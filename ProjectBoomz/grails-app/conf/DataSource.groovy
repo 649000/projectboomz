@@ -3,7 +3,7 @@ dataSource {
     driverClassName = "com.mysql.jdbc.Driver"
     username = "root"
     password = ""
-    dbCreate = "create-drop"
+    dbCreate = "update"
     url = "jdbc:mysql://localhost:3306/boomzdb"
 }
 hibernate {
