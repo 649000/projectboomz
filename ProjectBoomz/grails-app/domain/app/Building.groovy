@@ -1,7 +1,17 @@
 package app
 
-class Building {
+class Building
+{
 
-    static constraints = {
+    String buildingName
+    String latitude
+    String longitude
+    String type
+    String noiseLevel
+
+    static hasMany = [levels : Level]
+
+    static constraints =
+    {
     }
 }
