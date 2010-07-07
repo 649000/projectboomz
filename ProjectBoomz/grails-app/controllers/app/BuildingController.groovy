@@ -12,10 +12,10 @@ class BuildingController
 
     }
 
-        def search =
+    def search =
     {
 
-        System.out.println("fuck you!")
+        System.out.println("You are here!")
 
         // YJ'S PART
         // Get search criteria from params
