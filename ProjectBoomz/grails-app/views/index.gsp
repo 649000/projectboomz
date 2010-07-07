@@ -19,20 +19,26 @@
 	function changeIt()
 	{
 		document.getElementById("right_container").id="right_container_shift";
-		document.getElementById("left_container").id="left_container_shift";
+		document.getElementById("map").innerHTML="left_container_shift";
 	}
 	</script>
+
+ <script src="http://maps.google.com/maps?file=api&amp;v=3&amp;key=ABQIAAAAl3XLeSqUNe8Ev9bdkkHWFBTlogEOPz-D7BlWWD22Bqn0kvQxhBQR-srLJJlcXUmLMTM2KkMsePdU1A"
+            type="text/javascript"></script>
+
+    <script type="text/javascript" src="${resource(dir: 'js', file: 'scripts.js')}" ></script>
+
 <link rel="stylesheet" href="${resource(dir:'css', file:'main.css')}"
 </head>
 
-  <body>
+  <body onload="load()" onunload="GUnload()">
     <div id="container">
-      <div id="left_container"></div>
+      <div id="map"></div>
       <div id="right_container">
         <div id="right_container_banner">
           <div id="right_container_banner_left">
           </div>
-          <div id="right_container_banner_middle"><img src="boomz.PNG" width="200" height="20"/></div>
+          <div id="right_container_banner_middle"> <img src="${resource(dir:'images',file:'boomz.PNG')}" /</div>
           <div id="right_container_banner_right">
           </div>
         </div>
@@ -45,7 +51,16 @@
           <form>
           <div id="textbox_background">
           <input type="text" name="test" id="textbox"/>
-          <input type="button" name="test2" id="button" onmouseover="darkenButton()" onmouseout="lightenButton()"/>
+          <g:form>
+            <span  onmouseover="darkenButton()" onmouseout="lightenButton()">
+          <g:submitToRemote
+          url="[controller: 'building', action:'search']"
+          onSuccess="load(e)"
+          onLoading=""
+          onComplete=""
+          id="button" />
+          </g:form>
+</span>
           </div>
           </form>
           </div>

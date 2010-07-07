@@ -13,13 +13,12 @@
         width:98%;
         height:98%;
         margin:auto;
-      }#left_container {
+      }#map {
         position:inherit;
         left:0px;
         top:0px;
         width:69%;
         height:100%;
-        background-color:#9cd2ef;
         border: 1px solid #CCC;
       }
       #right_container {
@@ -36,7 +35,6 @@
         top:0px;
         width:30%;
         height:100%;
-        background-color:#9cd2ef;
         border: 1px solid #CCC;
       }
       #right_container_shift {
