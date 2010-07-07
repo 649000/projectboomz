@@ -1,6 +1,20 @@
 package app
 
-class BuildingController {
+class BuildingController
+{
 
-    def index = { }
+    def index =
+    {
+        
+        // NAZRI'S PART
+
+    }
+
+    def search =
+    {
+
+        // YJ'S PART
+        
+    }
+    
 }
