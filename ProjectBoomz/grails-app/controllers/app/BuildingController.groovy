@@ -25,9 +25,12 @@ class BuildingController
         // Search by name, building type, noise level
 	def buildings = Building.createCriteria().list(params)
 	{
+            or
+            {
 		like("buildingName", "%" +  keyword + "%")
 		like("noiseLevel", "%" +  keyword + "%")
 		like("type", "%" +  keyword + "%")
+            }
 	}
 
         println( buildings.size() )
