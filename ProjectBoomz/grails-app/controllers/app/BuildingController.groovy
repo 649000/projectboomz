@@ -8,7 +8,8 @@ class BuildingController
     def LibraryService
     def CinemaService
     def PlacesOfInterestService
-    def counter=0
+    def CounterService
+ 
 
     def index = {
         println("Start of Index Action")
@@ -19,23 +20,28 @@ class BuildingController
     def loadData =
     {
         println("Start of loadData Action")
+        //println("CounterService: " + CounterService._Counter())
 
-        if(counter==0)
+        if(CounterService._Counter()==1)
         {
+           println("Start CounterService: " + CounterService.CounterValue())
+            Building.executeUpdate("delete Building c where c.type != :_type", [_type:"NULL"])
             //Loading for the first time.
             //Removal of previous data in DB is ommited for now *Note*
 
-
-            for(Building b: LibraryService.getLibraries())
-            {
-               
-                b.save(insert:true)
-                 println(b.buildingName)
-
+            for(Building b: LibraryService.getLibraries()){
+                b.save()
             }
 
-            //Upon successfully loading of data, counter++;
+            for(Building b: CinemaService.getCinemas()){
+                b.save()
+            }
+
+            for(Building b: PlacesOfInterestService.getPlaces()){
+                b.save()
+            }           
         }
+        println(" End CounterService: " + CounterService.CounterValue())
                 
         
     }
