@@ -61,7 +61,6 @@ function updateShareResult(response)
 
 function validateShareForm(thisform)
 {
-    $('shareResult').innerHTML = 'Sending...'
     with (thisform)
     {
         if( !validate_required(friendName, "Your friend's name must be filled out!") )
@@ -85,6 +84,7 @@ function validateShareForm(thisform)
             return false
         }
     }
+    $('shareResult').innerHTML = 'Sending...'
     return true
 }
 
