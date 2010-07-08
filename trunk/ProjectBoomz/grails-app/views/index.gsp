@@ -23,7 +23,10 @@
 	}
 	</script>
 
- <script src="http://maps.google.com/maps?file=api&amp;v=3&amp;key=ABQIAAAAl3XLeSqUNe8Ev9bdkkHWFBTlogEOPz-D7BlWWD22Bqn0kvQxhBQR-srLJJlcXUmLMTM2KkMsePdU1A"
+
+        <g:javascript library="scriptaculous" />
+
+        <script src="http://maps.google.com/maps?file=api&amp;v=3&amp;key=ABQIAAAAl3XLeSqUNe8Ev9bdkkHWFBTlogEOPz-D7BlWWD22Bqn0kvQxhBQR-srLJJlcXUmLMTM2KkMsePdU1A"
             type="text/javascript"></script>
 
     <script type="text/javascript" src="${resource(dir: 'js', file: 'scripts.js')}" ></script>
