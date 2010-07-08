@@ -5,11 +5,39 @@ import grails.converters.JSON
 class BuildingController
 {
 
-    def index =
-    {
-        
-        // NAZRI'S PART
+    def LibraryService
+    def CinemaService
+    def PlacesOfInterestService
+    def counter=0
 
+    def index = {
+        println("Start of Index Action")
+
+        redirect(action:"loadData")
+    }
+
+    def loadData =
+    {
+        println("Start of loadData Action")
+
+        if(counter==0)
+        {
+            //Loading for the first time.
+            //Removal of previous data in DB is ommited for now *Note*
+
+
+            for(Building b: LibraryService.getLibraries())
+            {
+               
+                b.save(insert:true)
+                 println(b.buildingName)
+
+            }
+
+            //Upon successfully loading of data, counter++;
+        }
+                
+        
     }
 
     def search =
