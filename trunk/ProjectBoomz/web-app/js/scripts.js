@@ -22,8 +22,11 @@ function addPins(map, response)
         marker.bindInfoWindowHtml( "<font face=\"Arial\" size=\"2em\"><b>" + results[i].buildingName + "</b>" +
                                     "<br/><br/><b>Type:</b><br/>" + results[i].type +
                                     "<br/><br/><b>Noise Level:</b><br/>" + results[i].noiseLevel +
-                                    "<br/><br/><table width=\"100%\"><tr><td><b><a href=\"#\">Share</a></b></td><td><b><a href=\"#\">View</a></b></td></tr></table></font>")
+                                    "<br/><br/><table width=\"100%\"><tr><td><b><a href=\"#\">Share</a></b></td><td><b><a href=\"level/index?name="+ results[i].buildingName+"\">View</a></b></td></tr></table></font>")
+
         map.addOverlay(marker)
     }
     
 }
+
+
