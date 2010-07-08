@@ -28,7 +28,7 @@
 
     <script type="text/javascript" src="${resource(dir: 'js', file: 'scripts.js')}" ></script>
 
-<link rel="stylesheet" href="${resource(dir:'css', file:'main.css')}"
+<link rel="stylesheet" href="${resource(dir:'css', file:'main.css')}" />
 </head>
 
   <body onload="load()" onunload="GUnload()">
@@ -38,7 +38,7 @@
         <div id="right_container_banner">
           <div id="right_container_banner_left">
           </div>
-          <div id="right_container_banner_middle"> <img src="${resource(dir:'images',file:'boomz.PNG')}" /</div>
+          <div id="right_container_banner_middle"> <img src="${resource(dir:'images',file:'boomz.PNG')}" /></div>
           <div id="right_container_banner_right">
           </div>
         </div>
@@ -48,21 +48,20 @@
           <div id="right_container_search_middle">
           <div id="searchHeader">Search : </div>
 
-          <form>
           <div id="textbox_background">
-          <input type="text" name="test" id="textbox"/>
+          
           <g:form>
+            <g:textField name="keyword" id="textbox"/>
             <span  onmouseover="darkenButton()" onmouseout="lightenButton()">
-          <g:submitToRemote
-          url="[controller: 'building', action:'search']"
-          onSuccess="load(e)"
-          onLoading=""
-          onComplete=""
-          id="button" />
+            <g:submitToRemote
+            url="[controller: 'building', action:'search']"
+            onSuccess="load(e)"
+            onLoading=""
+            onComplete=""
+            id="button" />
+            </span>
           </g:form>
-</span>
           </div>
-          </form>
           </div>
 
           <div id="right_container_search_right">
