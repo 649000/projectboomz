@@ -4,7 +4,7 @@
         padding: 0px;
         height: 100%;
       }
-      #container {
+      .container {
         position:absolute;
         left:0px;
         top:0px;
@@ -13,7 +13,7 @@
         width:98%;
         height:98%;
         margin:auto;
-      }#map {
+      }.left_container {
         position:inherit;
         left:0px;
         top:0px;
@@ -21,7 +21,7 @@
         height:100%;
         border: 1px solid #CCC;
       }
-      #right_container {
+      .right_container {
         position:inherit;
         right:0px;
         top:0px;
@@ -29,7 +29,7 @@
         height:100%;
       }
 
-	  #left_container_shift {
+	  .left_container_shift {
         position:inherit;
         left:0px;
         top:0px;
@@ -37,7 +37,7 @@
         height:100%;
         border: 1px solid #CCC;
       }
-      #right_container_shift {
+      .right_container_shift {
         position:inherit;
         right:0px;
         top:0px;
@@ -45,7 +45,7 @@
         height:100%;
       }
 
-      #right_container_banner {
+      .right_container_banner {
         position:inherit;
         left:0px;
         top:0px;
@@ -53,7 +53,7 @@
         height:22px;
         background-repeat: no-repeat;
       }
-      #right_container_banner_left {
+      .right_container_banner_left {
         position:inherit;
         left:0px;
         width:10px;
@@ -61,7 +61,7 @@
         background-image: url(../images/lside.png);
         background-repeat: no-repeat;
       }
-      #right_container_banner_middle {
+      .right_container_banner_middle {
 	position:inherit;
 	left:10px;
 	right:10px;
@@ -71,7 +71,7 @@
 	background-repeat: repeat-x;
 	text-align: center;
       }
-      #right_container_banner_right {
+      .right_container_banner_right {
         position:inherit;
         right:0px;
         width:10px;
@@ -80,14 +80,14 @@
         background-repeat: no-repeat;
       }
 
-      #right_container_search {
+      .right_container_search {
         position:inherit;
         left:0px;
         top:32px;
         width:100%;
         height:48px;
       }
-      #right_container_search_left {
+      .right_container_search_left {
         position:inherit;
         left:0px;
         width:10px;
@@ -95,7 +95,7 @@
         background-image: url(../images/lsearch.png);
         background-repeat: no-repeat;
       }
-      #right_container_search_middle {
+      .right_container_search_middle {
         position:inherit;
         left:10px;
         right:10px;
@@ -104,7 +104,7 @@
         background-image: url(../images/msearch.png);
         background-repeat: repeat-x;
       }
-      #right_container_search_right {
+      .right_container_search_right {
         position:inherit;
         right:0px;
         width:10px;
@@ -113,7 +113,7 @@
         background-repeat: no-repeat;
       }
 
-      #right_container_content {
+      .right_container_content {
         top:90px;
         bottom:0px;
         position:inherit;
@@ -123,7 +123,7 @@
         border: 1px solid #CCC;
       }
 
-      #right_container_content_header {
+      .right_container_content_header {
         background-color: #f7f7f7;
         border-bottom-width: 1px;
         border-bottom-style: solid;
@@ -140,7 +140,7 @@
         text-align:justify;
       }
 
-      #right_container_content_content {
+      .right_container_content_content {
         font-family: Helvetica, Arial, sans-serif;
         font-size: 14px;
         color: #666666;
@@ -152,7 +152,7 @@
         text-align:justify;
       }
 
-	  #textbox_background
+	  .textbox_background
 	  {
 		  position:absolute;
 		  top:15%;
@@ -162,7 +162,7 @@
 		height: 33px;
 		width: 261px;
 	  }
-	  #textbox_background_hover
+	  .textbox_background_hover
 	  {
 		position:absolute;
 		  top:15%;
@@ -173,7 +173,7 @@
 		width: 261px;
 	  }
 
-	  #textbox
+	  .textbox
 	  {
 	background:none;
 	border:none;
@@ -188,7 +188,7 @@
 	color: #666666;
 	  }
 
-	  #button
+	  .button
 	  {
 	background:none;
 	cursor:pointer;
@@ -198,7 +198,7 @@
 	border:none;
 	  }
 
-	  #searchHeader
+	  .searchHeader
 	  {
 		  font-family:Helvetica, Arial, sans-serif;
 		  color: #666666;
