@@ -32,6 +32,7 @@ class PlacesOfInterestService {
                 buildingz.longitude = it.content.properties.Longitude.text()
                 buildingz.latitude = it.content.properties.Latitude.text()
                 buildingz.type = "Places of Interest"
+                buildingz.noiseLevel = 0
                 buildingList.add(buildingz)
             }
 
