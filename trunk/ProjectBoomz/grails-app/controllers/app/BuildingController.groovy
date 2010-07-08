@@ -1,6 +1,6 @@
 package app
 
- import grails.converters.JSON;
+import grails.converters.JSON
 
 class BuildingController
 {
