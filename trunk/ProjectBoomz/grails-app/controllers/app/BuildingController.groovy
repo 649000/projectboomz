@@ -1,6 +1,7 @@
 package app
 
 import grails.converters.JSON
+import java.text.SimpleDateFormat
 
 class BuildingController
 {
@@ -9,7 +10,8 @@ class BuildingController
     def CinemaService
     def PlacesOfInterestService
     def CounterService
- 
+
+    def shareByEmailService
 
     def index = {
         println("Start of Index Action")
@@ -90,6 +92,40 @@ class BuildingController
 		}
             }
         }
+    }
+
+    def share =
+    {
+        String[] recipients = new String[1]
+        recipients[0] = params.friendEmail
+
+        def content =
+        "Dear " + params.friendName + ",\n\n" +
+        "Your friend " + params.readerName + " recently visited Project Boomz for the latest updates on " +
+        "noise pollution levels in Singapore and has highly recommended that you note the following information:\n\n" +
+        "The venue " + params.buildingName + ", which is a " + params.buildingType + ", had a noise level of " +
+        params.noiseLevel + " dB as of " + getDateTime() + ".\n\n\n\n\n" +
+        "PROJECT BOOMZ\nPeace to the ears"
+
+        println(content)
+
+        boolean successfulSend = shareByEmailService.postMail(recipients, "Updates from Project Boomz", content, params.readerName.toString(), params.readerEmail.toString() );
+        if (successfulSend)
+        {
+            render 'We have successfully sent the information you wanted to share!'
+        }
+        else
+        {
+            render 'The sending failed! You might want to try again.'
+        }
+
+    }
+
+    def String getDateTime()
+    {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMMM yyyy hh:mm aaa");
+        Date date = new Date();
+        return sdf.format(date);
     }
     
 }
