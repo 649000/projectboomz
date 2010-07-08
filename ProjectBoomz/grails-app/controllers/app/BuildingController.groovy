@@ -74,5 +74,22 @@ class BuildingController
         render buildings as JSON
 
     }
+
+    def autoComplete={
+        def buildings=Building.findAllByBuildingNameLike("%${params.query}%")
+
+        //Create XML response
+        render(contentType: "text/xml") {
+	    results() {
+	        buildings.each { building ->
+		    result(){
+		        name(building.buildingName)
+                        //Optional id which will be available in onItemSelect
+                        id(building.id)
+		    }
+		}
+            }
+        }
+    }
     
 }

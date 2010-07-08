@@ -54,7 +54,11 @@
           <div id="textbox" class="textbox_background">
           
           <g:form>
-            <g:textField name="keyword" class="textbox"/>
+
+            <resource:autoComplete skin="default" />
+            <g:form>
+              <richui:autoComplete name="keyword" class="textbox" action="${createLinkTo('dir': 'building/autoComplete')}" />
+            </g:form>
             <span  onmouseover="darkenButton()" onmouseout="lightenButton()">
             <g:submitToRemote
             url="[controller: 'building', action:'search']"
@@ -80,19 +84,5 @@
         </div>
       </div>
     </div>
-
-
-
-    <resource:tabView />
-
-...
-
-<richui:tabView id="tabView"> <richui:tabLabels> <richui:tabLabel selected="true" title="My Tab 1" /> <richui:tabLabel title="Tab 2" /> <richui:tabLabel title="Tab 3" /> </richui:tabLabels>
-
-<richui:tabContents> <richui:tabContent> <h1>My Tab 1</h1> This is tab 1. </richui:tabContent>
-
-<richui:tabContent> And this is tab 2. </richui:tabContent>
-
-<richui:tabContent> This is tab 3. <g:link action="list">A link</g:link> </richui:tabContent> </richui:tabContents> </richui:tabView>
   </body>
 </html>
