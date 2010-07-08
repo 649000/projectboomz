@@ -1,8 +1,10 @@
 
 
 var germ=null, currClipPlane=null, LastExpand=true;
-function Init()
+function Init(response)
 {
+    var a = eval( '(' + response.responseText + ')')
+    alert(a.type)
     Germanium.CreateInstance("myGerm", InitSuccessCallback, InitFailureCallback);
     
 }
@@ -10,6 +12,8 @@ function Init()
 function InitSuccessCallback(obj)
 {
     germ = obj;
+  //var tmp = ${remoteFunction(controller:'level', action: 'loadBuilding')}
+    //alert(tmp)
     germ.Load("http://www.germanium3d.com/static/sample/generic_building/generic_building.xlcl", null, LoadOk, LoadFail);
 }
 
@@ -27,6 +31,7 @@ function InitFailureCallback(message, code)
 function LoadOk()
 {
 	//alert('Loading successful!');
+        
 }
 
 // Will be called if loading fails
