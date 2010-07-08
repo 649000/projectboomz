@@ -75,8 +75,8 @@
           </div>
         </div>
         <div class="right_container_content">
-          <div class="right_container_content_header">Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!</div>
-          <div class="right_container_content_content">
+          <div class="right_container_content_header" id="right_container_content_header">Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!</div>
+          <div class="right_container_content_content" id="right_container_content_content">
             <p>Hi me really hard! Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!
             </p>
             <input type="button" onclick="changeIt()" value="click me"/>
@@ -84,5 +84,19 @@
         </div>
       </div>
     </div>
+
+
+
+<!--    <resource:tabView />
+
+...
+
+<richui:tabView id="tabView"> <richui:tabLabels> <richui:tabLabel selected="true" title="My Tab 1" /> <richui:tabLabel title="Tab 2" /> <richui:tabLabel title="Tab 3" /> </richui:tabLabels>
+
+<richui:tabContents> <richui:tabContent> <h1>My Tab 1</h1> This is tab 1. </richui:tabContent>
+
+<richui:tabContent> And this is tab 2. </richui:tabContent>
+
+<richui:tabContent> This is tab 3. <g:link action="list">A link</g:link> </richui:tabContent> </richui:tabContents> </richui:tabView>-->
   </body>
 </html>
