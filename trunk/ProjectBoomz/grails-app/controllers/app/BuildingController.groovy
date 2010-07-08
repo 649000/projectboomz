@@ -27,8 +27,7 @@ class BuildingController
            println("Start CounterService: " + CounterService.CounterValue())
             Building.executeUpdate("delete Building c where c.type != :_type", [_type:"NULL"])
             //Loading for the first time.
-            //Removal of previous data in DB is ommited for now *Note*
-
+            
             for(Building b: LibraryService.getLibraries()){
                 b.save()
             }
