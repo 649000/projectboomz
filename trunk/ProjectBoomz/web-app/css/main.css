@@ -185,17 +185,21 @@
 	padding-left:10px;
 	font-family:Helvetica, Arial, sans-serif;
 	font-size:14px;
-	color: #666666;
+        z-index: 2;
 	  }
 
 	  .button
 	  {
+              position: absolute;
+              left: 233px;
+              top:4px;
 	background:none;
 	cursor:pointer;
 	background-repeat: no-repeat;
 	width:22px;
 	height:24px;
 	border:none;
+        border: 1px solid #000;
 	  }
 
 	  .searchHeader
