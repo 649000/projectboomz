@@ -35,7 +35,7 @@ srLJJlcXUmLMTM2KkMsePdU1A"
 <link rel="stylesheet" href="${resource(dir:'css', file:'main.css')}" />
 </head>
 
-  <body onload="load()" onunload="GUnload()">
+  <body onload="initialisePage(); load()" onunload="GUnload()">
     <div class="container">
       <div id="map" class="left_container"></div>
       <div id="right_container" class="right_container">
@@ -55,7 +55,7 @@ srLJJlcXUmLMTM2KkMsePdU1A"
           <div id="textbox" class="textbox_background">
             <resource:autoComplete skin="default" />
           <g:form>
-            <richui:autoComplete class="textbox" name="person" action="${createLinkTo('dir': 'building/autoComplete')}" />
+            <richui:autoComplete class="textbox" name="keyword" action="${createLinkTo('dir': 'building/autoComplete')}" />
             <!--<g:textField name="keyword" class="textbox"/>-->
             <span  onmouseover="darkenButton()" onmouseout="lightenButton()">
             <g:submitToRemote
@@ -76,12 +76,33 @@ srLJJlcXUmLMTM2KkMsePdU1A"
           <div class="right_container_content_header" id="right_container_content_header">Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi
 you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi
 you!</div>
+          <div class="right_container_content_header" id="share_form_header">Share</div>
           <div class="right_container_content_content" id="right_container_content_content">
             <p>Hi me really hard! Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really
 hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me
 really hard!Hi me really hard!
             </p>
             <input type="button" onclick="changeIt()" value="click me"/>
+          </div>
+          <div class="right_container_content_content" id="share_form_content">
+            <p>Email information about <span id="share_form_buildingName"></span> to your friends!</p>
+            <g:form>
+              <p>Your Friend's Name:</p><g:textField name="friendName" id="friendName" size="48" />
+              <p>Your Friend's Email Address:</p><g:textField name="friendEmail" id="friendEmail" size="48" />
+              <p>Your Name:</p><g:textField name="readerName" id="readerName" size="48" />
+              <p>Your Email Address:</p><g:textField name="readerEmail" id="readerEmail" size="48" />
+              <g:hiddenField name="buildingName" id="buildingName" value="" />
+              <g:hiddenField name="buildingType" id="buildingType" value="" />
+              <g:hiddenField name="noiseLevel" id="noiseLevel" value="" />
+              <br/><br/>
+              <g:submitToRemote
+                url="[controller: 'building', action:'share']"
+                value="Share"
+                before="if( !validateShareForm(this) ) return false"
+                onSuccess="updateShareResult(e)" />
+            </g:form>
+            <br/><br/>
+            <span id="shareResult"></span>
           </div>
         </div>
       </div>
