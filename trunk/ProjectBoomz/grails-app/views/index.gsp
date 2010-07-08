@@ -26,7 +26,8 @@
 
         <g:javascript library="scriptaculous" />
 
-        <script src="http://maps.google.com/maps?file=api&amp;v=3&amp;key=ABQIAAAAl3XLeSqUNe8Ev9bdkkHWFBTlogEOPz-D7BlWWD22Bqn0kvQxhBQR-srLJJlcXUmLMTM2KkMsePdU1A"
+        <script src="http://maps.google.com/maps?file=api&amp;v=3&amp;key=ABQIAAAAl3XLeSqUNe8Ev9bdkkHWFBTlogEOPz-D7BlWWD22Bqn0kvQxhBQR-
+srLJJlcXUmLMTM2KkMsePdU1A"
             type="text/javascript"></script>
 
     <script type="text/javascript" src="${resource(dir: 'js', file: 'scripts.js')}" ></script>
@@ -52,13 +53,9 @@
           <div class="searchHeader">Search : </div>
 
           <div id="textbox" class="textbox_background">
-          
-          <g:form>
 
-            <resource:autoComplete skin="default" />
-            <g:form>
-              <richui:autoComplete name="keyword" class="textbox" action="${createLinkTo('dir': 'building/autoComplete')}" />
-            </g:form>
+          <g:form>
+            <g:textField name="keyword" class="textbox"/>
             <span  onmouseover="darkenButton()" onmouseout="lightenButton()">
             <g:submitToRemote
             url="[controller: 'building', action:'search']"
@@ -75,9 +72,13 @@
           </div>
         </div>
         <div class="right_container_content">
-          <div class="right_container_content_header" id="right_container_content_header">Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!</div>
+          <div class="right_container_content_header" id="right_container_content_header">Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi
+you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi
+you!</div>
           <div class="right_container_content_content" id="right_container_content_content">
-            <p>Hi me really hard! Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!
+            <p>Hi me really hard! Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really
+hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me
+really hard!Hi me really hard!
             </p>
             <input type="button" onclick="changeIt()" value="click me"/>
           </div>
@@ -91,7 +92,8 @@
 
 ...
 
-<richui:tabView id="tabView"> <richui:tabLabels> <richui:tabLabel selected="true" title="My Tab 1" /> <richui:tabLabel title="Tab 2" /> <richui:tabLabel title="Tab 3" /> </richui:tabLabels>
+<richui:tabView id="tabView"> <richui:tabLabels> <richui:tabLabel selected="true" title="My Tab 1" /> <richui:tabLabel title="Tab 2" /> <richui:tabLabel
+title="Tab 3" /> </richui:tabLabels>
 
 <richui:tabContents> <richui:tabContent> <h1>My Tab 1</h1> This is tab 1. </richui:tabContent>
 
