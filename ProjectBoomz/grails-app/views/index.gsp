@@ -8,18 +8,18 @@
     <script type="text/javascript">
 	function darkenButton()
 	{
-		document.getElementById("textbox_background").id="textbox_background_hover";
+		document.getElementById("textbox").className="textbox_background_hover";
 	}
 
 	function lightenButton()
 	{
-		document.getElementById("textbox_background_hover").id="textbox_background";
+		document.getElementById("textbox").className="textbox_background";
 	}
 
 	function changeIt()
 	{
-		document.getElementById("right_container").id="right_container_shift";
-		document.getElementById("map").innerHTML="left_container_shift";
+		document.getElementById("right_container").className="right_container_shift";
+		document.getElementById("map").className="left_container_shift";
 	}
 	</script>
 
@@ -32,44 +32,44 @@
 </head>
 
   <body onload="load()" onunload="GUnload()">
-    <div id="container">
-      <div id="map"></div>
-      <div id="right_container">
-        <div id="right_container_banner">
-          <div id="right_container_banner_left">
+    <div class="container">
+      <div id="map" class="left_container"></div>
+      <div id="right_container" class="right_container">
+        <div class="right_container_banner">
+          <div class="right_container_banner_left">
           </div>
-          <div id="right_container_banner_middle"> <img src="${resource(dir:'images',file:'boomz.PNG')}" /></div>
-          <div id="right_container_banner_right">
+          <div class="right_container_banner_middle"> <img src="${resource(dir:'images',file:'boomz.PNG')}" /></div>
+          <div class="right_container_banner_right">
           </div>
         </div>
-        <div id="right_container_search">
-          <div id="right_container_search_left">
+        <div class="right_container_search">
+          <div class="right_container_search_left">
           </div>
-          <div id="right_container_search_middle">
-          <div id="searchHeader">Search : </div>
+          <div class="right_container_search_middle">
+          <div class="searchHeader">Search : </div>
 
-          <div id="textbox_background">
+          <div id="textbox" class="textbox_background">
           
           <g:form>
-            <g:textField name="keyword" id="textbox"/>
+            <g:textField name="keyword" class="textbox"/>
             <span  onmouseover="darkenButton()" onmouseout="lightenButton()">
             <g:submitToRemote
             url="[controller: 'building', action:'search']"
             onSuccess="load(e)"
             onLoading=""
             onComplete=""
-            id="button" />
+            class="button" />
             </span>
           </g:form>
           </div>
           </div>
 
-          <div id="right_container_search_right">
+          <div class="right_container_search_right">
           </div>
         </div>
-        <div id="right_container_content">
-          <div id="right_container_content_header">Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!</div>
-          <div id="right_container_content_content">
+        <div class="right_container_content">
+          <div class="right_container_content_header">Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!</div>
+          <div class="right_container_content_content">
             <p>Hi me really hard! Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!</p>
             <input type="button" onclick="changeIt()" value="click me"/>
           </div>
