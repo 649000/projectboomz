@@ -121,6 +121,7 @@
         width:100%;
         height:auto;
         border: 1px solid #CCC;
+        overflow: auto;
       }
 
       .right_container_content_header {
@@ -129,7 +130,7 @@
         border-bottom-style: solid;
         border-bottom-color: #ededed;
         font-family: Helvetica, Arial, sans-serif;
-        font-size: 12px;
+        font-size: 16px;
         color: #666666;
         height: auto;
         font-weight: bold;
