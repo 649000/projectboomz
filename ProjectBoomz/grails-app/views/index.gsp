@@ -73,14 +73,10 @@ srLJJlcXUmLMTM2KkMsePdU1A"
           </div>
         </div>
         <div class="right_container_content">
-          <div class="right_container_content_header" id="right_container_content_header">Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi
-you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi you!Hi
-you!</div>
+          <div class="right_container_content_header" id="right_container_content_header">What's Up?</div>
           <div class="right_container_content_header" id="share_form_header">Share</div>
           <div class="right_container_content_content" id="right_container_content_content">
-            <p>Hi me really hard! Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really
-hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me really hard!Hi me
-really hard!Hi me really hard!
+            <p>The quick brown fox jumps over the lazy dog.
             </p>
             <input type="button" onclick="changeIt()" value="click me"/>
           </div>
@@ -103,6 +99,8 @@ really hard!Hi me really hard!
             </g:form>
             <br/><br/>
             <span id="shareResult"></span>
+            <br/><br/>
+            <p><a href="#" onClick="abandonShare(); return false">Back</a></p>
           </div>
         </div>
       </div>
