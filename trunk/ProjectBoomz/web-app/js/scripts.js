@@ -39,9 +39,36 @@ function addPins(map, response)
     for (var i = 0; i < results.length; i++)
     {
         var marker = new GMarker(   new GLatLng( results[i].latitude, results[i].longitude )   )
+        var noiseDescription
+        var advice
+        if( results[i].noiseLevel <= 30 )
+        {
+            noiseDescription = '<font color=\"Green">(Quiet)</font>'
+            advice = '<p>This place is probably conducive enough for<br/>work or activities that require intense concentration.</p>'
+        }
+        else if( results[i].noiseLevel <= 50 )
+        {
+            noiseDescription = '<font color=\"Blue\">(Moderate)</font>'
+            advice = '<p>This place is probably conducive enough for<br/>work or activities that require concentration.</p>'
+        }
+        else if( results[i].noiseLevel <= 80 )
+        {
+            noiseDescription = '<font color=\"Orange\">(Noisy)</font>'
+            advice = '<p>Distractions abound.<br/>This place is probably not the best place for<br/>work or activities that require some degree of concentration.</p>'
+        }
+        else if( results[i].noiseLevel <= 110 )
+        {
+            noiseDescription = '<font color=\"Red\">(Very Noisy)</font>'
+            advice = '<p>This place is probably not conducive for<br/>any form of work or activities that require concentration.</p>'
+        }
+        else if( results[i].noiseLevel > 110 )
+        {
+            noiseDescription = '<font color=\"Red\"><b>(Painfully Noisy)</b></font>'
+            advice = '<p>This place is probably not conducive for any form of activity.<br/>A prolonged stay in this location may be hazardous to you.</p>'
+        }
         marker.bindInfoWindowHtml( "<font face=\"Arial\" size=\"2em\"><b>" + results[i].buildingName + "</b>" +
                                     "<br/><br/><b>Type:</b><br/>" + results[i].type +
-                                    "<br/><br/><b>Noise Level:</b><br/>" + results[i].noiseLevel +
+                                    "<br/><br/><b>Noise Level:</b><br/>" + results[i].noiseLevel + " dB " + noiseDescription +
                                     "<br/><br/><table width=\"100%\"><tr>" +
                                     "<td><b><a href=\"#\" onClick=\"prepareShare('" + results[i].buildingName + "', '" + results[i].type + "', '" + results[i].noiseLevel + "'); return false\">Share</a></b></td>" +
                                     "<td><b><a href=\"level/index?name="+ results[i].buildingName+"\">View</a></b></td></tr></table></font>");
@@ -149,6 +176,14 @@ function validate_email(field,alerttxt)
         }
 
     }
+}
+
+function abandonShare()
+{
+    $('share_form_header').hide()
+    $('share_form_content').hide()
+    $('right_container_content_header').show()
+    $('right_container_content_content').show()
 }
 
 function changeIt()
