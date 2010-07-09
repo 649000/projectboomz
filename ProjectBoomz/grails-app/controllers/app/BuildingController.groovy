@@ -99,12 +99,43 @@ class BuildingController
         String[] recipients = new String[1]
         recipients[0] = params.friendEmail
 
+        def noiseDescription
+        def advice
+        def noiseLevel = Double.valueOf( params.noiseLevel )
+        if( noiseLevel <= 30 )
+        {
+            noiseDescription = "Quiet"
+            advice = "that this place is probably conducive enough for work or activities that require intense concentration."
+        }
+        else if( noiseLevel <= 50 )
+        {
+            noiseDescription = "Moderate"
+            advice = "that this place is probably conducive enough for work or activities that require concentration."
+        }
+        else if( noiseLevel <= 80 )
+        {
+            noiseDescription = "Noisy"
+            advice = "that this place is probably not the best place for work or activities that require some degree of concentration. You may find yourself distracted by the sources of noise in this location."
+        }
+        else if( noiseLevel <= 110 )
+        {
+            noiseDescription = "Very Noisy"
+            advice = "that this place is probably not conducive for work or activities that require concentration because there are intense sources of noise."
+        }
+        else if( noiseLevel > 110 )
+        {
+            noiseDescription = "Painfully Noisy"
+            advice = "that this place is probably not conducive for any form of activity. A prolonged stay in this location is hazardous to you and you should get out of this place as soon as you can. If you do have to stay here, you are advised to make use of earplugs."
+        }
+
         def content =
         "Dear " + params.friendName + ",\n\n" +
         "Your friend " + params.readerName + " recently visited Project Boomz for the latest updates on " +
         "noise pollution levels in Singapore and has highly recommended that you note the following information:\n\n" +
         "The venue " + params.buildingName + ", which is a " + params.buildingType + ", had a noise level of " +
-        params.noiseLevel + " dB as of " + getDateTime() + ".\n\n\n\n\n" +
+        params.noiseLevel + " dB as of " + getDateTime() + "." +
+        "\n\nA noise level of " + params.noiseLevel + " dB is classified to be " + noiseDescription + ". You are advised " + advice +
+        "\n\n\n\n\n" +
         "PROJECT BOOMZ\nPeace to the ears"
 
         println(content)
