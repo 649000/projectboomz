@@ -23,6 +23,5 @@
   </head>
   <body onLoad="${remoteFunction(action:'loadBuilding',onSuccess:'Init(e)')}" >
     <div id="myGerm" style="width: 100%; height: 600px;"></div>
-    <a href="${createLink(action:'loadBuilding')}">my link</a>
 </body>
 </html>
