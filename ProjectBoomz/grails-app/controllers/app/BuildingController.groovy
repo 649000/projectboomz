@@ -158,5 +158,15 @@ class BuildingController
         Date date = new Date();
         return sdf.format(date);
     }
+
+    def updateNoise =
+    {
+        def building = params.buildingName
+        def noiseLevel = params.noiseLevel
+
+        def buildingToUpdate = Building.findByBuildingName(building)
+        buildingToUpdate.noiseLevel = noiseLevel
+        render 'Success'
+    }
     
 }
