@@ -4,23 +4,37 @@ function initialisePage()
     $('share_form_content').hide()
 }
 
+var map=null;
+var markers;
+
 // Maps API JS
 function load(response)
 {
   if (GBrowserIsCompatible())
   {
-    var map = new GMap2(document.getElementById("map"));
+    map = new GMap2(document.getElementById("map"));
     map.setCenter(new GLatLng(1.358058,103.879166), 11);
     map.addControl(new GLargeMapControl3D());
     map.addControl(new GMapTypeControl());
 
     addPins(map, response)
+
+    for (var i = 0; i < results.length; i++)
+    {
+       var HTML=( "<div class=\"right_container_content_content\"/><b>" + results[i].buildingName + "</b>" +
+                                    "<br/><b>Type : </b>" + results[i].type +
+                                    "<br/><b>Noise Level : </b><br/>" + results[i].noiseLevel +
+                                    "</div>");
+        $('right_container_content_content').innerHTML=HTML;
+    }
   }
 }
 
 function addPins(map, response)
 {
     var results = eval( '(' + response.responseText + ')')
+    var HTML='';
+    markers=[];
 
     for (var i = 0; i < results.length; i++)
     {
@@ -30,11 +44,23 @@ function addPins(map, response)
                                     "<br/><br/><b>Noise Level:</b><br/>" + results[i].noiseLevel +
                                     "<br/><br/><table width=\"100%\"><tr>" +
                                     "<td><b><a href=\"#\" onClick=\"prepareShare('" + results[i].buildingName + "', '" + results[i].type + "', '" + results[i].noiseLevel + "'); return false\">Share</a></b></td>" +
-                                    "<td><b><a href=\"level/index?name="+ results[i].buildingName+"\">View</a></b></td></tr></table></font>")
-
+                                    "<td><b><a href=\"level/index?name="+ results[i].buildingName+"\">View</a></b></td></tr></table></font>");
         map.addOverlay(marker)
+        HTML+="<p><b><a style=\"text-decoration:underline; cursor:pointer\" onclick=\"changePoint("+results[i].latitude+","+results[i].longitude+","+i+")\">" + results[i].buildingName + "</a></b>" +
+                                    "<br/><b>Type : </b>" + results[i].type +
+                                    "<br/><b>Noise Level : </b>" + results[i].noiseLevel+ "</p>";
+        markers[i]=marker;
     }
+
+    $('right_container_content_content').innerHTML=HTML;
+    $('right_container_content_header').innerHTML="Search results for : \'"+ $('keyword').value+"\'";
     
+}
+
+function changePoint(latitude, longitude,i)
+{
+    map.setCenter(new GLatLng(latitude,longitude), 15);
+    GEvent.trigger(markers[i],"click");
 }
 
 function prepareShare(name, type, noiseLevel)
@@ -123,4 +149,10 @@ function validate_email(field,alerttxt)
         }
 
     }
+}
+
+function changeIt()
+{
+    $('map').morph('left_container_shift');
+    $('right_container').morph('right_container_shift');
 }
