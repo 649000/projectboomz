@@ -1,5 +1,3 @@
-
-
 var germ=null, currClipPlane=null, LastExpand=true;
 var listObj = null;
 var buildingObj=null;
@@ -11,9 +9,7 @@ function Init(response)
     listObj = eval( '(' + response.responseText + ')')
     buildingObj = listObj[0]
     roomObj = listObj[1]
-//    alert(levelObj[0].xcoordinate)
-//    alert(levelObj[0].ycoordinate)
-//    alert(levelObj[0].zcoordinate)
+    //alert(roomObj[0].xcoordinate)
     Germanium.CreateInstance("myGerm", InitSuccessCallback, InitFailureCallback);
 }
 
@@ -29,14 +25,20 @@ function InitSuccessCallback(obj)
         // Set placemark position
         var point = germ.CreatePointGeometry();
 
-        point.SetPosition(roomObj[0].xcoordinate, roomObj[0].ycoordinate, roomObj[0].zcoordinate);
-        alert(roomObj[0].xcoordinate)
-
-      //  point.SetPosition(-17.825, 9.27, -32.744)
+       // alert(roomObj[0].xcoordinate)
+       alert(roomObj[0].xcoordinate)
+       alert(roomObj[0].ycoordinate)
+       alert(roomObj[0].zcoordinate)
+       //convert to double.
+      // point.SetPosition(roomObj[i].xcoordinate, roomObj[i].ycoordinate, roomObj[i].zcoordinate);
+        
+        //point.SetPosition(-17.825, 9.27, -32.744)
+      
         myPlacemark.SetGeometry(point);
         // Add placemark to the scene
         germ.AddPlacemark(myPlacemark);
   }
+  
 // create a placemark for drag & drop to get coords
 //var pmark = germ.CreatePlacemark("Item to drag and drop");
 //germ.AddPlacemark(pmark);
