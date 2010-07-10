@@ -18,15 +18,13 @@ class RoomController {
         def _building = Building.findByBuildingName(session.temp)
         println(_building.type)
 
-        def level = new ArrayList()
-        level = Level.findAllByBuilding(_building)
-        println(level.floor)
+        def room = new ArrayList()
+        room = Room.findAllByBuilding(_building)
 
-         
         //Display building info and germanium 3D model of the building
         //render as JSON, the appropriate model based on the model
   
-        def list =[_building, level]
+        def list =[_building, room]
         render list as JSON
       
         
