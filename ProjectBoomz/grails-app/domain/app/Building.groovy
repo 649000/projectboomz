@@ -9,7 +9,7 @@ class Building
     String type
     String noiseLevel
 
-    static hasMany = [levels : Level]
+    static hasMany = [room: Room]
 
     static constraints =
     {
