@@ -2,7 +2,7 @@ package app
 
 import grails.converters.JSON
 
-class LevelController {
+class RoomController {
 
     
 
