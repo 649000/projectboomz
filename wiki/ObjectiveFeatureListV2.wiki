@@ -1,12 +1,11 @@
-
 Objectives:
 
-1. Service for People
-2. Mobile Platform
-3. ??
+# Service for People
+# Mobile Platform
+# ??
 
 Features List:
 
-1.
-2.
-3.
+#
+#
+#
