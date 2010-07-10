@@ -71,7 +71,7 @@ function addPins(map, response)
                                     "<br/><br/><b>Noise Level:</b><br/>" + results[i].noiseLevel + " dB " + noiseDescription +
                                     "<br/><br/><table width=\"100%\"><tr>" +
                                     "<td><b><a href=\"#\" onClick=\"prepareShare('" + results[i].buildingName + "', '" + results[i].type + "', '" + results[i].noiseLevel + "'); return false\">Share</a></b></td>" +
-                                    "<td><b><a href=\"level/index?name="+ results[i].buildingName+"\">View</a></b></td></tr></table></font>");
+                                    "<td><b><a href=\"room/index?name="+ results[i].buildingName+"\">View</a></b></td></tr></table></font>");
         map.addOverlay(marker)
         HTML+="<p><b><a style=\"text-decoration:underline; cursor:pointer\" onclick=\"changePoint("+results[i].latitude+","+results[i].longitude+","+i+")\">" + results[i].buildingName + "</a></b>" +
                                     "<br/><b>Type : </b>" + results[i].type +
