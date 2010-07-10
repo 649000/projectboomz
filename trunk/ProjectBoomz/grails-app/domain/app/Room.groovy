@@ -1,6 +1,6 @@
 package app
 
-class Level {
+class Room {
 
     static belongsTo = [building : Building]
     String noiseLevel   
