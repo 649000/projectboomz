@@ -1,0 +1,2 @@
+
+1. Split JS files at the beginning or when necessary.
