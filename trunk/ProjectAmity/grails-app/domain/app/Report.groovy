@@ -4,7 +4,7 @@ class Report {
 
     static constraints = {
     }
-
+    
     String datePosted
     String image
     String title
