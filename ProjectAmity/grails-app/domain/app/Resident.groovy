@@ -8,8 +8,8 @@ class Resident {
     String address
     String userid
     String password
-    static hasMany = [ passengers : Resident, cabSharers : Resident, barterAds : BarterAd, report: Report ]
-    static hasOne = [ driver : Resident ]
+    static hasMany = [ barterAds : BarterAd, report: Report ]
+    static hasOne = [ carpoolListing : CarpoolListing ]
 
     static constraints = {
     }
