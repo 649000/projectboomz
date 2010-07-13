@@ -5,11 +5,16 @@ class Report {
     static constraints = {
     }
 
-    Date datePosted
+    String datePosted
     String image
+    String title
     String description
-    String indoor
-    double xcoordinate
-    double ycoordinate
-    double zcoordinate
+    String category
+    String status
+    double latitude
+    double longitude
+    double altitude
+    String moderationStatus
+    
+    static belongsTo = [ resident : Resident ]
 }
