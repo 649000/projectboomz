@@ -18,7 +18,7 @@ class CarpoolListing {
     String returnTime
 
     String frequency // which days of the week?
-    String type // driver or passenger or cab pooling
+    String type // type of person the Resident is --> LOOKING FOR <-- driver or passenger or cab pooling
     String status // pending or accepted?
 
 }
