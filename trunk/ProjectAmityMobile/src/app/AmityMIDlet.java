@@ -4,31 +4,34 @@
  */
 package app;
 
+import java.io.IOException;
 import javax.microedition.midlet.*;
 import javax.microedition.lcdui.*;
 import javax.microedition.location.*;
 import javax.microedition.io.*;
-import java.io.IOException;
+import javax.microedition.media.*;
+import javax.microedition.media.control.*;
 import java.io.InputStream;
-import java.util.Calendar;
-import java.util.Date;
+import java.io.OutputStream;
+import javax.microedition.io.file.FileConnection;
 
 /**
  * @author student
  */
-public class VisualMIDlet extends MIDlet implements CommandListener {
+public class AmityMIDlet extends MIDlet implements CommandListener {
 
     private boolean midletPaused = false;
     private LocationProvider provider = null;
     private String userIDLoggedIn = "";
-
     //URLs
     private String loginUserURL = "";
-    private String reportURL="";
-
+    private String reportURL = "";
     //Server return messages
     private String loginServerMsg = "";
-    private String reportServerMsg="";
+    private String reportServerMsg = "";
+    private Player mPlayer;
+    private VideoControl mVideoControl;
+    private Display mDisplay;
     //<editor-fold defaultstate="collapsed" desc=" Generated Fields ">//GEN-BEGIN:|fields|0|
     private Form loginForm;
     private TextField NRICLoginFormtextField;
@@ -40,13 +43,14 @@ public class VisualMIDlet extends MIDlet implements CommandListener {
     private Command loginCommand;
     private Command exitCommand;
     private Command exitCommand1;
-    private Command okCommand1;
+    private Command locationCommand;
+    private Command snapPicCommand;
     //</editor-fold>//GEN-END:|fields|0|
 
     /**
-     * The VisualMIDlet constructor.
+     * The AmityMIDlet constructor.
      */
-    public VisualMIDlet() {
+    public AmityMIDlet() {
     }
 
     //<editor-fold defaultstate="collapsed" desc=" Generated Methods ">//GEN-BEGIN:|methods|0|
@@ -69,6 +73,9 @@ public class VisualMIDlet extends MIDlet implements CommandListener {
      */
     public void startMIDlet() {//GEN-END:|3-startMIDlet|0|3-preAction
         // write pre-action user code here
+
+        //Initialize mDisplay
+        mDisplay = Display.getDisplay(this);
         switchDisplayable(null, getLoginForm());//GEN-LINE:|3-startMIDlet|1|3-postAction
         // write post-action user code here
 
@@ -121,18 +128,23 @@ public class VisualMIDlet extends MIDlet implements CommandListener {
                 // write pre-action user code here
                 switchDisplayable(null, getLoginForm());//GEN-LINE:|7-commandAction|2|27-postAction
                 // write post-action user code here
-            } else if (command == okCommand1) {//GEN-LINE:|7-commandAction|3|33-preAction
+            } else if (command == locationCommand) {//GEN-LINE:|7-commandAction|3|33-preAction
                 // write pre-action user code here
                 getLocation();
 //GEN-LINE:|7-commandAction|4|33-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|5|21-preAction
-        } else if (displayable == loginForm) {
-            if (command == exitCommand) {//GEN-END:|7-commandAction|5|21-preAction
+            } else if (command == snapPicCommand) {//GEN-LINE:|7-commandAction|5|37-preAction
                 // write pre-action user code here
-                exitMIDlet();//GEN-LINE:|7-commandAction|6|21-postAction
+                capture();
+//GEN-LINE:|7-commandAction|6|37-postAction
                 // write post-action user code here
-            } else if (command == loginCommand) {//GEN-LINE:|7-commandAction|7|18-preAction
+            }//GEN-BEGIN:|7-commandAction|7|21-preAction
+        } else if (displayable == loginForm) {
+            if (command == exitCommand) {//GEN-END:|7-commandAction|7|21-preAction
+                // write pre-action user code here
+                exitMIDlet();//GEN-LINE:|7-commandAction|8|21-postAction
+                // write post-action user code here
+            } else if (command == loginCommand) {//GEN-LINE:|7-commandAction|9|18-preAction
                 // write pre-action user code here
 //                System.out.println("NRIC: " + NRICLoginFormtextField.getString());
 //                System.out.println("Password: " + passwordLoginFormtextField.getString());
@@ -145,14 +157,14 @@ public class VisualMIDlet extends MIDlet implements CommandListener {
 //                    alert.setTimeout(2000); //Timeout in 2 seconds
 //                    switchDisplayable(alert, getLoginForm());
 //                }
-
-                switchDisplayable(null, getCameraCaptureForm());//GEN-LINE:|7-commandAction|8|18-postAction
+//GEN-LINE:|7-commandAction|10|18-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|9|7-postCommandAction
-        }//GEN-END:|7-commandAction|9|7-postCommandAction
+                showCamera();
+            }//GEN-BEGIN:|7-commandAction|11|7-postCommandAction
+        }//GEN-END:|7-commandAction|11|7-postCommandAction
         // write post-action user code here
-    }//GEN-BEGIN:|7-commandAction|10|
-    //</editor-fold>//GEN-END:|7-commandAction|10|
+    }//GEN-BEGIN:|7-commandAction|12|
+    //</editor-fold>//GEN-END:|7-commandAction|12|
 
     //<editor-fold defaultstate="collapsed" desc=" Generated Getter: loginForm ">//GEN-BEGIN:|14-getter|0|14-preInit
     /**
@@ -259,7 +271,8 @@ public class VisualMIDlet extends MIDlet implements CommandListener {
             // write pre-init user code here
             cameraCaptureForm = new Form("Test Camera & GPS", new Item[] { getTestLocationstringItem() });//GEN-BEGIN:|25-getter|1|25-postInit
             cameraCaptureForm.addCommand(getExitCommand1());
-            cameraCaptureForm.addCommand(getOkCommand1());
+            cameraCaptureForm.addCommand(getLocationCommand());
+            cameraCaptureForm.addCommand(getSnapPicCommand());
             cameraCaptureForm.setCommandListener(this);//GEN-END:|25-getter|1|25-postInit
             // write post-init user code here
         }//GEN-BEGIN:|25-getter|2|
@@ -296,19 +309,20 @@ public class VisualMIDlet extends MIDlet implements CommandListener {
         return testLocationstringItem;
     }
     //</editor-fold>//GEN-END:|31-getter|2|
+    //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: okCommand1 ">//GEN-BEGIN:|32-getter|0|32-preInit
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: locationCommand ">//GEN-BEGIN:|32-getter|0|32-preInit
     /**
-     * Returns an initiliazed instance of okCommand1 component.
+     * Returns an initiliazed instance of locationCommand component.
      * @return the initialized component instance
      */
-    public Command getOkCommand1() {
-        if (okCommand1 == null) {//GEN-END:|32-getter|0|32-preInit
+    public Command getLocationCommand() {
+        if (locationCommand == null) {//GEN-END:|32-getter|0|32-preInit
             // write pre-init user code here
-            okCommand1 = new Command("Get Location", Command.OK, 0);//GEN-LINE:|32-getter|1|32-postInit
+            locationCommand = new Command("Get Location", Command.OK, 0);//GEN-LINE:|32-getter|1|32-postInit
             // write post-init user code here
         }//GEN-BEGIN:|32-getter|2|
-        return okCommand1;
+        return locationCommand;
     }
     //</editor-fold>//GEN-END:|32-getter|2|
 
@@ -327,6 +341,22 @@ public class VisualMIDlet extends MIDlet implements CommandListener {
         return alert;
     }
     //</editor-fold>//GEN-END:|34-getter|2|
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: snapPicCommand ">//GEN-BEGIN:|36-getter|0|36-preInit
+    /**
+     * Returns an initiliazed instance of snapPicCommand component.
+     * @return the initialized component instance
+     */
+    public Command getSnapPicCommand() {
+        if (snapPicCommand == null) {//GEN-END:|36-getter|0|36-preInit
+            // write pre-init user code here
+            snapPicCommand = new Command("Snap Picture", Command.OK, 0);//GEN-LINE:|36-getter|1|36-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|36-getter|2|
+        return snapPicCommand;
+    }
+    //</editor-fold>//GEN-END:|36-getter|2|
 
     /**
      * Returns a display instance.
@@ -343,6 +373,7 @@ public class VisualMIDlet extends MIDlet implements CommandListener {
         switchDisplayable(null, null);
         destroyApp(true);
         notifyDestroyed();
+
     }
 
     /**
@@ -508,5 +539,121 @@ public class VisualMIDlet extends MIDlet implements CommandListener {
 
             }
         }.start();
+    }
+
+    private void showCamera() {
+        System.out.println("Method showCamera() Starts here");
+        try {
+            mPlayer = Manager.createPlayer("capture://video");
+            mPlayer.realize();
+
+            mVideoControl = (VideoControl) mPlayer.getControl("VideoControl");
+
+            Canvas canvas = new CameraCanvas(this, mVideoControl);
+            canvas.addCommand(getExitCommand1());
+            canvas.addCommand(getSnapPicCommand());
+            canvas.setCommandListener(this);
+            //  mDisplay.setCurrent(canvas);
+            switchDisplayable(null, canvas);
+
+            /*
+            Form form = new Form("Camera form");
+            Item item = (Item)mVideoControl.initDisplayMode(
+            GUIControl.USE_GUI_PRIMITIVE, null);
+            form.append(item);
+            form.addCommand(mBackCommand);
+            form.addCommand(mCaptureCommand);
+            form.setCommandListener(this);
+            mDisplay.setCurrent(form);
+             */
+
+            mPlayer.start();
+        } catch (IOException ioe) {
+            handleException(ioe);
+        } catch (MediaException me) {
+            handleException(me);
+        }
+    }
+
+    public void capture() {
+
+        new Thread() {
+
+            public void run() {
+
+                try {
+                    // Get the image.
+                    byte[] raw = mVideoControl.getSnapshot(null);
+                    Image image = Image.createImage(raw, 0, raw.length);
+
+//                    Image thumb = createThumbnail(image);
+//
+//                    // Place it in the main form.
+//                    if (cameraCaptureForm.size() > 0 && cameraCaptureForm.get(0) instanceof StringItem) {
+//                        cameraCaptureForm.delete(0);
+//                    }
+//                    cameraCaptureForm.append(thumb);
+
+
+                    FileConnection fconn = (FileConnection) Connector.open("file:///SDCard/myfile.jpg", Connector.WRITE);
+                    fconn.create();
+                    OutputStream out = fconn.openOutputStream();
+                    //out.write(image);
+                    out.write(raw);
+                    out.close();
+                    fconn.close();
+
+                    // Flip back to the main form.
+                    mDisplay.setCurrent(cameraCaptureForm);
+
+                    // Shut down the player.
+                    mPlayer.close();
+                    mPlayer = null;
+                    mVideoControl = null;
+                } catch (MediaException me) {
+                    handleException(me);
+                } catch (Exception e) {
+                    handleException(e);
+                }
+
+            }
+        }.start();
+
+
+    }
+
+    private Image createThumbnail(Image image) {
+        int sourceWidth = image.getWidth();
+        int sourceHeight = image.getHeight();
+
+        int thumbWidth = 64;
+        int thumbHeight = -1;
+
+        if (thumbHeight == -1) {
+            thumbHeight = thumbWidth * sourceHeight / sourceWidth;
+        }
+
+        Image thumb = Image.createImage(thumbWidth, thumbHeight);
+        Graphics g = thumb.getGraphics();
+
+        for (int y = 0; y < thumbHeight; y++) {
+            for (int x = 0; x < thumbWidth; x++) {
+                g.setClip(x, y, 1, 1);
+                int dx = x * sourceWidth / thumbWidth;
+                int dy = y * sourceHeight / thumbHeight;
+                g.drawImage(image, x - dx, y - dy, Graphics.LEFT | Graphics.TOP);
+            }
+        }
+
+        Image immutableThumb = Image.createImage(thumb);
+
+        return immutableThumb;
+    }
+
+    private void handleException(Exception e) {
+        Alert a = new Alert("Exception", e.toString(), null, null);
+        a.setTimeout(2000);
+        switchDisplayable(a, getReportForm());
+        //  mDisplay.setCurrent(a, cameraCaptureForm);
     }
 }
