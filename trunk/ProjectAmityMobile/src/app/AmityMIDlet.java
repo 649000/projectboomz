@@ -36,15 +36,26 @@ public class AmityMIDlet extends MIDlet implements CommandListener {
     private Form loginForm;
     private TextField NRICLoginFormtextField;
     private TextField passwordLoginFormtextField;
-    private Form reportForm;
+    private Form reportMainForm;
+    private ChoiceGroup reportMainFormChoiceGroup;
     private Form cameraCaptureForm;
     private StringItem testLocationstringItem;
     private Alert alert;
+    private Form outdoorReportForm;
+    private Form indoorReportForm;
+    private Form mainMenuForm;
+    private ChoiceGroup mainMenuChoiceGroup;
     private Command loginCommand;
     private Command exitCommand;
     private Command exitCommand1;
     private Command locationCommand;
     private Command snapPicCommand;
+    private Command reportMenuOkCommand;
+    private Command outdoorReportBackCommand;
+    private Command indoorReportBbackCommand;
+    private Command outdoorReportSubmitCommand;
+    private Command indoorReportSubmitCommand;
+    private Command mainMenuOkCommand;
     //</editor-fold>//GEN-END:|fields|0|
 
     /**
@@ -138,13 +149,23 @@ public class AmityMIDlet extends MIDlet implements CommandListener {
                 capture();
 //GEN-LINE:|7-commandAction|6|37-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|7|21-preAction
-        } else if (displayable == loginForm) {
-            if (command == exitCommand) {//GEN-END:|7-commandAction|7|21-preAction
+            }//GEN-BEGIN:|7-commandAction|7|52-preAction
+        } else if (displayable == indoorReportForm) {
+            if (command == indoorReportBbackCommand) {//GEN-END:|7-commandAction|7|52-preAction
                 // write pre-action user code here
-                exitMIDlet();//GEN-LINE:|7-commandAction|8|21-postAction
+                switchDisplayable(null, getReportMainForm());//GEN-LINE:|7-commandAction|8|52-postAction
                 // write post-action user code here
-            } else if (command == loginCommand) {//GEN-LINE:|7-commandAction|9|18-preAction
+            } else if (command == indoorReportSubmitCommand) {//GEN-LINE:|7-commandAction|9|58-preAction
+                // write pre-action user code here
+//GEN-LINE:|7-commandAction|10|58-postAction
+                // write post-action user code here
+            }//GEN-BEGIN:|7-commandAction|11|21-preAction
+        } else if (displayable == loginForm) {
+            if (command == exitCommand) {//GEN-END:|7-commandAction|11|21-preAction
+                // write pre-action user code here
+                exitMIDlet();//GEN-LINE:|7-commandAction|12|21-postAction
+                // write post-action user code here
+            } else if (command == loginCommand) {//GEN-LINE:|7-commandAction|13|18-preAction
                 // write pre-action user code here
 //                System.out.println("NRIC: " + NRICLoginFormtextField.getString());
 //                System.out.println("Password: " + passwordLoginFormtextField.getString());
@@ -157,14 +178,63 @@ public class AmityMIDlet extends MIDlet implements CommandListener {
 //                    alert.setTimeout(2000); //Timeout in 2 seconds
 //                    switchDisplayable(alert, getLoginForm());
 //                }
-//GEN-LINE:|7-commandAction|10|18-postAction
+//GEN-LINE:|7-commandAction|14|18-postAction
                 // write post-action user code here
                 showCamera();
-            }//GEN-BEGIN:|7-commandAction|11|7-postCommandAction
-        }//GEN-END:|7-commandAction|11|7-postCommandAction
+            }//GEN-BEGIN:|7-commandAction|15|61-preAction
+        } else if (displayable == mainMenuForm) {
+            if (command == mainMenuOkCommand) {//GEN-END:|7-commandAction|15|61-preAction
+                // write pre-action user code here
+                if (mainMenuChoiceGroup.isSelected(0)) {
+                    System.out.println("User has selected private messaging module");
+                    switchDisplayable(null, null);
+                } else if (mainMenuChoiceGroup.isSelected(1)) {
+                    System.out.println("User has selected reporting module");
+                    switchDisplayable(null, getReportMainForm());
+                } else {
+                    System.out.println("User did not make a selection");
+                    alert = new Alert("Error", "Invalid selection", null, AlertType.ERROR);
+                    alert.setTimeout(2000); //Timeout in 2 seconds
+                    switchDisplayable(alert, getMainMenuForm());
+                }
+
+
+
+//GEN-LINE:|7-commandAction|16|61-postAction
+                // write post-action user code here
+            }//GEN-BEGIN:|7-commandAction|17|50-preAction
+        } else if (displayable == outdoorReportForm) {
+            if (command == outdoorReportBackCommand) {//GEN-END:|7-commandAction|17|50-preAction
+                // write pre-action user code here
+                switchDisplayable(null, getReportMainForm());//GEN-LINE:|7-commandAction|18|50-postAction
+                // write post-action user code here
+            } else if (command == outdoorReportSubmitCommand) {//GEN-LINE:|7-commandAction|19|56-preAction
+                // write pre-action user code here
+//GEN-LINE:|7-commandAction|20|56-postAction
+                // write post-action user code here
+            }//GEN-BEGIN:|7-commandAction|21|48-preAction
+        } else if (displayable == reportMainForm) {
+            if (command == reportMenuOkCommand) {//GEN-END:|7-commandAction|21|48-preAction
+                // write pre-action user code here
+                if (reportMainFormChoiceGroup.isSelected(0)) {
+                    switchDisplayable(null, getOutdoorReportForm());
+                } else if (reportMainFormChoiceGroup.isSelected(1)) {
+                    switchDisplayable(null, getIndoorReportForm());
+
+                } else {
+                    System.out.println("User did not make a selection");
+                    alert = new Alert("Error", "Invalid selection", null, AlertType.ERROR);
+                    alert.setTimeout(2000); //Timeout in 2 seconds
+                    switchDisplayable(alert, getMainMenuForm());
+                }
+
+//GEN-LINE:|7-commandAction|22|48-postAction
+                // write post-action user code here
+            }//GEN-BEGIN:|7-commandAction|23|7-postCommandAction
+        }//GEN-END:|7-commandAction|23|7-postCommandAction
         // write post-action user code here
-    }//GEN-BEGIN:|7-commandAction|12|
-    //</editor-fold>//GEN-END:|7-commandAction|12|
+    }//GEN-BEGIN:|7-commandAction|24|
+    //</editor-fold>//GEN-END:|7-commandAction|24|
 
     //<editor-fold defaultstate="collapsed" desc=" Generated Getter: loginForm ">//GEN-BEGIN:|14-getter|0|14-preInit
     /**
@@ -200,18 +270,20 @@ public class AmityMIDlet extends MIDlet implements CommandListener {
     }
     //</editor-fold>//GEN-END:|23-getter|2|
 
-    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: reportForm ">//GEN-BEGIN:|15-getter|0|15-preInit
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: reportMainForm ">//GEN-BEGIN:|15-getter|0|15-preInit
     /**
-     * Returns an initiliazed instance of reportForm component.
+     * Returns an initiliazed instance of reportMainForm component.
      * @return the initialized component instance
      */
-    public Form getReportForm() {
-        if (reportForm == null) {//GEN-END:|15-getter|0|15-preInit
+    public Form getReportMainForm() {
+        if (reportMainForm == null) {//GEN-END:|15-getter|0|15-preInit
             // write pre-init user code here
-            reportForm = new Form("Report", new Item[] { });//GEN-LINE:|15-getter|1|15-postInit
+            reportMainForm = new Form("Location Based Report", new Item[] { getReportMainFormChoiceGroup() });//GEN-BEGIN:|15-getter|1|15-postInit
+            reportMainForm.addCommand(getReportMenuOkCommand());
+            reportMainForm.setCommandListener(this);//GEN-END:|15-getter|1|15-postInit
             // write post-init user code here
         }//GEN-BEGIN:|15-getter|2|
-        return reportForm;
+        return reportMainForm;
     }
     //</editor-fold>//GEN-END:|15-getter|2|
     //</editor-fold>
@@ -357,6 +429,190 @@ public class AmityMIDlet extends MIDlet implements CommandListener {
         return snapPicCommand;
     }
     //</editor-fold>//GEN-END:|36-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: outdoorReportForm ">//GEN-BEGIN:|38-getter|0|38-preInit
+    /**
+     * Returns an initiliazed instance of outdoorReportForm component.
+     * @return the initialized component instance
+     */
+    public Form getOutdoorReportForm() {
+        if (outdoorReportForm == null) {//GEN-END:|38-getter|0|38-preInit
+            // write pre-init user code here
+            outdoorReportForm = new Form("Outdoor Reports", new Item[] { });//GEN-BEGIN:|38-getter|1|38-postInit
+            outdoorReportForm.addCommand(getOutdoorReportBackCommand());
+            outdoorReportForm.addCommand(getOutdoorReportSubmitCommand());
+            outdoorReportForm.setCommandListener(this);//GEN-END:|38-getter|1|38-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|38-getter|2|
+        return outdoorReportForm;
+    }
+    //</editor-fold>//GEN-END:|38-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: indoorReportForm ">//GEN-BEGIN:|39-getter|0|39-preInit
+    /**
+     * Returns an initiliazed instance of indoorReportForm component.
+     * @return the initialized component instance
+     */
+    public Form getIndoorReportForm() {
+        if (indoorReportForm == null) {//GEN-END:|39-getter|0|39-preInit
+            // write pre-init user code here
+            indoorReportForm = new Form("Indoor Report");//GEN-BEGIN:|39-getter|1|39-postInit
+            indoorReportForm.addCommand(getIndoorReportBbackCommand());
+            indoorReportForm.addCommand(getIndoorReportSubmitCommand());
+            indoorReportForm.setCommandListener(this);//GEN-END:|39-getter|1|39-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|39-getter|2|
+        return indoorReportForm;
+    }
+    //</editor-fold>//GEN-END:|39-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: mainMenuForm ">//GEN-BEGIN:|40-getter|0|40-preInit
+    /**
+     * Returns an initiliazed instance of mainMenuForm component.
+     * @return the initialized component instance
+     */
+    public Form getMainMenuForm() {
+        if (mainMenuForm == null) {//GEN-END:|40-getter|0|40-preInit
+            // write pre-init user code here
+            mainMenuForm = new Form("Project Amity", new Item[] { getMainMenuChoiceGroup() });//GEN-BEGIN:|40-getter|1|40-postInit
+            mainMenuForm.addCommand(getMainMenuOkCommand());
+            mainMenuForm.setCommandListener(this);//GEN-END:|40-getter|1|40-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|40-getter|2|
+        return mainMenuForm;
+    }
+    //</editor-fold>//GEN-END:|40-getter|2|
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: mainMenuChoiceGroup ">//GEN-BEGIN:|41-getter|0|41-preInit
+    /**
+     * Returns an initiliazed instance of mainMenuChoiceGroup component.
+     * @return the initialized component instance
+     */
+    public ChoiceGroup getMainMenuChoiceGroup() {
+        if (mainMenuChoiceGroup == null) {//GEN-END:|41-getter|0|41-preInit
+            // write pre-init user code here
+            mainMenuChoiceGroup = new ChoiceGroup("Choose or Die:", Choice.EXCLUSIVE);//GEN-BEGIN:|41-getter|1|41-postInit
+            mainMenuChoiceGroup.append("Private Messaging", null);
+            mainMenuChoiceGroup.append("Location Based Report", null);
+            mainMenuChoiceGroup.setSelectedFlags(new boolean[] { false, false });//GEN-END:|41-getter|1|41-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|41-getter|2|
+        return mainMenuChoiceGroup;
+    }
+    //</editor-fold>//GEN-END:|41-getter|2|
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: reportMainFormChoiceGroup ">//GEN-BEGIN:|44-getter|0|44-preInit
+    /**
+     * Returns an initiliazed instance of reportMainFormChoiceGroup component.
+     * @return the initialized component instance
+     */
+    public ChoiceGroup getReportMainFormChoiceGroup() {
+        if (reportMainFormChoiceGroup == null) {//GEN-END:|44-getter|0|44-preInit
+            // write pre-init user code here
+            reportMainFormChoiceGroup = new ChoiceGroup("For real, Choose or Die:", Choice.EXCLUSIVE);//GEN-BEGIN:|44-getter|1|44-postInit
+            reportMainFormChoiceGroup.append("Outdoor Reporting", null);
+            reportMainFormChoiceGroup.append("Indoor Reporting", null);
+            reportMainFormChoiceGroup.setFitPolicy(Choice.TEXT_WRAP_DEFAULT);
+            reportMainFormChoiceGroup.setSelectedFlags(new boolean[] { false, false });//GEN-END:|44-getter|1|44-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|44-getter|2|
+        return reportMainFormChoiceGroup;
+    }
+    //</editor-fold>//GEN-END:|44-getter|2|
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: reportMenuOkCommand ">//GEN-BEGIN:|47-getter|0|47-preInit
+    /**
+     * Returns an initiliazed instance of reportMenuOkCommand component.
+     * @return the initialized component instance
+     */
+    public Command getReportMenuOkCommand() {
+        if (reportMenuOkCommand == null) {//GEN-END:|47-getter|0|47-preInit
+            // write pre-init user code here
+            reportMenuOkCommand = new Command("Ok", Command.OK, 0);//GEN-LINE:|47-getter|1|47-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|47-getter|2|
+        return reportMenuOkCommand;
+    }
+    //</editor-fold>//GEN-END:|47-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: outdoorReportBackCommand ">//GEN-BEGIN:|49-getter|0|49-preInit
+    /**
+     * Returns an initiliazed instance of outdoorReportBackCommand component.
+     * @return the initialized component instance
+     */
+    public Command getOutdoorReportBackCommand() {
+        if (outdoorReportBackCommand == null) {//GEN-END:|49-getter|0|49-preInit
+            // write pre-init user code here
+            outdoorReportBackCommand = new Command("Back", Command.BACK, 0);//GEN-LINE:|49-getter|1|49-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|49-getter|2|
+        return outdoorReportBackCommand;
+    }
+    //</editor-fold>//GEN-END:|49-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: indoorReportBbackCommand ">//GEN-BEGIN:|51-getter|0|51-preInit
+    /**
+     * Returns an initiliazed instance of indoorReportBbackCommand component.
+     * @return the initialized component instance
+     */
+    public Command getIndoorReportBbackCommand() {
+        if (indoorReportBbackCommand == null) {//GEN-END:|51-getter|0|51-preInit
+            // write pre-init user code here
+            indoorReportBbackCommand = new Command("Back", Command.BACK, 0);//GEN-LINE:|51-getter|1|51-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|51-getter|2|
+        return indoorReportBbackCommand;
+    }
+    //</editor-fold>//GEN-END:|51-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: outdoorReportSubmitCommand ">//GEN-BEGIN:|55-getter|0|55-preInit
+    /**
+     * Returns an initiliazed instance of outdoorReportSubmitCommand component.
+     * @return the initialized component instance
+     */
+    public Command getOutdoorReportSubmitCommand() {
+        if (outdoorReportSubmitCommand == null) {//GEN-END:|55-getter|0|55-preInit
+            // write pre-init user code here
+            outdoorReportSubmitCommand = new Command("Submit", Command.OK, 0);//GEN-LINE:|55-getter|1|55-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|55-getter|2|
+        return outdoorReportSubmitCommand;
+    }
+    //</editor-fold>//GEN-END:|55-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: indoorReportSubmitCommand ">//GEN-BEGIN:|57-getter|0|57-preInit
+    /**
+     * Returns an initiliazed instance of indoorReportSubmitCommand component.
+     * @return the initialized component instance
+     */
+    public Command getIndoorReportSubmitCommand() {
+        if (indoorReportSubmitCommand == null) {//GEN-END:|57-getter|0|57-preInit
+            // write pre-init user code here
+            indoorReportSubmitCommand = new Command("Submit", "<null>", Command.OK, 0);//GEN-LINE:|57-getter|1|57-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|57-getter|2|
+        return indoorReportSubmitCommand;
+    }
+    //</editor-fold>//GEN-END:|57-getter|2|
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: mainMenuOkCommand ">//GEN-BEGIN:|60-getter|0|60-preInit
+    /**
+     * Returns an initiliazed instance of mainMenuOkCommand component.
+     * @return the initialized component instance
+     */
+    public Command getMainMenuOkCommand() {
+        if (mainMenuOkCommand == null) {//GEN-END:|60-getter|0|60-preInit
+            // write pre-init user code here
+            mainMenuOkCommand = new Command("Ok", Command.OK, 0);//GEN-LINE:|60-getter|1|60-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|60-getter|2|
+        return mainMenuOkCommand;
+    }
+    //</editor-fold>//GEN-END:|60-getter|2|
 
     /**
      * Returns a display instance.
@@ -506,7 +762,7 @@ public class AmityMIDlet extends MIDlet implements CommandListener {
                         userIDLoggedIn = NRICLoginFormtextField.getString();
                         Thread.sleep(500);
 
-                        switchDisplayable(null, getReportForm());
+                        switchDisplayable(null, getReportMainForm());
 
 
                     }
@@ -653,7 +909,7 @@ public class AmityMIDlet extends MIDlet implements CommandListener {
     private void handleException(Exception e) {
         Alert a = new Alert("Exception", e.toString(), null, null);
         a.setTimeout(2000);
-        switchDisplayable(a, getReportForm());
+        switchDisplayable(a, getReportMainForm());
         //  mDisplay.setCurrent(a, cameraCaptureForm);
     }
 }
