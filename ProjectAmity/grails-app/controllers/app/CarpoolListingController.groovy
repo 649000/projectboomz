@@ -95,12 +95,23 @@ class CarpoolListingController
     {
         def errors = ''
 
+        def status
         def departureHour
         def departureMinute
         def returnHour
         def returnMinute
         def frequency
         def type
+
+        // Retrieve listing status
+        if( !params.status.trim().equals("") )
+        {
+            status = params.status
+        }
+        else
+        {
+            errors += '<li>You did not specify your listing\'s status.</li>'
+        }
 
         // Parse the departure time
         if( !params.departureTimeHour.trim().equals("") )
@@ -170,7 +181,8 @@ class CarpoolListingController
 
             def departureTime = departureHour + departureMinute
             def returnTime = returnHour + returnMinute
-            
+
+            currentListing.status = status
             currentListing.departureTime = departureTime
             currentListing.returnTime = returnTime
             currentListing.frequency = frequency
@@ -197,67 +209,68 @@ class CarpoolListingController
 
     def search =
     {
-        
-    }
-
-    def executeSearch =
-    {
-        def searchingByDepartureTime = true
-        def searchingByArrivalTime = true
-
-        if( params.neighboursOnly != null )
+        // prevent nullpointerexception.
+        // when search.gsp is first loaded, no form fields exist and all the
+        // param values are null
+        if( params.endAddress != null )
         {
-            def neighboursOnly = params.neighboursOnly
-        }
+            params.max = 1
 
-        def listings = CarpoolListing.createCriteria().list(params)
-	{
-            and
+            if( params.neighboursOnly != null )
             {
-                if( !params.endAddress.trim().equals("") )
-                {
-                    eq("endAddress", params.endAddress)
-                }
-                
-                if( !params.departureTimeFrom.trim().equals("") && !params.departureTimeTo.trim().equals("") )
-                {
-                    between("departureTime", params.departureTimeFrom, params.departureTimeTo)
-                }
-
-                if( !params.returnTimeFrom.trim().equals("") && !params.returnTimeTo.trim().equals("") )
-                {
-                    between("returnTime", params.returnTimeFrom, params.returnTimeTo)
-                }
-
-                if( !params.frequency.trim().equals("") )
-                {
-                    eq("frequency", params.frequency)
-                }
-
-                if( !params.type.trim().equals("") )
-                {
-                    if( params.type.equals("Driver") )
-                    {
-                        eq("type", "Passenger")
-                    }
-                    else if( params.type.equals("Passenger") )
-                    {
-                        eq("type", "Driver")
-                    }
-                    else if( params.type.equals("Cab Pool") )
-                    {
-                        eq("type", "Cab Pool")
-                    }
-                }
-
-                // Don't retrieve the current user's listing
-                ne("resident", session.user)
-                // Retrieve only pending listings
-                eq("status", "Pending")
+                def neighboursOnly = params.neighboursOnly
             }
-	}
-        println(listings.size())
-        [listings : listings]
+
+            def listings = CarpoolListing.createCriteria().list(params)
+            {
+                and
+                {
+                    if( !params.endAddress.trim().equals("") )
+                    {
+                        eq("endAddress", params.endAddress)
+                    }
+
+                    if( !params.departureTimeFrom.trim().equals("") && !params.departureTimeTo.trim().equals("") )
+                    {
+                        between("departureTime", params.departureTimeFrom, params.departureTimeTo)
+                    }
+
+                    if( !params.returnTimeFrom.trim().equals("") && !params.returnTimeTo.trim().equals("") )
+                    {
+                        between("returnTime", params.returnTimeFrom, params.returnTimeTo)
+                    }
+
+                    if( !params.frequency.trim().equals("") )
+                    {
+                        eq("frequency", params.frequency)
+                    }
+
+                    if( !params.type.trim().equals("") )
+                    {
+                        if( params.type.equals("Driver") )
+                        {
+                            eq("type", "Passenger")
+                        }
+                        else if( params.type.equals("Passenger") )
+                        {
+                            eq("type", "Driver")
+                        }
+                        else if( params.type.equals("Cab Pool") )
+                        {
+                            eq("type", "Cab Pool")
+                        }
+                    }
+
+                    // Don't retrieve the current user's listing
+                    ne("resident", session.user)
+                    // Retrieve only pending listings
+                    eq("status", "Pending")
+                }
+            }
+            println(listings.totalCount)
+            params.totalResults = listings.totalCount
+            [listings : listings, params : params]
+        }
     }
     
 }
