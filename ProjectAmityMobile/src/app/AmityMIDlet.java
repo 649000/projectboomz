@@ -18,7 +18,7 @@ import javax.microedition.io.file.FileConnection;
 /**
  * @author student
  */
-public class AmityMIDlet extends MIDlet implements CommandListener {
+public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandListener {
 
     private boolean midletPaused = false;
     private LocationProvider provider = null;
@@ -42,7 +42,11 @@ public class AmityMIDlet extends MIDlet implements CommandListener {
     private StringItem testLocationstringItem;
     private Alert alert;
     private Form outdoorReportForm;
+    private TextField outdoorTitletextField;
+    private ImageItem outdoorImageItem;
     private Form indoorReportForm;
+    private TextField indoorTitleTextField;
+    private StringItem indoorPostalStringItem;
     private Form mainMenuForm;
     private ChoiceGroup mainMenuChoiceGroup;
     private Command loginCommand;
@@ -56,6 +60,8 @@ public class AmityMIDlet extends MIDlet implements CommandListener {
     private Command outdoorReportSubmitCommand;
     private Command indoorReportSubmitCommand;
     private Command mainMenuOkCommand;
+    private Command outdoorSelectNewCommand;
+    private Command outdoorSnapPicCommand;
     //</editor-fold>//GEN-END:|fields|0|
 
     /**
@@ -210,6 +216,8 @@ public class AmityMIDlet extends MIDlet implements CommandListener {
                 // write post-action user code here
             } else if (command == outdoorReportSubmitCommand) {//GEN-LINE:|7-commandAction|19|56-preAction
                 // write pre-action user code here
+
+
 //GEN-LINE:|7-commandAction|20|56-postAction
                 // write post-action user code here
             }//GEN-BEGIN:|7-commandAction|21|48-preAction
@@ -341,7 +349,7 @@ public class AmityMIDlet extends MIDlet implements CommandListener {
     public Form getCameraCaptureForm() {
         if (cameraCaptureForm == null) {//GEN-END:|25-getter|0|25-preInit
             // write pre-init user code here
-            cameraCaptureForm = new Form("Test Camera & GPS", new Item[] { getTestLocationstringItem() });//GEN-BEGIN:|25-getter|1|25-postInit
+            cameraCaptureForm = new Form("Testing Purposes Form", new Item[] { getTestLocationstringItem() });//GEN-BEGIN:|25-getter|1|25-postInit
             cameraCaptureForm.addCommand(getExitCommand1());
             cameraCaptureForm.addCommand(getLocationCommand());
             cameraCaptureForm.addCommand(getSnapPicCommand());
@@ -438,7 +446,7 @@ public class AmityMIDlet extends MIDlet implements CommandListener {
     public Form getOutdoorReportForm() {
         if (outdoorReportForm == null) {//GEN-END:|38-getter|0|38-preInit
             // write pre-init user code here
-            outdoorReportForm = new Form("Outdoor Reports", new Item[] { });//GEN-BEGIN:|38-getter|1|38-postInit
+            outdoorReportForm = new Form("Outdoor Reports", new Item[] { getOutdoorTitletextField(), getOutdoorImageItem() });//GEN-BEGIN:|38-getter|1|38-postInit
             outdoorReportForm.addCommand(getOutdoorReportBackCommand());
             outdoorReportForm.addCommand(getOutdoorReportSubmitCommand());
             outdoorReportForm.setCommandListener(this);//GEN-END:|38-getter|1|38-postInit
@@ -456,7 +464,7 @@ public class AmityMIDlet extends MIDlet implements CommandListener {
     public Form getIndoorReportForm() {
         if (indoorReportForm == null) {//GEN-END:|39-getter|0|39-preInit
             // write pre-init user code here
-            indoorReportForm = new Form("Indoor Report");//GEN-BEGIN:|39-getter|1|39-postInit
+            indoorReportForm = new Form("Indoor Report", new Item[] { getIndoorPostalStringItem(), getIndoorTitleTextField() });//GEN-BEGIN:|39-getter|1|39-postInit
             indoorReportForm.addCommand(getIndoorReportBbackCommand());
             indoorReportForm.addCommand(getIndoorReportSubmitCommand());
             indoorReportForm.setCommandListener(this);//GEN-END:|39-getter|1|39-postInit
@@ -613,6 +621,126 @@ public class AmityMIDlet extends MIDlet implements CommandListener {
         return mainMenuOkCommand;
     }
     //</editor-fold>//GEN-END:|60-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: outdoorTitletextField ">//GEN-BEGIN:|62-getter|0|62-preInit
+    /**
+     * Returns an initiliazed instance of outdoorTitletextField component.
+     * @return the initialized component instance
+     */
+    public TextField getOutdoorTitletextField() {
+        if (outdoorTitletextField == null) {//GEN-END:|62-getter|0|62-preInit
+            // write pre-init user code here
+            outdoorTitletextField = new TextField("Title:", null, 32, TextField.ANY);//GEN-LINE:|62-getter|1|62-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|62-getter|2|
+        return outdoorTitletextField;
+    }
+    //</editor-fold>//GEN-END:|62-getter|2|
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: indoorTitleTextField ">//GEN-BEGIN:|63-getter|0|63-preInit
+    /**
+     * Returns an initiliazed instance of indoorTitleTextField component.
+     * @return the initialized component instance
+     */
+    public TextField getIndoorTitleTextField() {
+        if (indoorTitleTextField == null) {//GEN-END:|63-getter|0|63-preInit
+            // write pre-init user code here
+            indoorTitleTextField = new TextField("Title:", null, 32, TextField.ANY);//GEN-LINE:|63-getter|1|63-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|63-getter|2|
+        return indoorTitleTextField;
+    }
+    //</editor-fold>//GEN-END:|63-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: outdoorImageItem ">//GEN-BEGIN:|64-getter|0|64-preInit
+    /**
+     * Returns an initiliazed instance of outdoorImageItem component.
+     * @return the initialized component instance
+     */
+    public ImageItem getOutdoorImageItem() {
+        if (outdoorImageItem == null) {//GEN-END:|64-getter|0|64-preInit
+            // write pre-init user code here
+            outdoorImageItem = new ImageItem("Image:", null, ImageItem.LAYOUT_DEFAULT, "<Missing Image>");//GEN-BEGIN:|64-getter|1|64-postInit
+            outdoorImageItem.addCommand(getOutdoorSelectNewCommand());
+            outdoorImageItem.addCommand(getOutdoorSnapPicCommand());
+            outdoorImageItem.setItemCommandListener(this);//GEN-END:|64-getter|1|64-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|64-getter|2|
+        return outdoorImageItem;
+    }
+    //</editor-fold>//GEN-END:|64-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Method: commandAction for Items ">//GEN-BEGIN:|8-itemCommandAction|0|8-preItemCommandAction
+    /**
+     * Called by a system to indicated that a command has been invoked on a particular item.
+     * @param command the Command that was invoked
+     * @param displayable the Item where the command was invoked
+     */
+    public void commandAction(Command command, Item item) {//GEN-END:|8-itemCommandAction|0|8-preItemCommandAction
+        // write pre-action user code here
+        if (item == outdoorImageItem) {//GEN-BEGIN:|8-itemCommandAction|1|66-preAction
+            if (command == outdoorSelectNewCommand) {//GEN-END:|8-itemCommandAction|1|66-preAction
+                // write pre-action user code here
+//GEN-LINE:|8-itemCommandAction|2|66-postAction
+                // write post-action user code here
+            } else if (command == outdoorSnapPicCommand) {//GEN-LINE:|8-itemCommandAction|3|68-preAction
+                // write pre-action user code here
+                showCamera();
+//GEN-LINE:|8-itemCommandAction|4|68-postAction
+                // write post-action user code here
+            }//GEN-BEGIN:|8-itemCommandAction|5|8-postItemCommandAction
+        }//GEN-END:|8-itemCommandAction|5|8-postItemCommandAction
+        // write post-action user code here
+    }//GEN-BEGIN:|8-itemCommandAction|6|
+    //</editor-fold>//GEN-END:|8-itemCommandAction|6|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: outdoorSelectNewCommand ">//GEN-BEGIN:|65-getter|0|65-preInit
+    /**
+     * Returns an initiliazed instance of outdoorSelectNewCommand component.
+     * @return the initialized component instance
+     */
+    public Command getOutdoorSelectNewCommand() {
+        if (outdoorSelectNewCommand == null) {//GEN-END:|65-getter|0|65-preInit
+            // write pre-init user code here
+            outdoorSelectNewCommand = new Command("Ok", Command.OK, 0);//GEN-LINE:|65-getter|1|65-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|65-getter|2|
+        return outdoorSelectNewCommand;
+    }
+    //</editor-fold>//GEN-END:|65-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: outdoorSnapPicCommand ">//GEN-BEGIN:|67-getter|0|67-preInit
+    /**
+     * Returns an initiliazed instance of outdoorSnapPicCommand component.
+     * @return the initialized component instance
+     */
+    public Command getOutdoorSnapPicCommand() {
+        if (outdoorSnapPicCommand == null) {//GEN-END:|67-getter|0|67-preInit
+            // write pre-init user code here
+            outdoorSnapPicCommand = new Command("Snap Picture", Command.OK, 0);//GEN-LINE:|67-getter|1|67-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|67-getter|2|
+        return outdoorSnapPicCommand;
+    }
+    //</editor-fold>//GEN-END:|67-getter|2|
+    //</editor-fold>
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: indoorPostalStringItem ">//GEN-BEGIN:|69-getter|0|69-preInit
+    /**
+     * Returns an initiliazed instance of indoorPostalStringItem component.
+     * @return the initialized component instance
+     */
+    public StringItem getIndoorPostalStringItem() {
+        if (indoorPostalStringItem == null) {//GEN-END:|69-getter|0|69-preInit
+            // write pre-init user code here
+            indoorPostalStringItem = new StringItem("Postal Code:", null);//GEN-LINE:|69-getter|1|69-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|69-getter|2|
+        return indoorPostalStringItem;
+    }
+    //</editor-fold>//GEN-END:|69-getter|2|
 
     /**
      * Returns a display instance.
