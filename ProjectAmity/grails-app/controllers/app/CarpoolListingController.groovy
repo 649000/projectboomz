@@ -1,0 +1,263 @@
+package app
+
+import grails.converters.JSON
+
+class CarpoolListingController
+{
+
+    def libraryService
+    def cinemaService
+    def placesOfInterestService
+    def counterService
+    def supermarketService
+
+    def index =
+    {
+        loadData()
+
+        def currentUser = Resident.get(1)
+        session.user = currentUser
+
+        if(currentUser.carpoolListing.departureTime.length() == 4)
+        {
+            params.departureTimeHour = currentUser.carpoolListing.departureTime.substring(0,2)
+            params.departureTimeMinute = currentUser.carpoolListing.departureTime.substring(2,4)
+        }
+
+        if(currentUser.carpoolListing.returnTime.length() == 4)
+        {
+            params.returnTimeHour = currentUser.carpoolListing.returnTime.substring(0,2)
+            params.returnTimeMinute = currentUser.carpoolListing.returnTime.substring(2,4)
+        }
+        
+        [ listing : currentUser.carpoolListing ]
+    }
+
+    def loadData()
+    {
+        println("Start of loadData Action")
+        //println("CounterService: " + CounterService._Counter())
+
+        if( counterService._Counter() == 1 )
+        {
+            println("Start CounterService: " + counterService.CounterValue())
+            Destination.executeUpdate("delete Destination d where d.name != :_name", [_name:"NULL"])
+            //Loading for the first time.
+
+            for(Destination d : cinemaService.getCinemas())
+            {
+                d.save()
+            }
+
+            for(Destination d : libraryService.getLibraries())
+            {
+                d.save()
+            }
+
+            for(Destination d : placesOfInterestService.getPlaces())
+            {
+                d.save()
+            }
+
+            for(Destination d : supermarketService.getSupermarkets())
+            {
+                d.save()
+            }
+        }
+        println("End CounterService: " + counterService.CounterValue())
+
+
+    }
+
+    def searchAJAX =
+    {
+        def destinations = Destination.findAllByNameLike("%${params.query}%")
+        println("Keyword: " + params.query + " You are here. " + destinations.size() )
+        //Create XML response
+        render(contentType: "text/xml")
+        {
+	    results()
+            {
+	        destinations.each
+                { destination ->
+		    result()
+                    {
+		        name(destination.name)
+                        //Optional id which will be available in onItemSelect
+                        id(destination.id)
+		    }
+		}
+            }
+        }
+    }
+
+    def save =
+    {
+        def errors = ''
+
+        def departureHour
+        def departureMinute
+        def returnHour
+        def returnMinute
+        def frequency
+        def type
+
+        // Parse the departure time
+        if( !params.departureTimeHour.trim().equals("") )
+        {
+            departureHour = params.departureTimeHour
+        }
+        else
+        {
+            errors += '<li>You did not specify your departure hour.</li>'
+        }
+        if( !params.departureTimeMinute.trim().equals("") )
+        {
+            departureMinute = params.departureTimeMinute
+        }
+        else
+        {
+            errors += '<li>You did not specify your departure minute.</li>'
+        }        
+
+        // Parse the return time
+        if( !params.returnTimeHour.trim().equals("") )
+        {
+            returnHour = params.returnTimeHour
+        }
+        else
+        {
+            errors += '<li>You did not specify your return hour.</li>'
+        }
+        if( !params.returnTimeMinute.trim().equals("") )
+        {
+            returnMinute = params.returnTimeMinute
+        }
+        else
+        {
+            errors += '<li>You did not specify your return minute.</li>'
+        }
+
+        // Retrieve frequence and type
+        if( !params.frequency.trim().equals("") )
+        {
+            frequency = params.frequency
+        }
+        else
+        {
+            errors += '<li>You did not specify your frequency.</li>'
+        }
+        if( !params.type.trim().equals("") )
+        {
+            type = params.type
+        }
+        else
+        {
+            errors += '<li>You did not specify the type of person you are looking for.</li>'
+        }
+
+        if( errors.length() > 0 )
+        {
+            // If there are missing fields, throw back the error message.
+            render '<p>Some Errors Occured!</p><ul>' + errors + '</ul>'
+        }
+        else
+        {
+            // Otherwise, update relevant fields in the CarpoolListing
+
+            def currentUser = session.user
+            def currentListing = CarpoolListing.findByResident(currentUser)
+
+            def departureTime = departureHour + departureMinute
+            def returnTime = returnHour + returnMinute
+            
+            currentListing.departureTime = departureTime
+            currentListing.returnTime = returnTime
+            currentListing.frequency = frequency
+            currentListing.type = type
+
+            if( !params.endAddress.trim().equals("") )
+            {
+                currentListing.endAddress = params.endAddress
+
+                def d = Destination.findByName(params.endAddress)
+                currentListing.endLatitude = d.latitude
+                currentListing.endLongitude = d.longitude
+            }
+
+            render 'Success!'
+        }
+    }
+
+    def view =
+    {
+        def listingToView = CarpoolListing.findByResident( Resident.findById(params.id) )
+        [ listing : listingToView ]
+    }
+
+    def search =
+    {
+        
+    }
+
+    def executeSearch =
+    {
+        def searchingByDepartureTime = true
+        def searchingByArrivalTime = true
+
+        if( params.neighboursOnly != null )
+        {
+            def neighboursOnly = params.neighboursOnly
+        }
+
+        def listings = CarpoolListing.createCriteria().list(params)
+	{
+            and
+            {
+                if( !params.endAddress.trim().equals("") )
+                {
+                    eq("endAddress", params.endAddress)
+                }
+                
+                if( !params.departureTimeFrom.trim().equals("") && !params.departureTimeTo.trim().equals("") )
+                {
+                    between("departureTime", params.departureTimeFrom, params.departureTimeTo)
+                }
+
+                if( !params.returnTimeFrom.trim().equals("") && !params.returnTimeTo.trim().equals("") )
+                {
+                    between("returnTime", params.returnTimeFrom, params.returnTimeTo)
+                }
+
+                if( !params.frequency.trim().equals("") )
+                {
+                    eq("frequency", params.frequency)
+                }
+
+                if( !params.type.trim().equals("") )
+                {
+                    if( params.type.equals("Driver") )
+                    {
+                        eq("type", "Passenger")
+                    }
+                    else if( params.type.equals("Passenger") )
+                    {
+                        eq("type", "Driver")
+                    }
+                    else if( params.type.equals("Cab Pool") )
+                    {
+                        eq("type", "Cab Pool")
+                    }
+                }
+
+                // Don't retrieve the current user's listing
+                ne("resident", session.user)
+                // Retrieve only pending listings
+                eq("status", "Pending")
+            }
+	}
+        println(listings.size())
+        [listings : listings]
+    }
+    
+}
