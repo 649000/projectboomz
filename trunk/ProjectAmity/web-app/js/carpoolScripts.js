@@ -4,11 +4,6 @@ function initialisePage()
     $('saving').hide()
 }
 
-function initialiseSearchPage()
-{
-    $('searchLoading').hide()
-}
-
 function toggleControl(element)
 {
     $(element).toggle();
