@@ -6,7 +6,7 @@ class Message
     String subject
     String message
     String timeStamp
-    boolean read
+    boolean isRead
     Resident sender
     Resident receiver
 
