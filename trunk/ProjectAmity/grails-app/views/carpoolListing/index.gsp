@@ -16,7 +16,7 @@
                 <link rel="stylesheet" href="${resource(dir:'css',file:'style.css')}" />
 
 	</head>
-<body class="thrColFixHdr"  onload="initialisePage(); load()" onunload="GUnload()">
+<body class="thrColFixHdr"  onload="initialiseCarpoolPage()">
 
 		<div class="wrapper">
 
@@ -85,8 +85,8 @@
         <br/>
         <g:submitToRemote value="Update Listing"
                           url="[controller: 'carpoolListing', action:'save']"
-                          onSuccess="updateSaveStatus(e)"
-                          onLoading="prepareSave(); toggleControl('saving')"
+                          onSuccess="updateListingSaveStatus(e)"
+                          onLoading="prepareSaveListing(); toggleControl('saving')"
                           onComplete="toggleControl('saving')" />
       </g:form>
     </div>

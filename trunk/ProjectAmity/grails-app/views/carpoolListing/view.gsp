@@ -15,7 +15,7 @@ srLJJlcXUmLMTM2KkMsePdU1A"
 
     </head>
 
-  <body onload="load(${listing.startLatitude}, ${listing.startLongitude}, ${listing.endLatitude}, ${listing.endLongitude})" onunload="GUnload()">
+  <body onload="loadCarpoolMap(${listing.startLatitude}, ${listing.startLongitude}, ${listing.endLatitude}, ${listing.endLongitude})" onunload="GUnload()">
 
     <h1>${listing.resident.name}'s Listing</h1>
 
