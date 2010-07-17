@@ -8,7 +8,9 @@ class Building {
     String postalCode
     double latitude
     double longitude
-    double altitude
+    double xcoordinate
+    double ycoordinate
+    double zcoordinate
     String level
     String stairwell
      static hasMany = [ indoorReport : IndoorReport]
