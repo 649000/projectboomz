@@ -37,5 +37,5 @@ function prepareSave()
 function updateSaveStatus(response)
 {
     $('defineListingStatus').show()
-    $('defineListingStatus').innerHTML = response.responseText
+    $('defineListingStatus').innerHTML = '<br/>' + response.responseText
 }
