@@ -1,4 +1,4 @@
-function initialisePage()
+function initialiseCarpoolPage()
 {
     $('destinationAutoComplete').hide()
     $('saving').hide()
@@ -10,7 +10,7 @@ function toggleControl(element)
 }
 
 // Maps API JS
-function load(startLat, startLong, endLat, endLong)
+function loadCarpoolMap(startLat, startLong, endLat, endLong)
 {
     if (GBrowserIsCompatible())
     {
@@ -29,12 +29,12 @@ function load(startLat, startLong, endLat, endLong)
 }
 
 // AJAX Save
-function prepareSave()
+function prepareSaveListing()
 {
     $('defineListingStatus').hide()
 }
 
-function updateSaveStatus(response)
+function updateListingSaveStatus(response)
 {
     $('defineListingStatus').show()
     $('defineListingStatus').innerHTML = '<br/>' + response.responseText
