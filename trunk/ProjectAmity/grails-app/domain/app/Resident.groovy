@@ -6,6 +6,7 @@ class Resident {
     String nric
     String name
     String address
+    String postalCode
     String userid
     String password
     static hasMany = [ barterAds : BarterAd, report: Report, indoorReport: IndoorReport ]
