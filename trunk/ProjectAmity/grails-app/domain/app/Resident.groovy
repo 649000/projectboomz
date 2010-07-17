@@ -9,8 +9,9 @@ class Resident {
     String postalCode
     String userid
     String password
-    static hasMany = [ barterAds : BarterAd, report: Report, indoorReport: IndoorReport ]
+    static hasMany = [ barterAds : BarterAd, report: Report, indoorReport: IndoorReport, sentMessages : Message, receivedMessages : Message ]
     static hasOne = [ carpoolListing : CarpoolListing ]
+    static mappedBy = [ sentMessages : 'sender', receivedMessages : 'receiver' ]
 
     static constraints = {
     }
