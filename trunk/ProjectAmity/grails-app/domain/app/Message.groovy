@@ -1,11 +1,13 @@
 package app
 
+import java.text.SimpleDateFormat
+
 class Message
 {
 
     String subject
     String message
-    String timeStamp
+    Date timeStamp
     boolean isRead
     Resident sender
     Resident receiver
