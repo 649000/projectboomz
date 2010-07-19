@@ -8,20 +8,21 @@
         <g:javascript library="scriptaculous" />
         <g:javascript library="prototype" />
 
+        <script type="text/javascript" src="${resource(dir: 'js', file: 'carpoolScripts.js')}" ></script>
+
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 
                 <link rel="stylesheet" href="${resource(dir:'css',file:'layout.css')}" />
                 <link rel="stylesheet" href="${resource(dir:'css',file:'style.css')}" />
 
-                        <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAl3XLeSqUNe8Ev9bdkkHWFBTlogEOPz-D7BlWWD22Bqn0kvQxhBQR-
+        <script src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=ABQIAAAAl3XLeSqUNe8Ev9bdkkHWFBTlogEOPz-D7BlWWD22Bqn0kvQxhBQR-
 srLJJlcXUmLMTM2KkMsePdU1A"
             type="text/javascript"></script>
 
         <script type="text/javascript" src="${resource(dir: 'js', file: 'carpoolScripts.js')}" ></script>
 
 	</head>
-
-  <body  class="thrColFixHdr"  onload="loadCarpoolMap(${listing.startLatitude}, ${listing.startLongitude}, ${listing.endLatitude}, ${listing.endLongitude})" onunload="GUnload()">
+<body class="thrColFixHdr"  onload="loadCarpoolMap(${listing.startLatitude}, ${listing.startLongitude}, ${listing.endLatitude}, ${listing.endLongitude})" onunload="GUnload()">
 
 		<div class="wrapper">
 
@@ -41,29 +42,21 @@ srLJJlcXUmLMTM2KkMsePdU1A"
   <div id="navi">&nbsp; You are here: Testing</div>
   <div id="mainContent">
 
-  <!--CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
-HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
-HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
-HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
-HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
-HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
-HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
-HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE  -->
+  <!--CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
+HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
+HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
+HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE  -->
 
-    </div>
-	<!-- This clearing element should immediately follow the #mainContent div in order to force the #container div to contain all child floats --><br class="clearfloat" />
-<!-- end #container --></div>
 
-			<div class="push"></div>
 
-  
 
-    <h1>${listing.resident.name}'s Listing</h1>
+
+<h1>${listing.resident.name}'s Listing</h1>
 
     <g:if test="${listing.status == 'Fulfilled'}">
       <p style="background-color: #ffc0cb">This user's listing has already been fulfilled.</p>
     </g:if>
-      
+
     <h2>User Information</h2>
 
     <p>Name: ${listing.resident.name}</p>
@@ -85,19 +78,15 @@ HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HE
     <p><a href="#" onClick="toggleControl('directionsPane'); return false">Show Driving Directions</a></p>
     <div id="directionsPane" style="width: 40%"></div>
 
-  </body>
+    </div>
+	<!-- This clearing element should immediately follow the #mainContent div in order to force the #container div to contain all child floats --><br
+class="clearfloat" />
 
+<!-- end #container --></div>
 
+			<div class="push"></div>
 
-<!--CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
-HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
-HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
-HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
-HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
-HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
-HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
-HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE  -->
-</div>
+		</div>
 
 		<div class="footer">
 			<p>Copyright &copy; 2010 Team Smiley Face</p>
