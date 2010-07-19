@@ -12,3 +12,52 @@ function barterlistData(response)
 
     $('divBarterResults').innerHTML = html
 }
+
+  var youritemsArray=new Array()
+  var peopleitemsArray=new Array()
+
+function hideStuff()
+{
+  $('youritems').hide()
+  $('peopleitems').hide()
+}
+
+function showYourItems()
+{
+  $('youritems').show()
+  $('peopleitems').hide()
+}
+function showPeopleItems()
+{
+  $('youritems').hide()
+  $('peopleitems').show()
+}
+function movePeopleItem(divID, barterID)
+{
+  var asdf=$(divID)
+  $(divID).remove()
+  $('tradepeopleitems').insert(asdf)
+  peopleitemsArray.push(barterID)
+}
+function moveYourItem(divID, barterID)
+{
+  var asdf=$(divID)
+  $(divID).remove()
+  $('tradeyouritems').insert(asdf)
+  youritemsArray.push(barterID)
+}
+function moveYourItemBack(divID)
+{
+  var asdf=$(divID)
+  $(divID).remove()
+  $('youritems').insert(asdf)
+  peopleitemsArray.push(barterID)
+}
+function confirmTrade()
+{
+alert('Your items: '+ youritemsArray)
+alert('To trade: '+ peopleitemsArray)
+var allTrades=youritemsArray+','+peopleitemsArray
+alert(allTrades)
+${remoteFunction(controller:"barterAd", action:"startAssign", params:"'toAssign='+allTrades")}
+}

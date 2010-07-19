@@ -9,6 +9,8 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Untitled Document</title>
+<link rel="stylesheet" href="${resource(dir:'css',file:'layout.css')}" />
+                <link rel="stylesheet" href="${resource(dir:'css',file:'style.css')}" />
 <g:javascript library="scriptaculous" />
 <script  type="text/javascript">
   var youritemsArray=new Array()
@@ -56,50 +58,54 @@ function confirmTrade()
 alert('Your items: '+ youritemsArray)
 alert('To trade: '+ peopleitemsArray)
 var allTrades=youritemsArray+','+peopleitemsArray
-alert(allTrades)
+alert(allTrade)
 ${remoteFunction(controller:"barterAd", action:"startAssign", params:"'toAssign='+allTrades")}
+}
+function confirmCancel()
+{
+}
+function searchItems()
+{
+  
 }
 </script>
 <style type="text/css">
-body
-{
-	font-family:Helvetica, Arial;
-	font-size:14px;
-}
-#youritems {
-	height:310px;
-	width:550px;
-	background-color:#39C;
-        overflow: auto;
-}
-#peopleitems {
-	height:310px;
-	width:550px;
-	background-color:#3C0;
-        overflow: auto;
-}
-#tradepeopleitems
-{
-  background-color:#FC0;
-   overflow: auto;
-   width:275px;
-   height:200px;
-}
-#tradeyouritems
-{
-  background-color:#C9F;
-   overflow: auto;
-   width:275px;
-   height:200px;
-}
+
 </style>
 </head>
 
-<body onload="hideStuff()">
+<body class="thrColFixHdr" onload="hideStuff()">
+
+		<div class="wrapper">
+
+			<div id="container">
+            <img src="${resource(dir:'images/amity',file:'logo3.PNG')}" id="logo"/>
+            <img src="${resource(dir:'images/amity',file:'header.png')}" id="headerIMG">
+            <img src="${resource(dir:'images/amity',file:'bg.jpg')}" id="background"/>
+            <img src="${resource(dir:'images/amity',file:'home.png')}" id="home"/>
+            <img src="${resource(dir:'images/amity',file:'report.png')}" id="report"/>
+            <img src="${resource(dir:'images/amity',file:'carpool.png')}" id="carpool"/>
+            <img src="${resource(dir:'images/amity',file:'barter.png')}" id="barter"/>
+            <img src="${resource(dir:'images/amity',file:'bbarter.png')}" id="pageTitle"/>
+  <div id="header">
+    <h1>test</h1>
+  <!-- end #header --></div>
+  <div id="banner">&nbsp;</div>
+  <div id="navi">&nbsp; You are here: Testing</div>
+  <div id="mainContent">
+
+  <!--CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
+HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
+HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
+HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
+HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
+HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
+HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
+HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE  -->
 <table width="600" height="570" border="1" align="center">
   <tr>
     <td width="50" rowspan="4">&nbsp;<g:actionSubmit value="Your items" onclick="showYourItems()"/><g:actionSubmit value="Browse items" onclick="showPeopleItems()"/></td>
-    <td height="30" colspan="2">Search: <g:textField name="search"/></td>
+    <td height="30" colspan="2">Search: <g:textField name="search"/><g:actionSubmit value="Search" onclick="searchItems()"/></td>
   </tr>
   <tr>
     <td colspan="2">
@@ -107,7 +113,7 @@ body
       <div id="youritems">Your items:<br/>
         <table border="1" width="530">
           <tr height="280"><td  width="270"><g:each in="${barters[0]}" var="barter">
-  <div id="MEM_${barter.id}" style="font-family: Arial, Helvetica, sans-serif;font-size: 12px; width:200px; height:100px; cursor:pointer; background:#88da5d; border:1px solid #333;" class="draggable">
+  <div id="MEM_${barter.id}" style="width:200px; height:150px; cursor:pointer; background:#88da5d; border:1px solid #333;" class="draggable">
     Name : ${barter.itemName}<br/>
     Description : ${barter.itemDescription}<br/>
     Category : ${barter.itemCategory}<br/>
@@ -124,7 +130,7 @@ body
       <div id="peopleitems">Your items:<br/>
         <table border="1" width="530">
           <tr height="280"><td  width="270"><g:each in="${barters[1]}" var="barter">
-  <div id="MEM_${barter.id}" style="font-family: Arial, Helvetica, sans-serif;font-size: 12px; width:200px; height:100px; cursor:pointer; background:#88da5d; border:1px solid #333;" class="draggable">
+  <div id="MEM_${barter.id}" style="width:200px; height:150px; cursor:pointer; background:#88da5d; border:1px solid #333;" class="draggable">
     Name : ${barter.itemName}<br/>
     Description : ${barter.itemDescription}<br/>
     Category : ${barter.itemCategory}<br/>
@@ -155,8 +161,30 @@ body
   </tr>
   <tr>
     <td height="30">&nbsp;</td>
-    <td><g:actionSubmit value="Trade" onclick="confirmTrade()"/></td>
+    <td><g:actionSubmit value="Trade" onclick="confirmTrade()"/>
+    <g:actionSubmit value="Cancel" onclick="confirmCancel()"/></td>
   </tr>
 </table>
-</body>
+
+    </div>
+	<!-- This clearing element should immediately follow the #mainContent div in order to force the #container div to contain all child floats --><br class="clearfloat" />
+<!-- end #container --></div>
+
+			<div class="push"></div>
+
+
+  <!--CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
+HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
+HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
+HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
+HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
+HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
+HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT
+HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE  -->
+</div>
+
+		<div class="footer">
+			<p>Copyright &copy; 2010 Team Smiley Face</p>
+		</div>
+	</body>
 </html>

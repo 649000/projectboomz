@@ -94,3 +94,29 @@ h1 a:hover, h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, h6 a:hover  {text-de
 	background-image: url(../images/amity/content_bg.png);
 	background-repeat: repeat-x;
 } 
+#youritems {
+	height:310px;
+	width:550px;
+	background-color:#39C;
+        overflow: auto;
+}
+#peopleitems {
+	height:310px;
+	width:550px;
+	background-color:#3C0;
+        overflow: auto;
+}
+#tradepeopleitems
+{
+  background-color:#FC0;
+   overflow: auto;
+   width:275px;
+   height:200px;
+}
+#tradeyouritems
+{
+  background-color:#C9F;
+   overflow: auto;
+   width:275px;
+   height:200px;
+}
