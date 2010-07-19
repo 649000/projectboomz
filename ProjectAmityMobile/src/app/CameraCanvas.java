@@ -38,6 +38,7 @@ public class CameraCanvas
   }
 
   public void keyPressed(int keyCode) {
+
     int action = getGameAction(keyCode);
     if (action == FIRE)
       mAmityMIDlet.capture();
