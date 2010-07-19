@@ -4,34 +4,43 @@ import grails.converters.JSON
 
 class BuildingController {
 
-        def index = {
+    def index = {
 
         //User will be redirected to this index closure
 
         //This controller will retrieve the building's info based on the postal code
-        println("Params Received (Postal COde): " + params.postalCode)
+        println("Params Received (Postal Code): " + params.postalCode)
         session.postalCode = params.postalCode
     }
 
     def loadBuilding =
     {
 
-        //Retrieve building info based on postal code
-       // println(session.postalCode)
-        def _building = Building.findByPostalCode(session.postalCode)
-
+        //Retrieve building info based on postal code to load building
+       
+        def _building = Building.findAllByPostalCode(session.postalCode)
+   
         //Store all the indoor reports 
         def reportList = new ArrayList()
+        def buildingInfoList = new ArrayList()
 
         for(Building b: _building)
         {
             def r = IndoorReport.findAllByBuilding(b)
+            if(r.size() !=0)
+            {
+            String buildingInfo = b.postalCode + "|" + b.level + "|"+ b.stairwell
+            buildingInfoList.add(buildingInfo)
+           // println(buildingInfo)
             reportList.add(r)
+           // println(r)
+            }
         }
 
 
-       // def list =[_building, room]
-        render reportList as JSON
+
+        def toReturn =[_building, reportList, buildingInfoList]
+        render toReturn as JSON
 
 
     }
