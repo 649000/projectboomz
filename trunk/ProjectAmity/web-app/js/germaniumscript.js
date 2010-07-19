@@ -1,39 +1,50 @@
 var germ=null
-var reportObj = null
+var reponseObj = null
+var buildingObj = null
+var reportObj= null
+var buildingInfoObj = null
 var grabbedPlacemark = null
-//var myPlacemark = null
-function Init(response)
+var buildingData=[];
+var myPlacemark = null
+
+function InitGermanium(response)
 {
-    reportObj = eval( '(' + response.responseText + ')')
+    responseObj = eval( '(' + response.responseText + ')')
+    buildingObj = responseObj[0]
+    reportObj = responseObj[1]
+    buildingInfoObj = responseObj[2]
     Germanium.CreateInstance("myGerm", InitSuccessCallback, InitFailureCallback);
 }
 
 function InitSuccessCallback(obj)
 {
     germ = obj
-    //germ.Load("http://www.germanium3d.com/static/sample/" + buildingObj.buildingName + ".xlcl", null, LoadOk, LoadFail);
+    var postalCode = buildingObj[0].postalCode
+    //germ.Load("http://www.germanium3d.com/static/sample/" + postalCode + ".xlcl", null, LoadOk, LoadFail);
     germ.Load("http://www.germanium3d.com/static/sample/generic_building/generic_building.xlcl", null, LoadOk, LoadFail);
 
-         for(var i=0;i<roomObj.size();i++){
+    for(var i=0;i<buildingObj.size();i++){
         // Create a placemark
-        var myPlacemark = germ.CreatePlacemark()
+        var myPlacemark = germ.CreatePlacemark("Lift Lobby Level : " + buildingObj[i].level)
         // Set placemark position
         var point = germ.CreatePointGeometry()
-
-       // alert(roomObj[0].xcoordinate)
-       alert(roomObj[0].xcoordinate)
-       alert(roomObj[0].ycoordinate)
-       alert(roomObj[0].zcoordinate)
-       //convert to double.
-      // point.SetPosition(roomObj[i].xcoordinate, roomObj[i].ycoordinate, roomObj[i].zcoordinate);
-
        
+        point.SetPosition(buildingObj[i].xcoordinate, buildingObj[i].ycoordinate, buildingObj[i].zcoordinate)
+        myPlacemark.SetContent( "<font color =\"white\">|" +buildingObj[i].level +"|" + buildingObj[i].stairwell+ "|</font>")
+
+        //      var whiteLabelStyle =  germ.CreateLabelStyle()
+        //      whiteLabelStyle.SetTextColor("8A2BE2")
+        //      var myStyleset = germ.CreateStyleSet()
+        //      myStyleset.SetLabelStyle(whiteLabelStyle)
+        //      myPlacemark.SetStyleSet(myStyleset)
 
         myPlacemark.SetGeometry(point)
         // Add placemark to the scene
-        germ.AddPlacemark(myPlacemark)
-  }
-
+        germ.AddPlacemark(myPlacemark)        
+    }
+    germ.AddEventHandler(Germanium.Event.OnPlacemarkActivated, loadReports)
+   
+    
 // create a placemark for drag & drop to get coords
 //var pmark = germ.CreatePlacemark("Item to drag and drop");
 //germ.AddPlacemark(pmark);
@@ -41,22 +52,51 @@ function InitSuccessCallback(obj)
 //germ.AddEventHandler(Germanium.Event.OnMouseUp, DropPlacemark);
 }
 
+function loadReports(event)
+{
+    $('test').innerHTML=""
+    grabbedPlacemark = event.placemark
+    var toSplitPlacemark = grabbedPlacemark.GetContent()
+    var splittedPlacemark = toSplitPlacemark.split("|")
+    //splittedPlacemark[1] = Level name
+    //splittedPlacemark[2] = Stairwell location
+    //splittedBuilding[0] = postal code
+    //splittedBuilding[1] = level
+    //splittedBuilding[2] = stairwell
+
+    for(var j=0;j<buildingInfoObj.size();j++){
+        var tobeSplittedbuilding = buildingInfoObj[j]
+        var splittedBuilding = tobeSplittedbuilding.split("|")
+        if(splittedBuilding[1]==splittedPlacemark[1] && splittedBuilding[2]==splittedPlacemark[2] )
+        {
+            for(var k=0;k<reportObj[j].size();k++){
+
+             //   alert(reportObj[j][k].title)
+              
+            $('test').innerHTML+= reportObj[j][k].title +"</br>" + reportObj[j][k].datePosted +"</br>" + reportObj[j][k].image +"</br>" + reportObj[j][k].description+"</br>" + reportObj[j][k].status +"</br>"
+            }
+        }
+    }
+
+
+}
+
 function InitFailureCallback(message, code)
 {
     alert("Germanium initialization failed: " + message + "; error code: " + code)
 }
 
-// Will be called if loading finishes successfully
+
 function LoadOk()
 {
+// Will be called if loading finishes successfully
 //alert(a.type)
 //alert('Loading successful!');
-
 }
 
-// Will be called if loading fails
 function LoadFail(errMsg, errCode)
 {
+    // Will be called if loading fails
     alert('Loading failed. Error code: ' + errCode + '; message: ' + errMsg)
 }
 
@@ -79,7 +119,6 @@ function LoadFail(errMsg, errCode)
 //   // put grabbedPlacemark at the computed coordinates
 //   grabbedPlacemark.GetGeometry().SetPosition(coords);
 //}
-
 //function DropPlacemark(event)
 //{
 //   if (grabbedPlacemark != null)
