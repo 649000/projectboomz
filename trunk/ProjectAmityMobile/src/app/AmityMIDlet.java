@@ -13,6 +13,8 @@ import javax.microedition.media.*;
 import javax.microedition.media.control.*;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Date;
+
 import javax.microedition.io.file.FileConnection;
 
 /**
@@ -32,6 +34,8 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
     private Player mPlayer;
     private VideoControl mVideoControl;
     private Display mDisplay;
+    private Date d;
+    private Command exitCommand2;
     //<editor-fold defaultstate="collapsed" desc=" Generated Fields ">//GEN-BEGIN:|fields|0|
     private Form loginForm;
     private TextField NRICLoginFormtextField;
@@ -47,6 +51,7 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
     private Form indoorReportForm;
     private TextField indoorTitleTextField;
     private StringItem indoorPostalStringItem;
+    private ImageItem indoorImageItem;
     private Form mainMenuForm;
     private ChoiceGroup mainMenuChoiceGroup;
     private Command loginCommand;
@@ -55,8 +60,8 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
     private Command locationCommand;
     private Command snapPicCommand;
     private Command reportMenuOkCommand;
-    private Command outdoorReportBackCommand;
     private Command indoorReportBbackCommand;
+    private Command outdoorReportBackCommand;
     private Command outdoorReportSubmitCommand;
     private Command indoorReportSubmitCommand;
     private Command mainMenuOkCommand;
@@ -90,7 +95,7 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
      */
     public void startMIDlet() {//GEN-END:|3-startMIDlet|0|3-preAction
         // write pre-action user code here
-
+        d = new Date();
         //Initialize mDisplay
         mDisplay = Display.getDisplay(this);
         switchDisplayable(null, getLoginForm());//GEN-LINE:|3-startMIDlet|1|3-postAction
@@ -140,38 +145,29 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
      */
     public void commandAction(Command command, Displayable displayable) {//GEN-END:|7-commandAction|0|7-preCommandAction
         // write pre-action user code here
-        if (displayable == cameraCaptureForm) {//GEN-BEGIN:|7-commandAction|1|27-preAction
-            if (command == exitCommand1) {//GEN-END:|7-commandAction|1|27-preAction
-                // write pre-action user code here
-                switchDisplayable(null, getLoginForm());//GEN-LINE:|7-commandAction|2|27-postAction
-                // write post-action user code here
-            } else if (command == locationCommand) {//GEN-LINE:|7-commandAction|3|33-preAction
+        if (displayable == cameraCaptureForm) {//GEN-BEGIN:|7-commandAction|1|33-preAction
+            if (command == locationCommand) {//GEN-END:|7-commandAction|1|33-preAction
                 // write pre-action user code here
                 getLocation();
-//GEN-LINE:|7-commandAction|4|33-postAction
+//GEN-LINE:|7-commandAction|2|33-postAction
                 // write post-action user code here
-            } else if (command == snapPicCommand) {//GEN-LINE:|7-commandAction|5|37-preAction
-                // write pre-action user code here
-                capture();
-//GEN-LINE:|7-commandAction|6|37-postAction
-                // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|7|52-preAction
+            }//GEN-BEGIN:|7-commandAction|3|52-preAction
         } else if (displayable == indoorReportForm) {
-            if (command == indoorReportBbackCommand) {//GEN-END:|7-commandAction|7|52-preAction
+            if (command == indoorReportBbackCommand) {//GEN-END:|7-commandAction|3|52-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getReportMainForm());//GEN-LINE:|7-commandAction|8|52-postAction
+                switchDisplayable(null, getReportMainForm());//GEN-LINE:|7-commandAction|4|52-postAction
                 // write post-action user code here
-            } else if (command == indoorReportSubmitCommand) {//GEN-LINE:|7-commandAction|9|58-preAction
+            } else if (command == indoorReportSubmitCommand) {//GEN-LINE:|7-commandAction|5|58-preAction
                 // write pre-action user code here
-//GEN-LINE:|7-commandAction|10|58-postAction
+//GEN-LINE:|7-commandAction|6|58-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|11|21-preAction
+            }//GEN-BEGIN:|7-commandAction|7|21-preAction
         } else if (displayable == loginForm) {
-            if (command == exitCommand) {//GEN-END:|7-commandAction|11|21-preAction
+            if (command == exitCommand) {//GEN-END:|7-commandAction|7|21-preAction
                 // write pre-action user code here
-                exitMIDlet();//GEN-LINE:|7-commandAction|12|21-postAction
+                exitMIDlet();//GEN-LINE:|7-commandAction|8|21-postAction
                 // write post-action user code here
-            } else if (command == loginCommand) {//GEN-LINE:|7-commandAction|13|18-preAction
+            } else if (command == loginCommand) {//GEN-LINE:|7-commandAction|9|18-preAction
                 // write pre-action user code here
 //                System.out.println("NRIC: " + NRICLoginFormtextField.getString());
 //                System.out.println("Password: " + passwordLoginFormtextField.getString());
@@ -184,12 +180,13 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
 //                    alert.setTimeout(2000); //Timeout in 2 seconds
 //                    switchDisplayable(alert, getLoginForm());
 //                }
-//GEN-LINE:|7-commandAction|14|18-postAction
+
+                switchDisplayable(null, getMainMenuForm());//GEN-LINE:|7-commandAction|10|18-postAction
                 // write post-action user code here
-                showCamera();
-            }//GEN-BEGIN:|7-commandAction|15|61-preAction
+
+            }//GEN-BEGIN:|7-commandAction|11|61-preAction
         } else if (displayable == mainMenuForm) {
-            if (command == mainMenuOkCommand) {//GEN-END:|7-commandAction|15|61-preAction
+            if (command == mainMenuOkCommand) {//GEN-END:|7-commandAction|11|61-preAction
                 // write pre-action user code here
                 if (mainMenuChoiceGroup.isSelected(0)) {
                     System.out.println("User has selected private messaging module");
@@ -206,43 +203,58 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
 
 
 
-//GEN-LINE:|7-commandAction|16|61-postAction
+//GEN-LINE:|7-commandAction|12|61-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|17|50-preAction
+            }//GEN-BEGIN:|7-commandAction|13|50-preAction
         } else if (displayable == outdoorReportForm) {
-            if (command == outdoorReportBackCommand) {//GEN-END:|7-commandAction|17|50-preAction
+            if (command == outdoorReportBackCommand) {//GEN-END:|7-commandAction|13|50-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getReportMainForm());//GEN-LINE:|7-commandAction|18|50-postAction
+                switchDisplayable(null, getReportMainForm());//GEN-LINE:|7-commandAction|14|50-postAction
                 // write post-action user code here
-            } else if (command == outdoorReportSubmitCommand) {//GEN-LINE:|7-commandAction|19|56-preAction
+            } else if (command == outdoorReportSubmitCommand) {//GEN-LINE:|7-commandAction|15|56-preAction
                 // write pre-action user code here
-
-
-//GEN-LINE:|7-commandAction|20|56-postAction
+                outdoorImageItem.setImage(null);
+                indoorImageItem.setImage(null);
+//GEN-LINE:|7-commandAction|16|56-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|21|48-preAction
+            }//GEN-BEGIN:|7-commandAction|17|48-preAction
         } else if (displayable == reportMainForm) {
-            if (command == reportMenuOkCommand) {//GEN-END:|7-commandAction|21|48-preAction
+            if (command == reportMenuOkCommand) {//GEN-END:|7-commandAction|17|48-preAction
                 // write pre-action user code here
                 if (reportMainFormChoiceGroup.isSelected(0)) {
+
                     switchDisplayable(null, getOutdoorReportForm());
                 } else if (reportMainFormChoiceGroup.isSelected(1)) {
+
                     switchDisplayable(null, getIndoorReportForm());
-
-                } else {
-                    System.out.println("User did not make a selection");
-                    alert = new Alert("Error", "Invalid selection", null, AlertType.ERROR);
-                    alert.setTimeout(2000); //Timeout in 2 seconds
-                    switchDisplayable(alert, getMainMenuForm());
                 }
+//                 else {
+//                    System.out.println("User did not make a selection");
+//                    alert = new Alert("Error", "Invalid selection", null, AlertType.ERROR);
+//                    alert.setTimeout(2000); //Timeout in 2 seconds
+//                    switchDisplayable(alert, getMainMenuForm());
+//                }
 
-//GEN-LINE:|7-commandAction|22|48-postAction
+//GEN-LINE:|7-commandAction|18|48-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|23|7-postCommandAction
-        }//GEN-END:|7-commandAction|23|7-postCommandAction
+            }//GEN-BEGIN:|7-commandAction|19|7-postCommandAction
+        }//GEN-END:|7-commandAction|19|7-postCommandAction
         // write post-action user code here
-    }//GEN-BEGIN:|7-commandAction|24|
-    //</editor-fold>//GEN-END:|7-commandAction|24|
+        else if(command == snapPicCommand)
+        {
+            capture();
+        } else if (command == exitCommand1)
+        {
+            switchDisplayable(null, getOutdoorReportForm());
+        }
+        else if (command == exitCommand2)
+        {
+            switchDisplayable(null, getIndoorReportForm());
+        }
+    }//GEN-BEGIN:|7-commandAction|20|
+    //</editor-fold>//GEN-END:|7-commandAction|20|
+
+
 
     //<editor-fold defaultstate="collapsed" desc=" Generated Getter: loginForm ">//GEN-BEGIN:|14-getter|0|14-preInit
     /**
@@ -350,9 +362,7 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
         if (cameraCaptureForm == null) {//GEN-END:|25-getter|0|25-preInit
             // write pre-init user code here
             cameraCaptureForm = new Form("Testing Purposes Form", new Item[] { getTestLocationstringItem() });//GEN-BEGIN:|25-getter|1|25-postInit
-            cameraCaptureForm.addCommand(getExitCommand1());
             cameraCaptureForm.addCommand(getLocationCommand());
-            cameraCaptureForm.addCommand(getSnapPicCommand());
             cameraCaptureForm.setCommandListener(this);//GEN-END:|25-getter|1|25-postInit
             // write post-init user code here
         }//GEN-BEGIN:|25-getter|2|
@@ -431,7 +441,7 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
     public Command getSnapPicCommand() {
         if (snapPicCommand == null) {//GEN-END:|36-getter|0|36-preInit
             // write pre-init user code here
-            snapPicCommand = new Command("Snap Picture", Command.OK, 0);//GEN-LINE:|36-getter|1|36-postInit
+            snapPicCommand = new Command("Snap Picture", Command.SCREEN, 0);//GEN-LINE:|36-getter|1|36-postInit
             // write post-init user code here
         }//GEN-BEGIN:|36-getter|2|
         return snapPicCommand;
@@ -464,7 +474,7 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
     public Form getIndoorReportForm() {
         if (indoorReportForm == null) {//GEN-END:|39-getter|0|39-preInit
             // write pre-init user code here
-            indoorReportForm = new Form("Indoor Report", new Item[] { getIndoorPostalStringItem(), getIndoorTitleTextField() });//GEN-BEGIN:|39-getter|1|39-postInit
+            indoorReportForm = new Form("Indoor Report", new Item[] { getIndoorPostalStringItem(), getIndoorTitleTextField(), getIndoorImageItem() });//GEN-BEGIN:|39-getter|1|39-postInit
             indoorReportForm.addCommand(getIndoorReportBbackCommand());
             indoorReportForm.addCommand(getIndoorReportSubmitCommand());
             indoorReportForm.setCommandListener(this);//GEN-END:|39-getter|1|39-postInit
@@ -686,7 +696,7 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                 // write post-action user code here
             } else if (command == outdoorSnapPicCommand) {//GEN-LINE:|8-itemCommandAction|3|68-preAction
                 // write pre-action user code here
-                showCamera();
+                showCameraOutdoor();
 //GEN-LINE:|8-itemCommandAction|4|68-postAction
                 // write post-action user code here
             }//GEN-BEGIN:|8-itemCommandAction|5|8-postItemCommandAction
@@ -703,7 +713,7 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
     public Command getOutdoorSelectNewCommand() {
         if (outdoorSelectNewCommand == null) {//GEN-END:|65-getter|0|65-preInit
             // write pre-init user code here
-            outdoorSelectNewCommand = new Command("Ok", Command.OK, 0);//GEN-LINE:|65-getter|1|65-postInit
+            outdoorSelectNewCommand = new Command("Ok", Command.OK, 1);//GEN-LINE:|65-getter|1|65-postInit
             // write post-init user code here
         }//GEN-BEGIN:|65-getter|2|
         return outdoorSelectNewCommand;
@@ -718,7 +728,7 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
     public Command getOutdoorSnapPicCommand() {
         if (outdoorSnapPicCommand == null) {//GEN-END:|67-getter|0|67-preInit
             // write pre-init user code here
-            outdoorSnapPicCommand = new Command("Snap Picture", Command.OK, 0);//GEN-LINE:|67-getter|1|67-postInit
+            outdoorSnapPicCommand = new Command("Snap Picture", Command.OK, 2);//GEN-LINE:|67-getter|1|67-postInit
             // write post-init user code here
         }//GEN-BEGIN:|67-getter|2|
         return outdoorSnapPicCommand;
@@ -726,21 +736,44 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
     //</editor-fold>//GEN-END:|67-getter|2|
     //</editor-fold>
     //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: indoorPostalStringItem ">//GEN-BEGIN:|69-getter|0|69-preInit
-    /**
-     * Returns an initiliazed instance of indoorPostalStringItem component.
-     * @return the initialized component instance
-     */
-    public StringItem getIndoorPostalStringItem() {
-        if (indoorPostalStringItem == null) {//GEN-END:|69-getter|0|69-preInit
+        public Command getExitCommand2() {
+        if (exitCommand2 == null) {
             // write pre-init user code here
-            indoorPostalStringItem = new StringItem("Postal Code:", null);//GEN-LINE:|69-getter|1|69-postInit
+            exitCommand2 = new Command("Exit", Command.EXIT, 0);
             // write post-init user code here
-        }//GEN-BEGIN:|69-getter|2|
-        return indoorPostalStringItem;
+        }
+        return exitCommand2;
     }
-    //</editor-fold>//GEN-END:|69-getter|2|
+
+        //<editor-fold defaultstate="collapsed" desc=" Generated Getter: indoorPostalStringItem ">//GEN-BEGIN:|69-getter|0|69-preInit
+        /**
+         * Returns an initiliazed instance of indoorPostalStringItem component.
+         * @return the initialized component instance
+         */
+        public StringItem getIndoorPostalStringItem() {
+            if (indoorPostalStringItem == null) {//GEN-END:|69-getter|0|69-preInit
+            // write pre-init user code here
+                indoorPostalStringItem = new StringItem("Postal Code:", null);//GEN-LINE:|69-getter|1|69-postInit
+            // write post-init user code here
+            }//GEN-BEGIN:|69-getter|2|
+            return indoorPostalStringItem;
+        }
+        //</editor-fold>//GEN-END:|69-getter|2|
+
+        //<editor-fold defaultstate="collapsed" desc=" Generated Getter: indoorImageItem ">//GEN-BEGIN:|72-getter|0|72-preInit
+        /**
+         * Returns an initiliazed instance of indoorImageItem component.
+         * @return the initialized component instance
+         */
+        public ImageItem getIndoorImageItem() {
+            if (indoorImageItem == null) {//GEN-END:|72-getter|0|72-preInit
+                // write pre-init user code here
+                indoorImageItem = new ImageItem("Image:", null, ImageItem.LAYOUT_DEFAULT, "<Missing Image>", Item.PLAIN);//GEN-LINE:|72-getter|1|72-postInit
+                // write post-init user code here
+            }//GEN-BEGIN:|72-getter|2|
+            return indoorImageItem;
+        }
+        //</editor-fold>//GEN-END:|72-getter|2|
 
     /**
      * Returns a display instance.
@@ -790,7 +823,7 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
 
     static public String urlEncode(String sUrl) {
 
-
+        //Url Encoding for period has been omitted
         StringBuffer urlOK = new StringBuffer();
         for (int i = 0; i < sUrl.length(); i++) {
             char ch = sUrl.charAt(i);
@@ -813,6 +846,9 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                 case '-':
                     urlOK.append("%2D");
                     break;
+//                case '.':
+//                    urlOK.append("%2E");
+//                    break;
                 default:
                     urlOK.append(ch);
                     break;
@@ -889,10 +925,7 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                         loginServerMsg = "";
                         userIDLoggedIn = NRICLoginFormtextField.getString();
                         Thread.sleep(500);
-
-                        switchDisplayable(null, getReportMainForm());
-
-
+                        switchDisplayable(null, getMainMenuForm());
                     }
 
                     if (loginServerMsg.equals("F")) {
@@ -901,7 +934,6 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                         alert = new Alert("Error", "Username/Password is invalid.", null, AlertType.ERROR);
                         alert.setTimeout(2000); //Timeout in 2 seconds
                         switchDisplayable(alert, getLoginForm());
-
                     }
 
                 } catch (Exception e) {
@@ -925,7 +957,7 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
         }.start();
     }
 
-    private void showCamera() {
+    private void showCameraOutdoor() {
         System.out.println("Method showCamera() Starts here");
         try {
             mPlayer = Manager.createPlayer("capture://video");
@@ -958,6 +990,26 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
             handleException(me);
         }
     }
+        private void showCameraIndoor() {
+        System.out.println("Method showCamera() Starts here");
+        try {
+            mPlayer = Manager.createPlayer("capture://video");
+            mPlayer.realize();
+
+            mVideoControl = (VideoControl) mPlayer.getControl("VideoControl");
+
+            Canvas canvas = new CameraCanvas(this, mVideoControl);
+            canvas.addCommand(getExitCommand2());
+            canvas.addCommand(getSnapPicCommand());
+            canvas.setCommandListener(this);
+            switchDisplayable(null, canvas);
+            mPlayer.start();
+        } catch (IOException ioe) {
+            handleException(ioe);
+        } catch (MediaException me) {
+            handleException(me);
+        }
+    }
 
     public void capture() {
 
@@ -967,9 +1019,12 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
 
                 try {
                     // Get the image.
-                    byte[] raw = mVideoControl.getSnapshot(null);
+                    byte[] raw = mVideoControl.getSnapshot("encoding=jpeg");
                     Image image = Image.createImage(raw, 0, raw.length);
+                 
 
+                    String fileName = "AmityImage_" + d.getTime() + ".jpg";
+                    
 //                    Image thumb = createThumbnail(image);
 //
 //                    // Place it in the main form.
@@ -978,12 +1033,14 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
 //                    }
 //                    cameraCaptureForm.append(thumb);
 
-
-                    FileConnection fconn = (FileConnection) Connector.open("file:///SDCard/myfile.jpg", Connector.WRITE);
+                    System.out.println("FileConnection Starts here");
+                    //The following only works for nokia photos.
+                    FileConnection fconn = (FileConnection) Connector.open("file:///C:/Data/Images/" + fileName, Connector.WRITE);
                     fconn.create();
                     OutputStream out = fconn.openOutputStream();
                     //out.write(image);
                     out.write(raw);
+                    out.flush();
                     out.close();
                     fconn.close();
 
@@ -994,6 +1051,8 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                     mPlayer.close();
                     mPlayer = null;
                     mVideoControl = null;
+                       outdoorImageItem.setImage(image);
+                    indoorImageItem.setImage(image);
                 } catch (MediaException me) {
                     handleException(me);
                 } catch (Exception e) {
@@ -1039,5 +1098,56 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
         a.setTimeout(2000);
         switchDisplayable(a, getReportMainForm());
         //  mDisplay.setCurrent(a, cameraCaptureForm);
+    }
+
+    private void getUserPostalCode() {
+        //not done
+        new Thread() {
+
+            public void run() {
+                StringBuffer serverMsg = new StringBuffer("");
+                HttpConnection hc = null;
+                InputStream is = null;
+
+                try {
+                    hc = (HttpConnection) Connector.open(loginUserURL + urlEncode("?nric=" + NRICLoginFormtextField.getString() + "&Password=" + passwordLoginFormtextField.getString()));
+                    is = hc.openInputStream();
+                    int ch = is.read();
+                    while (ch != -1) {
+                        serverMsg.append((char) ch);
+
+                        ch = is.read();
+                    }
+                    System.out.println("Login THREAD: " + serverMsg.toString().trim());
+                    loginServerMsg = serverMsg.toString().trim();
+                    is.close();
+                    hc.close();
+
+                    if (loginServerMsg.equals("T")) {
+
+                        loginServerMsg = "";
+                        userIDLoggedIn = NRICLoginFormtextField.getString();
+                        Thread.sleep(500);
+
+                        switchDisplayable(null, getReportMainForm());
+
+
+                    }
+
+                    if (loginServerMsg.equals("F")) {
+                        loginServerMsg = "";
+                        System.out.println("Wrong Login Info");
+                        alert = new Alert("Error", "Username/Password is invalid.", null, AlertType.ERROR);
+                        alert.setTimeout(2000); //Timeout in 2 seconds
+                        switchDisplayable(alert, getLoginForm());
+
+                    }
+
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+
+            }
+        }.start();
     }
 }
