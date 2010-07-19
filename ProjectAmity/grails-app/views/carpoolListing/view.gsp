@@ -27,7 +27,7 @@ srLJJlcXUmLMTM2KkMsePdU1A"
 
     <p>Name: ${listing.resident.name}</p>
     <p>Listing Status: ${listing.status}</p>
-    <p>User ID: ${listing.resident.userid} <a href="#" onClick="alert('You will get to send a PM'); return false">Send Private Message</a></p>
+    <p>User ID: ${listing.resident.userid} <g:link controller="message" action="create" params="[receiverUserID: listing.resident.userid, subject: 'Your Carpool Listing']">Send Private Message</g:link></p>
     <p>Looking for: ${listing.type}</p>
     <p>Frequency: ${listing.frequency}</p>
 
