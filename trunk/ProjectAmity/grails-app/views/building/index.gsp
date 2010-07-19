@@ -14,7 +14,8 @@
   <g:javascript library="prototype" />
   <script type="text/javascript" src="${resource(dir: 'js', file: 'germaniumscript.js')}" ></script>
 </head>
-<body onLoad="${remoteFunction(action:'loadBuilding',onSuccess:'Init(e)')}" >
+<body  onLoad="${remoteFunction(action:'loadBuilding',onSuccess:'InitGermanium(e)')}">
   <div id="myGerm" style="width: 100%; height: 600px;"></div>
+  <div id="test"></div>
 </body>
 </html>
