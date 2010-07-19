@@ -4,12 +4,12 @@ import javax.microedition.media.MediaException;
 import javax.microedition.media.control.VideoControl;
 
 
-public class CameraCanvas
+public class CameraIndoorCanvas
     extends Canvas {
 
   private AmityMIDlet mAmityMIDlet;
 
-  public CameraCanvas(AmityMIDlet midlet, VideoControl videoControl) {
+  public CameraIndoorCanvas(AmityMIDlet midlet, VideoControl videoControl) {
     int width = getWidth();
     int height = getHeight();
 
@@ -41,6 +41,6 @@ public class CameraCanvas
 
     int action = getGameAction(keyCode);
     if (action == FIRE)
-      mAmityMIDlet.captureOutdoor();
+      mAmityMIDlet.captureIndoor();
   }
 }
