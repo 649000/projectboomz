@@ -1,4 +1,5 @@
 package app
+import grails.converters.JSON
 
 class BarterAdController {
 
@@ -7,7 +8,13 @@ class BarterAdController {
     }
 
     def create = {
-        render("test")
+        
+    }
+
+    def assign = {
+        def resident=Resident.findByNric("S9000001A")
+        def list= [BarterAd.findAllByResident(resident),BarterAd.findAllByResidentNot(resident)]
+        [barters: list]
     }
 
     def save = {
@@ -22,23 +29,63 @@ class BarterAdController {
         barter.save();
     }
 
+    def startAssign = {
+        //System.out.print(params.toAssign)
+
+        System.out.print("hi im here")
+        System.out.print(params.toAssign)
+        Date today=new Date()
+        params.requestDatePosted=today
+        params.requestMessage=null
+        params.requestState="0"
+        
+        def barter=new BarterRequest(params)
+        System.out.print(params)
+        barter.save()
+
+        System.out.print(barter.id)
+
+        def tempList=params.toAssign.split(",")
+
+        for(String s : tempList)
+        {
+            BarterAd b = BarterAd.get(s)
+            b.barterRequest = barter
+        }
+
+   }
+
+    def generateData()
+    {
+        Random random = new Random()
+
+        Date today=new Date()
+
+        //System.out.println(params.itemDatePosted)
+
+        def adjective=['Green', 'Red', 'Blue', 'Yellow', 'Purple', 'Black', 'White', 'Grey', 'Brown', 'Old', 'New', 'Thick', 'Thin']
+        def items=['Notepad', 'Blanket', 'Wallet', 'Pen', 'Pencil', 'Marker', 'Book', 'Chair', 'Table']
+
+        for(def i=0; i<50; i++)
+        {
+            def barter;
+            Resident a=new Resident()
+            a.id=random.nextInt(9)+1;
+            params.resident=a;
+            params.itemName=adjective[random.nextInt(12)]+" "+items[random.nextInt(9)]
+            params.itemDatePosted=today
+            barter=new BarterAd(params)
+            barter.save();
+        }
+    }
+
     def search = {
         
     }
 
     def startSearch = {
         def list=BarterAd.findAllByItemNameLike("%"+params.search+"%")
-
-        def html="<table><tr><td>Item Date</td><td>Name</td><td>Photo</td><td>Descrition</td><td>Category</td></tr>"
-
-        list.each()
-        {
-            html+="<tr><td>"+"${it.itemDatePosted}"+"</td><td>"+"${it.itemName}"+"</td><td>"+"${it.itemPhoto}"+"</td><td>"+"${it.itemDescription}"+"</td><td>"+"${it.itemCategory}"+"</td></tr>"
-        }
-
-        html+="</table>"
-
-        render html
+        render list as JSON
     }
 
     def list = {
@@ -47,5 +94,10 @@ class BarterAdController {
 
     def update = {
 
+    }
+
+    def test= {
+
+        
     }
 }
