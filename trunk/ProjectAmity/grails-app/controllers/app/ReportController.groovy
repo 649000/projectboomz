@@ -3,8 +3,10 @@ import grails.converters.JSON
 
 class ReportController {
 
+    def TwitterService
     def index = {
         // redirect (action: "loadData")
+        // TwitterService.updateStatus(params.text)
     }
 
     def saveOutdoor = {
