@@ -96,6 +96,7 @@
             </g:each>
 
           </table>
+          <br/>
           <g:paginate total="${params.totalResults}" controller="message" action="index" />
         </g:if>
 
