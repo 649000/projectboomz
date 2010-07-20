@@ -72,8 +72,8 @@ function loadReports(event)
             for(var k=0;k<reportObj[j].size();k++){
 
              //   alert(reportObj[j][k].title)
-              
-            $('test').innerHTML+= reportObj[j][k].title +"</br>" + reportObj[j][k].datePosted +"</br>" + reportObj[j][k].image +"</br>" + reportObj[j][k].description+"</br>" + reportObj[j][k].status +"</br>"
+              var splitteddate = reportObj[j][k].datePosted.split("T")
+            $('test').innerHTML+= '<p>' + reportObj[j][k].title +'</p><p>' + splitteddate[0]+'</p><p>' + reportObj[j][k].image +'</p><p>' + reportObj[j][k].description+'</p><p>' + reportObj[j][k].status +'</p>'
             }
         }
     }
