@@ -14,6 +14,7 @@ import javax.microedition.media.control.*;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
+import java.util.Vector;
 import org.apache.commons.codec.binary.Base64;
 import javax.microedition.io.file.FileConnection;
 
@@ -925,6 +926,29 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
     public void destroyApp(boolean unconditional) {
     }
 
+    private String[] split(String original, String separator) {
+        Vector nodes = new Vector();
+        // Parse nodes into vector
+        int index = original.indexOf(separator);
+        while (index >= 0) {
+            nodes.addElement(original.substring(0, index));
+            original = original.substring(index + separator.length());
+            index = original.indexOf(separator);
+        }
+        // Get the last node
+        nodes.addElement(original);
+
+        // Create split string array
+        String[] result = new String[nodes.size()];
+        if (nodes.size() > 0) {
+            for (int loop = 0; loop < nodes.size(); loop++) {
+                result[loop] = (String) nodes.elementAt(loop);
+                System.out.println(result[loop]);
+            }
+
+        }
+        return result;
+    }
     static public String urlEncode(String sUrl) {
 
         //Url Encoding for period has been omitted
@@ -950,9 +974,9 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                 case '-':
                     urlOK.append("%2D");
                     break;
-//                case '.':
-//                    urlOK.append("%2E");
-//                    break;
+                case '.':
+                    urlOK.append("%2E");
+                    break;
                 default:
                     urlOK.append(ch);
                     break;
