@@ -13,7 +13,7 @@ class ResidentController {
         {
             if(resident.password == params.password)
             {
-                render "T"
+                render "T|" + new Date()
             }
             else {
                 render "F"
