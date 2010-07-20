@@ -43,7 +43,8 @@ function loadMarkers()
     {
         var coordinates = new GLatLng(outdoorReport[i].latitude, outdoorReport[i].longitude);
         var marker = new GMarker(coordinates);
-        marker.bindInfoWindowHtml("<b>" + outdoorReport[i].title + "</b></br>" + outdoorReport[i].image + "</br>" + outdoorReport[i].description + "</br> Status: " + outdoorReport[i].status );
+        marker.bindInfoWindowHtml('<p><b>' + outdoorReport[i].title + '</b></p><p>' + outdoorReport[i].image + '</p><p>' + outdoorReport[i].description + '</p><p> Status: ' + outdoorReport[i].status +'</p>');
+
         map.addOverlay(marker);
     }
 
@@ -61,7 +62,7 @@ function loadMarkers()
           var _coordinates = new GLatLng(indoorReport[k][2], indoorReport[k][3])
           var _marker = new GMarker(_coordinates)
 
-          _marker.bindInfoWindowHtml("<b> Postal Code: " + indoorReport[k][0] + "</b></br> Indoor Reports </br>" +indoorReport[k][1] + " case(s) has been reported. </br> <a href=\"building/index?postalCode="+ indoorReport[k][0] +"\">View</a> ")
+          _marker.bindInfoWindowHtml("<p><b>Postal Code: " + indoorReport[k][0] + "</b></p><p> Indoor Reports " +indoorReport[k][1] + " case(s) has been reported. </p><p> <a href=\"http://localhost:8080/ProjectAmity/building/index?postalCode="+ indoorReport[k][0] +"\">View</a> </p>")
            map.addOverlay(_marker)
 //        toGeoCode = "Singapore " + indoorReport[k][0];
 //        var casesReport = indoorReport[k][1] + " cases has been reported.";
