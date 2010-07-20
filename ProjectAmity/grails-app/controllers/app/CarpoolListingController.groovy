@@ -214,7 +214,7 @@ class CarpoolListingController
         // param values are null
         if( params.endAddress != null )
         {
-            params.max = 1
+            params.max = 2
 
             if( params.neighboursOnly != null )
             {
