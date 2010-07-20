@@ -1047,8 +1047,8 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                     loginServerMsg = serverMsg.toString().trim();
                     is.close();
                     hc.close();
-
-                    if (loginServerMsg.equals("T")) {
+                    String temp[] = split(loginServerMsg,"|");
+                    if (temp[0].equals("T")) {
 
                         loginServerMsg = "";
                         userIDLoggedIn = NRICLoginFormtextField.getString();
