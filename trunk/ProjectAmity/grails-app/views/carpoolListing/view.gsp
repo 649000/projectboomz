@@ -59,28 +59,77 @@ HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE  -->
 <h1>${listing.resident.name}'s Listing</h1>
 
     <g:if test="${listing.status == 'Fulfilled'}">
-      <p style="background-color: #ffc0cb">This user's listing has already been fulfilled.</p>
+      <br/><p style="background-color: #ffc0cb">This user's listing has already been fulfilled.</p>
     </g:if>
 
+    <br/>
     <h2>User Information</h2>
+    <br/>
+    <table width="80%">
+      <tr>
+        <td width="20%"><b>Name: </b></td>
+        <td>${listing.resident.name}</td>
+        <td width="60%"></td>
+      </tr>
+      <tr>
+        <td width="20%"><b>Listing Status: </b></td>
+        <td>${listing.status}</td>
+        <td width="60%"></td>
+      </tr>
+      <tr>
+        <td width="20%"><b>User ID: </b></td>
+        <td>${listing.resident.userid}</td>
+        <td width="60%"><g:link controller="message" action="create" params="[receiverUserID: listing.resident.userid, subject: 'Your Carpool Listing']">Send Private Message</g:link></td>
+      </tr>
+      <tr>
+        <td width="20%"><b>Name: </b></td>
+        <td>${listing.type}</td>
+        <td width="60%"></td>
+      </tr>
+      <tr>
+        <td width="20%"><b>Frequency: </b></td>
+        <td>${listing.frequency}</td>
+        <td width="60%"></td>
+      </tr>
+    </table>
 
-    <p>Name: ${listing.resident.name}</p>
-    <p>Listing Status: ${listing.status}</p>
-    <p>User ID: ${listing.resident.userid} <g:link controller="message" action="create" params="[receiverUserID: listing.resident.userid, subject: 'Your Carpool Listing']">Send Private Message</g:link></p>
-    <p>Looking for: ${listing.type}</p>
-    <p>Frequency: ${listing.frequency}</p>
-
+    <br/>
     <h2>Journey Information</h2>
+    <br/>
+    <table width="80%">
+      <tr>
+        <td width="20%"><b>Starting Location: </b></td>
+        <td>${listing.startAddress}</td>
+      </tr>
+      <tr>
+        <td width="20%"><b>Departure Time: </b></td>
+        <td>${listing.departureTime}</td>
+      </tr>
+      <tr>
+        <td width="20%"><b> </b></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td width="20%"><b> </b></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td width="20%"><b>Destination Location: </b></td>
+        <td>${listing.endAddress}</td>
+      </tr>
+      <tr>
+        <td width="20%"><b>Looking for: </b></td>
+        <td>${listing.returnTime}</td>
+      </tr>
+    </table>
+    <br/>
 
-    <p>Starting Location: ${listing.startAddress}</p>
-    <p>Departure Time: ${listing.departureTime}</p>
+    <h2>Route Map</h2>
     <br/>
-    <p>Destination Location: ${listing.endAddress}</p>
-    <p>Looking for: ${listing.returnTime}</p>
-    <br/>
-    <p><a href="#" onClick="toggleControl('map'); return false">Show Journey on a Map</a></p>
     <div id="map" style="width: 40%; height: 350px; border: 1px solid black"></div>
-    <p><a href="#" onClick="toggleControl('directionsPane'); return false">Show Driving Directions</a></p>
+    <br/>
+    <h2>Driving Directions</h2>
+    <br/>
     <div id="directionsPane" style="width: 40%"></div>
 
     </div>
