@@ -18,18 +18,17 @@ class ReportController {
             def report = new Report();
             Date d = new Date()
             report.datePosted = d
-            report.image = params.image
+            report.image = params.imagename
             report.title = params.title
             report.description = params.description
             // report.category = "Outdoor"
-            report.latitude = params.latitude
-            report.longitude = params.longitude
-            report.altitude = params.altitude
+            report.latitude = Double.parseDouble(params.latitude)
+            report.longitude = Double.parseDouble(params.longitude)
+            report.altitude = Double.parseDouble(params.altitude)
             report.status = "Pending"
             report.moderationStatus = false
 
             InputStream input = request.getInputStream()
-
             BufferedReader r = new BufferedReader(new InputStreamReader(input))
             StringBuffer buf = new StringBuffer()
             String line
@@ -40,11 +39,11 @@ class ReportController {
             }
             String imageString = buf.toString()
 
-            byte[] imageByteArray = Base64.decode(imageString);
+           // byte[] imageByteArray = Base64.decode(imageString);
 
-            FileOutputStream f = new FileOutputStream("C://image.png");
-            f.write(imageByteArray);
-            f.close();
+//            FileOutputStream f = new FileOutputStream("C://"+params.imagename);
+//            f.write(imageByteArray);
+//            f.close();
 
             resident.addToReport(report)
             render "T"
@@ -68,12 +67,12 @@ class ReportController {
         {
             if(b.level==params.level && b.stairwell ==params.stairwell)
             {
-                theCorrectBuilding = b;
+                theCorrectBuilding = b
             }
         }
 
 
-        def indoorReport = new IndoorReport();
+        def indoorReport = new IndoorReport()
         //        Calendar c = Calendar.getInstance();
         //        int date = c.get(Calendar.DATE)
         //        int month = c.get(Calendar.MONTH)+1
@@ -83,7 +82,7 @@ class ReportController {
         
         Date d = new Date()
         indoorReport.datePosted = d
-        report.image = params.image
+        report.image = params.imagename
         report.title = params.title
         report.description = params.description
         // report.category = "Indoor"
@@ -91,7 +90,7 @@ class ReportController {
         report.status = "Pending"
         report.moderationStatus = false
         
-        b.addToIndoorReport(indoorReport)
+        theCorrectBuilding.addToIndoorReport(indoorReport)
         resident.addToIndoorReport(indoorReport)
     }
 
