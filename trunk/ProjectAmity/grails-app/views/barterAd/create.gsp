@@ -26,18 +26,24 @@
 
 			<div id="container">
             <img src="${resource(dir:'images/amity',file:'logo3.PNG')}" id="logo"/>
-            <img src="${resource(dir:'images/amity',file:'header.png')}" id="headerIMG">
+            <img src="${resource(dir:'images/amity',file:'header.png')}" id="headerIMG"/>
             <img src="${resource(dir:'images/amity',file:'bg.jpg')}" id="background"/>
+
             <img src="${resource(dir:'images/amity',file:'home.png')}" id="home"/>
-            <img src="${resource(dir:'images/amity',file:'report.png')}" id="report"/>
-            <img src="${resource(dir:'images/amity',file:'carpool.png')}" id="carpool"/>
-            <img src="${resource(dir:'images/amity',file:'barter.png')}" id="barter"/>
-            <img src="${resource(dir:'images/amity',file:'bcarpool.png')}" id="pageTitle"/>
+            <a href="${createLink(controller: 'report', action:'index')}" >
+            <img src="${resource(dir:'images/amity',file:'report.png')}" border="0" id="report"/></a>
+            <a href="${createLink(controller: 'carpoolListing', action:'index')}" >
+            <img src="${resource(dir:'images/amity',file:'carpool.png')}" border="0" id="carpool"/></a>
+            <a href="${createLink(controller: 'barterAd', action:'index')}" >
+            <img src="${resource(dir:'images/amity',file:'barter.png')}" border="0" id="barter"/></a>
+            <img src="${resource(dir:'images/amity',file:'bbarter.png')}" border="0" id="pageTitle"/>
   <div id="header">
     <h1>test</h1>
   <!-- end #header --></div>
   <div id="banner">&nbsp;</div>
-  <div id="navi">&nbsp; You are here: Testing</div>
+  <div id="navi">Welcome <a href="asdf">Lim Yuan Jie</a>
+    <span id="navi2"><a href="asdf"><img src="${resource(dir:'images/amity',file:'mail.png')}" border="0"/><span style="vertical-align:top;" >Message</span></a><a href="asdf"><img src="${resource(dir:'images/amity',file:'logout.png')}" border="0"/><span style="vertical-align:top;" >Logout</span></a></span>
+  </div>
   <div id="mainContent">
 
   <!--CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT

@@ -55,7 +55,7 @@ class BarterAdController {
 
    }
 
-    def generateData()
+    def generateData=
     {
         Random random = new Random()
 
