@@ -49,12 +49,8 @@
 
   <!--CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE CONTENT HERE  -->
   <resource:autoComplete skin="default" />
-      <h1>Welcome, ${session.user.name}</h1>
-      
       <div id="saving"><img src="${resource(dir:'images', file:'spinner.gif')}" alt="Loading" /> Saving...</div>
       <div id="defineListingStatus"></div>
-      <br/>
-      <p>Define your carpool listing here so that people can search for you.</p>
 
       <g:form>
         <br/>
