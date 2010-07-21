@@ -91,9 +91,9 @@
         <g:if test="${session.user.userid == message.receiver.userid}">
           <p><g:link action="create" params="[receiverUserID: message?.sender.userid, subject: 'Re: ' + message.subject , message: '\n\n\nOn ' + message.timeStamp + ', ' + message.sender.name + ' wrote: \n\n' + message.message]">Reply</g:link></p>
         </g:if>
-        <g:if test="${session.user.userid == message.sender.userid}">
+        <g:elseif test="${session.user.userid == message.sender.userid}">
             <p><g:link action="create" params="[receiverUserID: message?.receiver.userid, subject: 'Re: ' + message.subject , message: '\n\n\nOn ' + message.timeStamp + ', ' + message.sender.name + ' wrote: \n\n' + message.message]">Reply</g:link></p>
-        </g:if>
+        </g:elseif>
 
       </div>
       <!-- This clearing element should immediately follow the #mainContent div in order to force the #container div to contain all child floats -->
