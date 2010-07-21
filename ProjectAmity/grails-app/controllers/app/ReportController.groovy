@@ -3,10 +3,17 @@ import grails.converters.JSON
 
 class ReportController {
 
+    def messageCheckingService
     def TwitterService
+    
     def index = {
         // redirect (action: "loadData")
         // TwitterService.updateStatus(params.text)
+        if(session.user != null)
+        {
+            params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(session.user)
+            [params : params]
+        }
     }
 
     def saveOutdoor = {

@@ -33,8 +33,14 @@
     <h1>test</h1>
   <!-- end #header --></div>
   <div id="banner">&nbsp;</div>
-  <div id="navi">Welcome <a href="asdf">Lim Yuan Jie</a>
-    <span id="navi2"><a href="asdf"><img src="${resource(dir:'images/amity',file:'mail.png')}" border="0"/><span style="vertical-align:top;" >Message</span></a><a href="asdf"><img src="${resource(dir:'images/amity',file:'logout.png')}" border="0"/><span style="vertical-align:top;" >Logout</span></a></span>
+  <div id="navi">Welcome, <a href="#">${session.user.name}</a>.&nbsp;
+    <g:if test="${params.messageModuleUnreadMessages > 1}">
+      You have <a href="${createLink(controller: 'message', action:'index')}">${params.messageModuleUnreadMessages} unread messages</a>.
+    </g:if>
+    <g:elseif test="${params.messageModuleUnreadMessages == 1}">
+      You have <a href="${createLink(controller: 'message', action:'index')}">1 unread message</a>.
+    </g:elseif>
+    <span id="navi2"><a href="${createLink(controller: 'message', action:'index')}"><img src="${resource(dir:'images/amity',file:'mail.png')}" border="0"/><span style="vertical-align:top;" >Message</span></a><a href="asdf"><img src="${resource(dir:'images/amity',file:'logout.png')}" border="0"/><span style="vertical-align:top;" >Logout</span></a></span>
   </div>
   <div id="mainContent">
 
