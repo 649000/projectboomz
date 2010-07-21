@@ -31,7 +31,7 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
     private boolean checkForMessages = false;
     private boolean midletPaused = false;
     private LocationProvider provider = null;
-    private String userIDLoggedIn = "a";
+    private String userIDLoggedIn = "";
     private String userPostalCode = "";
     //URLs
     private String loginUserURL = "http://localhost:8080/ProjectAmity/resident/mLogin";
@@ -275,7 +275,7 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
             } else if (command == messageCreateSendCommand) {//GEN-LINE:|7-commandAction|15|95-preAction
                 // write pre-action user code here
 
-                userIDLoggedIn = "tampines5981";
+               // userIDLoggedIn = "tampines5981";
                 msgSender = userIDLoggedIn;
                 msgTo = tbxTo.getString();
                 msgSubject = tbxSubject.getString();
@@ -2013,8 +2013,8 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                     InputStream is = null;
 
                     try {
-                        userIDLoggedIn = "tampines5981";
-                        logInMessage = "2010/07/21 11:24:46";
+                       // userIDLoggedIn = "tampines5981";
+                      //  logInMessage = "2010/07/21 11:24:46";
                         hc = (HttpConnection) Connector.open(checkMessageURL + urlEncode("?user=" + userIDLoggedIn + "&timeStamp=" + logInMessage));
                         is = hc.openInputStream();
                         int ch = is.read();
@@ -2066,8 +2066,8 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                 InputStream is = null;
 
                 try {
-                    userIDLoggedIn = "tampines5981";
-                    logInMessage = "2010/07/21 11:24:46";
+                   // userIDLoggedIn = "tampines5981";
+                  //  logInMessage = "2010/07/21 11:24:46";
                     hc = (HttpConnection) Connector.open(checkMessageURL + urlEncode("?user=" + userIDLoggedIn + "&timeStamp=" + logInMessage));
                     is = hc.openInputStream();
                     int ch = is.read();
