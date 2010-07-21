@@ -3,11 +3,39 @@ package app
 import java.util.*
 import java.text.*
 
+
 class ResidentController {
 
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss")
 
     def index = { }
+
+    def checkPassword = {
+        def toReturn="";
+        def resident = Resident.findByNric(params.nric)
+
+        if(resident !=null)
+        {
+            if(resident.password == params.password)
+            {
+                session.user = resident
+                println("Login Success")
+                toReturn="Success"
+               
+            }
+            else
+            {
+                println("Wrong Password")
+                toReturn = "Invalid Password"
+            }
+        } else
+        {
+            println("Login Invalid")
+            toReturn = "Invalid Login ID"
+        }
+
+        render toReturn
+    }
 
     def mLogin =
     {
@@ -42,9 +70,7 @@ class ResidentController {
         {
             level+="|"+b.level
             stairwell+="|"+ b.stairwell
-
         }
-
         def toReturn = resident.postalCode+"~"+level+ "~" + stairwell
 
         render toReturn
