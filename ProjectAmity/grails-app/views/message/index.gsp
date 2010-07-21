@@ -40,9 +40,14 @@
         &nbsp;
       </div>
 
-      <div id="navi">
-        Welcome <a href="asdf">Lim Yuan Jie</a>
-        <span id="navi2"><a href="asdf"><img src="${resource(dir:'images/amity',file:'mail.png')}" border="0"/><span style="vertical-align:top;" >Message</span></a><a href="asdf"><img src="${resource(dir:'images/amity',file:'logout.png')}" border="0"/><span style="vertical-align:top;" >Logout</span></a></span>
+      <div id="navi">Welcome, <a href="#">${session.user.name}</a>.&nbsp;
+        <g:if test="${params.messageModuleUnreadMessages > 1}">
+          You have <a href="${createLink(controller: 'message', action:'index')}">${params.messageModuleUnreadMessages} unread messages</a>.
+        </g:if>
+        <g:elseif test="${params.messageModuleUnreadMessages == 1}">
+          You have <a href="${createLink(controller: 'message', action:'index')}">1 unread message</a>.
+        </g:elseif>
+        <span id="navi2"><a href="${createLink(controller: 'message', action:'index')}"><img src="${resource(dir:'images/amity',file:'mail.png')}" border="0"/><span style="vertical-align:top;" >Message</span></a><a href="asdf"><img src="${resource(dir:'images/amity',file:'logout.png')}" border="0"/><span style="vertical-align:top;" >Logout</span></a></span>
       </div>
 
       <div id="mainContent">
@@ -54,22 +59,14 @@
             <br/>${params.errors}<br/>
           </g:if>
         </div>
-
-        <br/>
-        <p>Hi, ${session.user.name}.</p>
-        <br/>
-
-        <g:if test="${params.unreadCount > 0}">
-          <br/><p>You have ${params.unreadCount} unread messages.</p><br/>
-        </g:if>
-
         
         <div id="messageOperationStatus">
           <g:if test="${flash.messageOperationStatus}">
             <br/>${flash.messageOperationStatus}<br/>
           </g:if>
         </div>
-        
+
+        <br/>
         <h2><a href="${createLink(controller: 'message', action:'index')}">Inbox</a> | <a href="${createLink(controller: 'message', action:'sent')}">Sent Messages</a></h2>
 
         <br/>
