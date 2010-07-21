@@ -4,6 +4,8 @@ import grails.converters.JSON
 
 class BuildingController {
 
+    def messageCheckingService
+
     def index = {
 
         //User will be redirected to this index closure
@@ -11,6 +13,12 @@ class BuildingController {
         //This controller will retrieve the building's info based on the postal code
         println("Params Received (Postal Code): " + params.postalCode)
         session.postalCode = params.postalCode
+
+        if(session.user != null)
+        {
+            params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(session.user)
+            [params : params]
+        }
     }
 
 
