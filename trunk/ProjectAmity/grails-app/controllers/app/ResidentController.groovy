@@ -18,7 +18,7 @@ class ResidentController {
         {
             if(resident.password == params.password)
             {
-                render "T|" + sdf.format( new Date() )
+                render "T|" + sdf.format( new Date() )+ "|" + resident.userid
             }
             else {
                 render "F"
