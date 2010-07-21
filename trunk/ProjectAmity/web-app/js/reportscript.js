@@ -43,7 +43,9 @@ function loadMarkers()
     {
         var coordinates = new GLatLng(outdoorReport[i].latitude, outdoorReport[i].longitude);
         var marker = new GMarker(coordinates);
-        marker.bindInfoWindowHtml('<p><b>' + outdoorReport[i].title + '</b></p><p>' + outdoorReport[i].image + '</p><p>' + outdoorReport[i].description + '</p><p> Status: ' + outdoorReport[i].status +'</p>');
+        outdoorReport[i].image
+        marker.bindInfoWindowHtml('<p><b>' + outdoorReport[i].title + '</b></p><p>' + '<img src="/ProjectAmity/outdoorreportimages/'+ outdoorReport[i].image+'" width="400"  height="300"</a>' + '</p><p>' + outdoorReport[i].description + '</p><p> Status: ' + outdoorReport[i].status +'</p>');
+
 
         map.addOverlay(marker);
     }
