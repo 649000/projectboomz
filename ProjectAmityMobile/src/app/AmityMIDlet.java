@@ -115,6 +115,7 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
     private Command messageCreateSendCommand;
     private Command messageViewBackCommand;
     private Command messageViewReplyCommand;
+    private Command mainMenuBackCommand;
     //</editor-fold>//GEN-END:|fields|0|
 
     /**
@@ -227,24 +228,30 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                 // write post-action user code here
             } else if (command == loginCommand) {//GEN-LINE:|7-commandAction|9|18-preAction
                 // write pre-action user code here
-//                System.out.println("NRIC: " + NRICLoginFormtextField.getString());
-//                System.out.println("Password: " + passwordLoginFormtextField.getString());
-//                if (!NRICLoginFormtextField.getString().equals("") && !passwordLoginFormtextField.getString().equals("")) {
-//                  loginAccount();
-//                 } else {
-//
-//                    System.out.println("Empty Fields Detected");
-//                    alert = new Alert("Error", "Username or Password cannot be blank.", null, AlertType.ERROR);
-//                    alert.setTimeout(2000); //Timeout in 2 seconds
-//                    switchDisplayable(alert, getLoginForm());
-//                }
+                System.out.println("NRIC: " + NRICLoginFormtextField.getString());
+                System.out.println("Password: " + passwordLoginFormtextField.getString());
+                if (!NRICLoginFormtextField.getString().equals("") && !passwordLoginFormtextField.getString().equals("")) {
+                  loginAccount();
+                 } else {
 
-                switchDisplayable(null, getMainMenuForm());//GEN-LINE:|7-commandAction|10|18-postAction
+                    System.out.println("Empty Fields Detected");
+                    alert = new Alert("Error", "Username or Password cannot be blank.", null, AlertType.ERROR);
+                    alert.setTimeout(2000); //Timeout in 2 seconds
+                    switchDisplayable(alert, getLoginForm());
+                }
+
+//GEN-LINE:|7-commandAction|10|18-postAction
                 // write post-action user code here
 
-            }//GEN-BEGIN:|7-commandAction|11|61-preAction
+            }//GEN-BEGIN:|7-commandAction|11|113-preAction
         } else if (displayable == mainMenuForm) {
-            if (command == mainMenuOkCommand) {//GEN-END:|7-commandAction|11|61-preAction
+            if (command == mainMenuBackCommand) {//GEN-END:|7-commandAction|11|113-preAction
+                // write pre-action user code here
+                userIDLoggedIn="";
+                switchDisplayable(null, getLoginForm());//GEN-LINE:|7-commandAction|12|113-postAction
+                // write post-action user code here
+                
+            } else if (command == mainMenuOkCommand) {//GEN-LINE:|7-commandAction|13|61-preAction
                 // write pre-action user code here
                 if (mainMenuChoiceGroup.isSelected(0)) {
                     System.out.println("User has selected private messaging module");
@@ -264,15 +271,15 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
 
 
 
-//GEN-LINE:|7-commandAction|12|61-postAction
+//GEN-LINE:|7-commandAction|14|61-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|13|93-preAction
+            }//GEN-BEGIN:|7-commandAction|15|93-preAction
         } else if (displayable == messageCreateForm) {
-            if (command == messageCreateBackCommand) {//GEN-END:|7-commandAction|13|93-preAction
+            if (command == messageCreateBackCommand) {//GEN-END:|7-commandAction|15|93-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getMessageMainForm());//GEN-LINE:|7-commandAction|14|93-postAction
+                switchDisplayable(null, getMessageMainForm());//GEN-LINE:|7-commandAction|16|93-postAction
                 // write post-action user code here
-            } else if (command == messageCreateSendCommand) {//GEN-LINE:|7-commandAction|15|95-preAction
+            } else if (command == messageCreateSendCommand) {//GEN-LINE:|7-commandAction|17|95-preAction
                 // write pre-action user code here
 
                // userIDLoggedIn = "tampines5981";
@@ -282,16 +289,16 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                 msgMessage = tbxMessage.getString();
                 sendMessage();
 
-//GEN-LINE:|7-commandAction|16|95-postAction
+//GEN-LINE:|7-commandAction|18|95-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|17|83-preAction
+            }//GEN-BEGIN:|7-commandAction|19|83-preAction
         } else if (displayable == messageMainForm) {
-            if (command == messageMainBackCommand) {//GEN-END:|7-commandAction|17|83-preAction
+            if (command == messageMainBackCommand) {//GEN-END:|7-commandAction|19|83-preAction
                 // write pre-action user code here
                 checkForMessages = false;
-                switchDisplayable(null, getMainMenuForm());//GEN-LINE:|7-commandAction|18|83-postAction
+                switchDisplayable(null, getMainMenuForm());//GEN-LINE:|7-commandAction|20|83-postAction
                 // write post-action user code here
-            } else if (command == messageMainNextCommand) {//GEN-LINE:|7-commandAction|19|85-preAction
+            } else if (command == messageMainNextCommand) {//GEN-LINE:|7-commandAction|21|85-preAction
                 // write pre-action user code here
                 if (messageMainChoice.isSelected(0)) {
                     System.out.println("User wants to compose new message");
@@ -306,29 +313,29 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                     switchDisplayable(alert, getMainMenuForm());
                 }
 
-//GEN-LINE:|7-commandAction|20|85-postAction
+//GEN-LINE:|7-commandAction|22|85-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|21|102-preAction
+            }//GEN-BEGIN:|7-commandAction|23|102-preAction
         } else if (displayable == messageViewForm) {
-            if (command == messageViewBackCommand) {//GEN-END:|7-commandAction|21|102-preAction
+            if (command == messageViewBackCommand) {//GEN-END:|7-commandAction|23|102-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getMessageMainForm());//GEN-LINE:|7-commandAction|22|102-postAction
+                switchDisplayable(null, getMessageMainForm());//GEN-LINE:|7-commandAction|24|102-postAction
                 // write post-action user code here
-            } else if (command == messageViewReplyCommand) {//GEN-LINE:|7-commandAction|23|105-preAction
+            } else if (command == messageViewReplyCommand) {//GEN-LINE:|7-commandAction|25|105-preAction
                 // write pre-action user code here
                                 System.out.println("User wants to reply to message");
                 getTbxTo().setString( lblFromID.getText() );
                 getTbxSubject().setString( "Re: " + lblSubject.getText() );
                 switchDisplayable(null, getMessageCreateForm());
-//GEN-LINE:|7-commandAction|24|105-postAction
+//GEN-LINE:|7-commandAction|26|105-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|25|50-preAction
+            }//GEN-BEGIN:|7-commandAction|27|50-preAction
         } else if (displayable == outdoorReportForm) {
-            if (command == outdoorReportBackCommand) {//GEN-END:|7-commandAction|25|50-preAction
+            if (command == outdoorReportBackCommand) {//GEN-END:|7-commandAction|27|50-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getReportMainForm());//GEN-LINE:|7-commandAction|26|50-postAction
+                switchDisplayable(null, getReportMainForm());//GEN-LINE:|7-commandAction|28|50-postAction
                 // write post-action user code here
-            } else if (command == outdoorReportSubmitCommand) {//GEN-LINE:|7-commandAction|27|56-preAction
+            } else if (command == outdoorReportSubmitCommand) {//GEN-LINE:|7-commandAction|29|56-preAction
                 if (!outdoorTitletextField.getString().equals("") && !outdoorDescriptiontextField.getString().equals("")) { //&& latitude != 0.0 && longitude != 0.0&& outdoorImageItem.getImage() != null) {
                     reportSubmitOutdoor();
                 } else {
@@ -340,15 +347,15 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                 }
 
 
-//GEN-LINE:|7-commandAction|28|56-postAction
+//GEN-LINE:|7-commandAction|30|56-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|29|77-preAction
+            }//GEN-BEGIN:|7-commandAction|31|77-preAction
         } else if (displayable == reportMainForm) {
-            if (command == reportMenuBackCommand) {//GEN-END:|7-commandAction|29|77-preAction
+            if (command == reportMenuBackCommand) {//GEN-END:|7-commandAction|31|77-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getMainMenuForm());//GEN-LINE:|7-commandAction|30|77-postAction
+                switchDisplayable(null, getMainMenuForm());//GEN-LINE:|7-commandAction|32|77-postAction
                 // write post-action user code here
-            } else if (command == reportMenuOkCommand) {//GEN-LINE:|7-commandAction|31|48-preAction
+            } else if (command == reportMenuOkCommand) {//GEN-LINE:|7-commandAction|33|48-preAction
                 // write pre-action user code here
                 if (reportMainFormChoiceGroup.getSelectedIndex() == 0) {
 
@@ -375,10 +382,10 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
 //                    switchDisplayable(alert, getMainMenuForm());
 //                }
 
-//GEN-LINE:|7-commandAction|32|48-postAction
+//GEN-LINE:|7-commandAction|34|48-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|33|7-postCommandAction
-        }//GEN-END:|7-commandAction|33|7-postCommandAction
+            }//GEN-BEGIN:|7-commandAction|35|7-postCommandAction
+        }//GEN-END:|7-commandAction|35|7-postCommandAction
  // write post-action user code here
         else if (command == snapPicCommand) {
             captureOutdoor();
@@ -390,8 +397,8 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
         } else if (command == exitCommand2) {
             switchDisplayable(null, getIndoorReportForm());
         }
-    }//GEN-BEGIN:|7-commandAction|34|
-    //</editor-fold>//GEN-END:|7-commandAction|34|
+    }//GEN-BEGIN:|7-commandAction|36|
+    //</editor-fold>//GEN-END:|7-commandAction|36|
 
     //<editor-fold defaultstate="collapsed" desc=" Generated Getter: loginForm ">//GEN-BEGIN:|14-getter|0|14-preInit
     /**
@@ -632,6 +639,7 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
             // write pre-init user code here
             mainMenuForm = new Form("Project Amity", new Item[] { getMainMenuChoiceGroup() });//GEN-BEGIN:|40-getter|1|40-postInit
             mainMenuForm.addCommand(getMainMenuOkCommand());
+            mainMenuForm.addCommand(getMainMenuBackCommand());
             mainMenuForm.setCommandListener(this);//GEN-END:|40-getter|1|40-postInit
             // write post-init user code here
         }//GEN-BEGIN:|40-getter|2|
@@ -1328,6 +1336,21 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
         return lblMessage;
     }
     //</editor-fold>//GEN-END:|111-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: mainMenuBackCommand ">//GEN-BEGIN:|112-getter|0|112-preInit
+    /**
+     * Returns an initiliazed instance of mainMenuBackCommand component.
+     * @return the initialized component instance
+     */
+    public Command getMainMenuBackCommand() {
+        if (mainMenuBackCommand == null) {//GEN-END:|112-getter|0|112-preInit
+            // write pre-init user code here
+            mainMenuBackCommand = new Command("Back", Command.BACK, 0);//GEN-LINE:|112-getter|1|112-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|112-getter|2|
+        return mainMenuBackCommand;
+    }
+    //</editor-fold>//GEN-END:|112-getter|2|
 
     /**
      * Returns a display instance.
