@@ -1,5 +1,8 @@
 package app
 
+import java.util.*
+import java.text.*
+
 class MessageMobileController
 {
 
@@ -58,6 +61,58 @@ class MessageMobileController
             {
                 render 'F'
             }
+        }
+    }
+
+    def check =
+    {
+        def user = params.user
+        def timeStamp = params.timeStamp
+        def newMessages
+        def message = ''
+
+        // Check if recipient exists
+        if( user != null )
+        {
+            user = Resident.findByUserid(user)
+            newMessages = Message.createCriteria().list
+            {
+                and
+                {
+                    eq("receiver", user)
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
+                    timeStamp = sdf.parse(timeStamp);
+                    SimpleDateFormat checker = new SimpleDateFormat("dd MMMM yyyy");
+                    println( checker.format(timeStamp) )
+                    ge("timeStamp", timeStamp )
+                    eq("isRead", false)
+                    order("timeStamp", "asc")
+                }
+            }
+            println( newMessages.size() )
+            println( newMessages )
+        }
+
+        if( newMessages.size() > 0 )
+        {
+            def newMsg = newMessages[0]
+
+            message += 'Y|'
+            message += newMsg.sender.name + '|'
+            message += newMsg.sender.userid + '|'
+            message += newMsg.receiver.name + '|'
+            message += newMsg.receiver.userid + '|'
+            message += newMsg.subject + '|'
+            message += newMsg.message + '|'
+            message += newMsg.timeStamp
+
+            newMessages[0].isRead = true
+
+            render message
+        }
+        else
+        {
+            render 'N'
         }
     }
 
