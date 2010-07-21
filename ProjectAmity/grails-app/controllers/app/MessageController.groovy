@@ -7,12 +7,13 @@ class MessageController
 {
 
     def messageCheckingService
+    def currentUser
 
     // Load the user's inbox
     def index =
     {
         session.user = Resident.get(7)
-        def currentUser = session.user
+        currentUser = session.user
 
         params.max = 5
         def inboxMessages = Message.createCriteria().list(params)
@@ -26,22 +27,8 @@ class MessageController
 
         println(inboxMessages.totalCount)
         params.totalResults = inboxMessages.totalCount
-        params.unreadCount = messageCheckingService.getUnreadMessages(currentUser)
+        params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(currentUser)
         [inboxMessages : inboxMessages, params : params]
-    }
-
-    // Get the number of unread messages
-    def int getUnreadMessages(Resident currentUser)
-    {
-        def unread = Message.createCriteria().list()
-        {
-            and
-            {
-                eq("isRead", false)
-                eq("receiver", currentUser)
-            }
-        }
-        return unread.size()
     }
 
     // load the list of sent messages
@@ -61,6 +48,7 @@ class MessageController
         }
 
         println(sentMessages.totalCount)
+        params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(currentUser)
         params.totalResults = sentMessages.totalCount
         [sentMessages : sentMessages, params : params]
     }
@@ -75,21 +63,25 @@ class MessageController
 
         if(messageToView == null)
         {
+            params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(currentUser)
             flash.messageOperationStatus = '<br/><p>The message you are trying to view does not exist!</p>'
             redirect(action: 'index')
         }
         else if( currentUser != messageToView.sender && currentUser != messageToView.receiver )
         {
+            params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(currentUser)
             flash.messageOperationStatus = '<br/><p>You are not authorised to view this message!</p>'
             redirect(action: 'index')
         }
         else if( currentUser != messageToView.sender )
         {
             messageToView.isRead = true
+            params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(currentUser)
             [message : messageToView, params : params]
         }
         else
         {
+            params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(currentUser)
             [message : messageToView, params : params]
         }
     }
@@ -100,11 +92,7 @@ class MessageController
         def currentUser = Resident.get(7)
         session.user = currentUser
 
-        if(params.receiverUserID == null)
-        {
-            //params.receiverUserID = "Enter the recipient's User ID."
-        }
-
+        params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(currentUser)
         [params : params]
     }
 
