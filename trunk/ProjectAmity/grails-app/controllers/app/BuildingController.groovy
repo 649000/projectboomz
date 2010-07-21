@@ -13,13 +13,11 @@ class BuildingController {
         session.postalCode = params.postalCode
     }
 
+
     def loadBuilding =
     {
-
         //Retrieve building info based on postal code to load building
-       
         def _building = Building.findAllByPostalCode(session.postalCode)
-   
         //Store all the indoor reports 
         def reportList = new ArrayList()
         def buildingInfoList = new ArrayList()
@@ -29,15 +27,13 @@ class BuildingController {
             def r = IndoorReport.findAllByBuilding(b)
             if(r.size() !=0)
             {
-            String buildingInfo = b.postalCode + "|" + b.level + "|"+ b.stairwell
-            buildingInfoList.add(buildingInfo)
-           // println(buildingInfo)
-            reportList.add(r)
-           // println(r)
+                String buildingInfo = b.postalCode + "|" + b.level + "|"+ b.stairwell
+                buildingInfoList.add(buildingInfo)
+                // println(buildingInfo)
+                reportList.add(r)
+                // println(r)
             }
         }
-
-
 
         def toReturn =[_building, reportList, buildingInfoList]
         render toReturn as JSON
