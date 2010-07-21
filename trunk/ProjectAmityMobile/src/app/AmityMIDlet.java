@@ -22,7 +22,13 @@ import javax.microedition.io.file.FileConnection;
  * @author student
  */
 public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandListener {
+    // variables for messaging module
 
+    private String logInMessage = "";
+    private String sendMessageURL = "http://localhost:8080/ProjectAmity/messageMobile/send";
+    private String checkMessageURL = "http://localhost:8080/ProjectAmity/messageMobile/check";
+    private String msgSender, msgTo, msgSubject, msgMessage;
+    private boolean checkForMessages = false;
     private boolean midletPaused = false;
     private LocationProvider provider = null;
     private String userIDLoggedIn = "a";
@@ -33,11 +39,12 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
     private String reportIndoorURL = "http://localhost:8080/ProjectAmity/report/saveIndoor";
     private String getPostalcode = "http://localhost:8080/ProjectAmity/resident/mPostalCode";
     //Need to get building info, level and stairwell
-    private String buildingInfoURL = "";
+    private String buildingInfoURL = "http://localhost:8080/ProjectAmity/building/buildingInfo";
     //Server return messages
     private String loginServerMsg = "";
     private String reportOutdoorServerMsg = "";
     private String reportIndoorServerMsg = "";
+    private String buildingInfoServerMsg = "";
     //temp variables to store the GPS coordinates
     private double latitude = 0.0;
     private double longitude = 0.0;
@@ -68,10 +75,26 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
     private Form indoorReportForm;
     private TextField indoorTitleTextField;
     private StringItem indoorPostalStringItem;
+    private ChoiceGroup indoorLevelChoiceGroup;
     private ImageItem indoorImageItem;
     private TextField indoorDescriptiontextField;
+    private ChoiceGroup indoorStairwellChoiceGroup;
     private Form mainMenuForm;
     private ChoiceGroup mainMenuChoiceGroup;
+    private Form messageMainForm;
+    private ChoiceGroup messageMainChoice;
+    private StringItem stringItem;
+    private Form messageCreateForm;
+    private TextField tbxTo;
+    private TextField tbxSubject;
+    private TextField tbxMessage;
+    private Form messageViewForm;
+    private StringItem lblSubject;
+    private StringItem lblFrom;
+    private StringItem lblFromID;
+    private StringItem lblTo;
+    private StringItem lblToID;
+    private StringItem lblMessage;
     private Command loginCommand;
     private Command exitCommand;
     private Command exitCommand1;
@@ -86,6 +109,12 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
     private Command outdoorSelectNewCommand;
     private Command outdoorSnapPicCommand;
     private Command reportMenuBackCommand;
+    private Command messageMainBackCommand;
+    private Command messageMainNextCommand;
+    private Command messageCreateBackCommand;
+    private Command messageCreateSendCommand;
+    private Command messageViewBackCommand;
+    private Command messageViewReplyCommand;
     //</editor-fold>//GEN-END:|fields|0|
 
     /**
@@ -219,7 +248,10 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                 // write pre-action user code here
                 if (mainMenuChoiceGroup.isSelected(0)) {
                     System.out.println("User has selected private messaging module");
-                    switchDisplayable(null, null);
+
+                    checkForMessages = true;
+                    checkForMessages();
+                    switchDisplayable(null, getMessageMainForm());
                 } else if (mainMenuChoiceGroup.isSelected(1)) {
                     System.out.println("User has selected reporting module");
                     switchDisplayable(null, getReportMainForm());
@@ -234,13 +266,69 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
 
 //GEN-LINE:|7-commandAction|12|61-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|13|50-preAction
-        } else if (displayable == outdoorReportForm) {
-            if (command == outdoorReportBackCommand) {//GEN-END:|7-commandAction|13|50-preAction
+            }//GEN-BEGIN:|7-commandAction|13|93-preAction
+        } else if (displayable == messageCreateForm) {
+            if (command == messageCreateBackCommand) {//GEN-END:|7-commandAction|13|93-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getReportMainForm());//GEN-LINE:|7-commandAction|14|50-postAction
+                switchDisplayable(null, getMessageMainForm());//GEN-LINE:|7-commandAction|14|93-postAction
                 // write post-action user code here
-            } else if (command == outdoorReportSubmitCommand) {//GEN-LINE:|7-commandAction|15|56-preAction
+            } else if (command == messageCreateSendCommand) {//GEN-LINE:|7-commandAction|15|95-preAction
+                // write pre-action user code here
+
+                userIDLoggedIn = "tampines5981";
+                msgSender = userIDLoggedIn;
+                msgTo = tbxTo.getString();
+                msgSubject = tbxSubject.getString();
+                msgMessage = tbxMessage.getString();
+                sendMessage();
+
+//GEN-LINE:|7-commandAction|16|95-postAction
+                // write post-action user code here
+            }//GEN-BEGIN:|7-commandAction|17|83-preAction
+        } else if (displayable == messageMainForm) {
+            if (command == messageMainBackCommand) {//GEN-END:|7-commandAction|17|83-preAction
+                // write pre-action user code here
+                checkForMessages = false;
+                switchDisplayable(null, getMainMenuForm());//GEN-LINE:|7-commandAction|18|83-postAction
+                // write post-action user code here
+            } else if (command == messageMainNextCommand) {//GEN-LINE:|7-commandAction|19|85-preAction
+                // write pre-action user code here
+                if (messageMainChoice.isSelected(0)) {
+                    System.out.println("User wants to compose new message");
+                    switchDisplayable(null, getMessageCreateForm());
+                } else if (messageMainChoice.isSelected(1)) {
+                    System.out.println("User wants to check for messages");
+                    checkForMessagesOnce();
+                } else {
+                    System.out.println("User did not make a selection");
+                    alert = new Alert("Error", "Invalid selection", null, AlertType.ERROR);
+                    alert.setTimeout(2000); //Timeout in 2 seconds
+                    switchDisplayable(alert, getMainMenuForm());
+                }
+
+//GEN-LINE:|7-commandAction|20|85-postAction
+                // write post-action user code here
+            }//GEN-BEGIN:|7-commandAction|21|102-preAction
+        } else if (displayable == messageViewForm) {
+            if (command == messageViewBackCommand) {//GEN-END:|7-commandAction|21|102-preAction
+                // write pre-action user code here
+                switchDisplayable(null, getMessageMainForm());//GEN-LINE:|7-commandAction|22|102-postAction
+                // write post-action user code here
+            } else if (command == messageViewReplyCommand) {//GEN-LINE:|7-commandAction|23|105-preAction
+                // write pre-action user code here
+                                System.out.println("User wants to reply to message");
+                getTbxTo().setString( lblFromID.getText() );
+                getTbxSubject().setString( "Re: " + lblSubject.getText() );
+                switchDisplayable(null, getMessageCreateForm());
+//GEN-LINE:|7-commandAction|24|105-postAction
+                // write post-action user code here
+            }//GEN-BEGIN:|7-commandAction|25|50-preAction
+        } else if (displayable == outdoorReportForm) {
+            if (command == outdoorReportBackCommand) {//GEN-END:|7-commandAction|25|50-preAction
+                // write pre-action user code here
+                switchDisplayable(null, getReportMainForm());//GEN-LINE:|7-commandAction|26|50-postAction
+                // write post-action user code here
+            } else if (command == outdoorReportSubmitCommand) {//GEN-LINE:|7-commandAction|27|56-preAction
                 if (!outdoorTitletextField.getString().equals("") && !outdoorDescriptiontextField.getString().equals("")) { //&& latitude != 0.0 && longitude != 0.0&& outdoorImageItem.getImage() != null) {
                     reportSubmitOutdoor();
                 } else {
@@ -252,15 +340,15 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                 }
 
 
-//GEN-LINE:|7-commandAction|16|56-postAction
+//GEN-LINE:|7-commandAction|28|56-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|17|77-preAction
+            }//GEN-BEGIN:|7-commandAction|29|77-preAction
         } else if (displayable == reportMainForm) {
-            if (command == reportMenuBackCommand) {//GEN-END:|7-commandAction|17|77-preAction
+            if (command == reportMenuBackCommand) {//GEN-END:|7-commandAction|29|77-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getMainMenuForm());//GEN-LINE:|7-commandAction|18|77-postAction
+                switchDisplayable(null, getMainMenuForm());//GEN-LINE:|7-commandAction|30|77-postAction
                 // write post-action user code here
-            } else if (command == reportMenuOkCommand) {//GEN-LINE:|7-commandAction|19|48-preAction
+            } else if (command == reportMenuOkCommand) {//GEN-LINE:|7-commandAction|31|48-preAction
                 // write pre-action user code here
                 if (reportMainFormChoiceGroup.getSelectedIndex() == 0) {
 
@@ -287,10 +375,10 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
 //                    switchDisplayable(alert, getMainMenuForm());
 //                }
 
-//GEN-LINE:|7-commandAction|20|48-postAction
+//GEN-LINE:|7-commandAction|32|48-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|21|7-postCommandAction
-        }//GEN-END:|7-commandAction|21|7-postCommandAction
+            }//GEN-BEGIN:|7-commandAction|33|7-postCommandAction
+        }//GEN-END:|7-commandAction|33|7-postCommandAction
  // write post-action user code here
         else if (command == snapPicCommand) {
             captureOutdoor();
@@ -302,8 +390,8 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
         } else if (command == exitCommand2) {
             switchDisplayable(null, getIndoorReportForm());
         }
-    }//GEN-BEGIN:|7-commandAction|22|
-    //</editor-fold>//GEN-END:|7-commandAction|22|
+    }//GEN-BEGIN:|7-commandAction|34|
+    //</editor-fold>//GEN-END:|7-commandAction|34|
 
     //<editor-fold defaultstate="collapsed" desc=" Generated Getter: loginForm ">//GEN-BEGIN:|14-getter|0|14-preInit
     /**
@@ -524,7 +612,7 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
     public Form getIndoorReportForm() {
         if (indoorReportForm == null) {//GEN-END:|39-getter|0|39-preInit
             // write pre-init user code here
-            indoorReportForm = new Form("Indoor Report", new Item[] { getIndoorPostalStringItem(), getIndoorTitleTextField(), getIndoorImageItem(), getIndoorDescriptiontextField() });//GEN-BEGIN:|39-getter|1|39-postInit
+            indoorReportForm = new Form("Indoor Report", new Item[] { getIndoorPostalStringItem(), getIndoorLevelChoiceGroup(), getIndoorStairwellChoiceGroup(), getIndoorTitleTextField(), getIndoorImageItem(), getIndoorDescriptiontextField() });//GEN-BEGIN:|39-getter|1|39-postInit
             indoorReportForm.addCommand(getIndoorReportBbackCommand());
             indoorReportForm.addCommand(getIndoorReportSubmitCommand());
             indoorReportForm.setCommandListener(this);//GEN-END:|39-getter|1|39-postInit
@@ -899,6 +987,348 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
     }
     //</editor-fold>//GEN-END:|76-getter|2|
 
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: indoorLevelChoiceGroup ">//GEN-BEGIN:|79-getter|0|79-preInit
+    /**
+     * Returns an initiliazed instance of indoorLevelChoiceGroup component.
+     * @return the initialized component instance
+     */
+    public ChoiceGroup getIndoorLevelChoiceGroup() {
+        if (indoorLevelChoiceGroup == null) {//GEN-END:|79-getter|0|79-preInit
+            // write pre-init user code here
+            indoorLevelChoiceGroup = new ChoiceGroup("Level:", Choice.EXCLUSIVE);//GEN-LINE:|79-getter|1|79-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|79-getter|2|
+        return indoorLevelChoiceGroup;
+    }
+    //</editor-fold>//GEN-END:|79-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: indoorStairwellChoiceGroup ">//GEN-BEGIN:|80-getter|0|80-preInit
+    /**
+     * Returns an initiliazed instance of indoorStairwellChoiceGroup component.
+     * @return the initialized component instance
+     */
+    public ChoiceGroup getIndoorStairwellChoiceGroup() {
+        if (indoorStairwellChoiceGroup == null) {//GEN-END:|80-getter|0|80-preInit
+            // write pre-init user code here
+            indoorStairwellChoiceGroup = new ChoiceGroup("Lobby/Stairwell:", Choice.EXCLUSIVE);//GEN-LINE:|80-getter|1|80-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|80-getter|2|
+        return indoorStairwellChoiceGroup;
+    }
+    //</editor-fold>//GEN-END:|80-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: messageMainForm ">//GEN-BEGIN:|81-getter|0|81-preInit
+    /**
+     * Returns an initiliazed instance of messageMainForm component.
+     * @return the initialized component instance
+     */
+    public Form getMessageMainForm() {
+        if (messageMainForm == null) {//GEN-END:|81-getter|0|81-preInit
+            // write pre-init user code here
+            messageMainForm = new Form("Private Messaging", new Item[] { getMessageMainChoice(), getStringItem() });//GEN-BEGIN:|81-getter|1|81-postInit
+            messageMainForm.addCommand(getMessageMainBackCommand());
+            messageMainForm.addCommand(getMessageMainNextCommand());
+            messageMainForm.setCommandListener(this);//GEN-END:|81-getter|1|81-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|81-getter|2|
+        return messageMainForm;
+    }
+    //</editor-fold>//GEN-END:|81-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: messageMainBackCommand ">//GEN-BEGIN:|82-getter|0|82-preInit
+    /**
+     * Returns an initiliazed instance of messageMainBackCommand component.
+     * @return the initialized component instance
+     */
+    public Command getMessageMainBackCommand() {
+        if (messageMainBackCommand == null) {//GEN-END:|82-getter|0|82-preInit
+            // write pre-init user code here
+            messageMainBackCommand = new Command("Back", Command.BACK, 0);//GEN-LINE:|82-getter|1|82-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|82-getter|2|
+        return messageMainBackCommand;
+    }
+    //</editor-fold>//GEN-END:|82-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: messageMainNextCommand ">//GEN-BEGIN:|84-getter|0|84-preInit
+    /**
+     * Returns an initiliazed instance of messageMainNextCommand component.
+     * @return the initialized component instance
+     */
+    public Command getMessageMainNextCommand() {
+        if (messageMainNextCommand == null) {//GEN-END:|84-getter|0|84-preInit
+            // write pre-init user code here
+            messageMainNextCommand = new Command("Next", Command.OK, 0);//GEN-LINE:|84-getter|1|84-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|84-getter|2|
+        return messageMainNextCommand;
+    }
+    //</editor-fold>//GEN-END:|84-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: messageMainChoice ">//GEN-BEGIN:|87-getter|0|87-preInit
+    /**
+     * Returns an initiliazed instance of messageMainChoice component.
+     * @return the initialized component instance
+     */
+    public ChoiceGroup getMessageMainChoice() {
+        if (messageMainChoice == null) {//GEN-END:|87-getter|0|87-preInit
+            // write pre-init user code here
+            messageMainChoice = new ChoiceGroup("What would you like to do?", Choice.EXCLUSIVE);//GEN-BEGIN:|87-getter|1|87-postInit
+            messageMainChoice.append("Compose a Message", null);
+            messageMainChoice.append("Check for New Messages", null);
+            messageMainChoice.setSelectedFlags(new boolean[] { false, false });//GEN-END:|87-getter|1|87-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|87-getter|2|
+        return messageMainChoice;
+    }
+    //</editor-fold>//GEN-END:|87-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: stringItem ">//GEN-BEGIN:|90-getter|0|90-preInit
+    /**
+     * Returns an initiliazed instance of stringItem component.
+     * @return the initialized component instance
+     */
+    public StringItem getStringItem() {
+        if (stringItem == null) {//GEN-END:|90-getter|0|90-preInit
+            // write pre-init user code here
+            stringItem = new StringItem("", "Projecty Amity Mobile\'s Private Messaing module automatically checks for new messages every 10 seconds.");//GEN-LINE:|90-getter|1|90-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|90-getter|2|
+        return stringItem;
+    }
+    //</editor-fold>//GEN-END:|90-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: messageCreateForm ">//GEN-BEGIN:|91-getter|0|91-preInit
+    /**
+     * Returns an initiliazed instance of messageCreateForm component.
+     * @return the initialized component instance
+     */
+    public Form getMessageCreateForm() {
+        if (messageCreateForm == null) {//GEN-END:|91-getter|0|91-preInit
+            // write pre-init user code here
+            messageCreateForm = new Form("Compose New Message", new Item[] { getTbxTo(), getTbxSubject(), getTbxMessage() });//GEN-BEGIN:|91-getter|1|91-postInit
+            messageCreateForm.addCommand(getMessageCreateBackCommand());
+            messageCreateForm.addCommand(getMessageCreateSendCommand());
+            messageCreateForm.setCommandListener(this);//GEN-END:|91-getter|1|91-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|91-getter|2|
+        return messageCreateForm;
+    }
+    //</editor-fold>//GEN-END:|91-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: messageCreateBackCommand ">//GEN-BEGIN:|92-getter|0|92-preInit
+    /**
+     * Returns an initiliazed instance of messageCreateBackCommand component.
+     * @return the initialized component instance
+     */
+    public Command getMessageCreateBackCommand() {
+        if (messageCreateBackCommand == null) {//GEN-END:|92-getter|0|92-preInit
+            // write pre-init user code here
+            messageCreateBackCommand = new Command("Back", Command.BACK, 0);//GEN-LINE:|92-getter|1|92-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|92-getter|2|
+        return messageCreateBackCommand;
+    }
+    //</editor-fold>//GEN-END:|92-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: messageCreateSendCommand ">//GEN-BEGIN:|94-getter|0|94-preInit
+    /**
+     * Returns an initiliazed instance of messageCreateSendCommand component.
+     * @return the initialized component instance
+     */
+    public Command getMessageCreateSendCommand() {
+        if (messageCreateSendCommand == null) {//GEN-END:|94-getter|0|94-preInit
+            // write pre-init user code here
+            messageCreateSendCommand = new Command("Send", Command.OK, 0);//GEN-LINE:|94-getter|1|94-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|94-getter|2|
+        return messageCreateSendCommand;
+    }
+    //</editor-fold>//GEN-END:|94-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: tbxTo ">//GEN-BEGIN:|97-getter|0|97-preInit
+    /**
+     * Returns an initiliazed instance of tbxTo component.
+     * @return the initialized component instance
+     */
+    public TextField getTbxTo() {
+        if (tbxTo == null) {//GEN-END:|97-getter|0|97-preInit
+            // write pre-init user code here
+            tbxTo = new TextField("To:", null, 32, TextField.ANY);//GEN-LINE:|97-getter|1|97-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|97-getter|2|
+        return tbxTo;
+    }
+    //</editor-fold>//GEN-END:|97-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: tbxSubject ">//GEN-BEGIN:|98-getter|0|98-preInit
+    /**
+     * Returns an initiliazed instance of tbxSubject component.
+     * @return the initialized component instance
+     */
+    public TextField getTbxSubject() {
+        if (tbxSubject == null) {//GEN-END:|98-getter|0|98-preInit
+            // write pre-init user code here
+            tbxSubject = new TextField("Subject:", null, 32, TextField.ANY);//GEN-LINE:|98-getter|1|98-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|98-getter|2|
+        return tbxSubject;
+    }
+    //</editor-fold>//GEN-END:|98-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: tbxMessage ">//GEN-BEGIN:|99-getter|0|99-preInit
+    /**
+     * Returns an initiliazed instance of tbxMessage component.
+     * @return the initialized component instance
+     */
+    public TextField getTbxMessage() {
+        if (tbxMessage == null) {//GEN-END:|99-getter|0|99-preInit
+            // write pre-init user code here
+            tbxMessage = new TextField("Message:", null, 500, TextField.ANY);//GEN-LINE:|99-getter|1|99-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|99-getter|2|
+        return tbxMessage;
+    }
+    //</editor-fold>//GEN-END:|99-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: messageViewForm ">//GEN-BEGIN:|100-getter|0|100-preInit
+    /**
+     * Returns an initiliazed instance of messageViewForm component.
+     * @return the initialized component instance
+     */
+    public Form getMessageViewForm() {
+        if (messageViewForm == null) {//GEN-END:|100-getter|0|100-preInit
+            // write pre-init user code here
+            messageViewForm = new Form("New Unread Message", new Item[] { getLblSubject(), getLblFrom(), getLblFromID(), getLblTo(), getLblToID(), getLblMessage() });//GEN-BEGIN:|100-getter|1|100-postInit
+            messageViewForm.addCommand(getMessageViewBackCommand());
+            messageViewForm.addCommand(getMessageViewReplyCommand());
+            messageViewForm.setCommandListener(this);//GEN-END:|100-getter|1|100-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|100-getter|2|
+        return messageViewForm;
+    }
+    //</editor-fold>//GEN-END:|100-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: messageViewBackCommand ">//GEN-BEGIN:|101-getter|0|101-preInit
+    /**
+     * Returns an initiliazed instance of messageViewBackCommand component.
+     * @return the initialized component instance
+     */
+    public Command getMessageViewBackCommand() {
+        if (messageViewBackCommand == null) {//GEN-END:|101-getter|0|101-preInit
+            // write pre-init user code here
+            messageViewBackCommand = new Command("Back", Command.BACK, 0);//GEN-LINE:|101-getter|1|101-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|101-getter|2|
+        return messageViewBackCommand;
+    }
+    //</editor-fold>//GEN-END:|101-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: messageViewReplyCommand ">//GEN-BEGIN:|104-getter|0|104-preInit
+    /**
+     * Returns an initiliazed instance of messageViewReplyCommand component.
+     * @return the initialized component instance
+     */
+    public Command getMessageViewReplyCommand() {
+        if (messageViewReplyCommand == null) {//GEN-END:|104-getter|0|104-preInit
+            // write pre-init user code here
+            messageViewReplyCommand = new Command("Reply", Command.OK, 0);//GEN-LINE:|104-getter|1|104-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|104-getter|2|
+        return messageViewReplyCommand;
+    }
+    //</editor-fold>//GEN-END:|104-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: lblSubject ">//GEN-BEGIN:|106-getter|0|106-preInit
+    /**
+     * Returns an initiliazed instance of lblSubject component.
+     * @return the initialized component instance
+     */
+    public StringItem getLblSubject() {
+        if (lblSubject == null) {//GEN-END:|106-getter|0|106-preInit
+            // write pre-init user code here
+            lblSubject = new StringItem("Subject:", null);//GEN-LINE:|106-getter|1|106-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|106-getter|2|
+        return lblSubject;
+    }
+    //</editor-fold>//GEN-END:|106-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: lblFrom ">//GEN-BEGIN:|107-getter|0|107-preInit
+    /**
+     * Returns an initiliazed instance of lblFrom component.
+     * @return the initialized component instance
+     */
+    public StringItem getLblFrom() {
+        if (lblFrom == null) {//GEN-END:|107-getter|0|107-preInit
+            // write pre-init user code here
+            lblFrom = new StringItem("From:", null);//GEN-LINE:|107-getter|1|107-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|107-getter|2|
+        return lblFrom;
+    }
+    //</editor-fold>//GEN-END:|107-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: lblFromID ">//GEN-BEGIN:|108-getter|0|108-preInit
+    /**
+     * Returns an initiliazed instance of lblFromID component.
+     * @return the initialized component instance
+     */
+    public StringItem getLblFromID() {
+        if (lblFromID == null) {//GEN-END:|108-getter|0|108-preInit
+            // write pre-init user code here
+            lblFromID = new StringItem("", null);//GEN-LINE:|108-getter|1|108-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|108-getter|2|
+        return lblFromID;
+    }
+    //</editor-fold>//GEN-END:|108-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: lblTo ">//GEN-BEGIN:|109-getter|0|109-preInit
+    /**
+     * Returns an initiliazed instance of lblTo component.
+     * @return the initialized component instance
+     */
+    public StringItem getLblTo() {
+        if (lblTo == null) {//GEN-END:|109-getter|0|109-preInit
+            // write pre-init user code here
+            lblTo = new StringItem("To:", null);//GEN-LINE:|109-getter|1|109-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|109-getter|2|
+        return lblTo;
+    }
+    //</editor-fold>//GEN-END:|109-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: lblToID ">//GEN-BEGIN:|110-getter|0|110-preInit
+    /**
+     * Returns an initiliazed instance of lblToID component.
+     * @return the initialized component instance
+     */
+    public StringItem getLblToID() {
+        if (lblToID == null) {//GEN-END:|110-getter|0|110-preInit
+            // write pre-init user code here
+            lblToID = new StringItem("", null);//GEN-LINE:|110-getter|1|110-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|110-getter|2|
+        return lblToID;
+    }
+    //</editor-fold>//GEN-END:|110-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: lblMessage ">//GEN-BEGIN:|111-getter|0|111-preInit
+    /**
+     * Returns an initiliazed instance of lblMessage component.
+     * @return the initialized component instance
+     */
+    public StringItem getLblMessage() {
+        if (lblMessage == null) {//GEN-END:|111-getter|0|111-preInit
+            // write pre-init user code here
+            lblMessage = new StringItem("", null);//GEN-LINE:|111-getter|1|111-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|111-getter|2|
+        return lblMessage;
+    }
+    //</editor-fold>//GEN-END:|111-getter|2|
+
     /**
      * Returns a display instance.
      * @return the display instance.
@@ -1151,7 +1581,7 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                 InputStream is = null;
 
                 try {
-                    
+
                     hc = (HttpConnection) Connector.open(reportOutdoorURL + urlEncode("?userid=" + userIDLoggedIn + "&title=" + outdoorTitletextField.getString() + "&description=" + outdoorDescriptiontextField.getString() + "&latitude=" + latitude + "&longitude=" + longitude + "&altitude=" + altitude + "&imagename=" + imageName), Connector.READ_WRITE);
 
                     hc.setRequestMethod(HttpConnection.POST);
@@ -1177,7 +1607,7 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                     hc.close();
 
                     if (reportOutdoorServerMsg.equals("T")) {
-                    outdoorCoordinarteStringItem.setText("");
+                        outdoorCoordinarteStringItem.setText("");
                         reportOutdoorServerMsg = "";
                         alert = new Alert("Success", "Report has been successfully submitted.", null, AlertType.CONFIRMATION);
                         alert.setTimeout(2000); //Timeout in 2 seconds
@@ -1211,8 +1641,8 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                 InputStream is = null;
 
                 try {
-                    
-                    hc = (HttpConnection) Connector.open(reportIndoorURL + urlEncode("?userid=" + userIDLoggedIn + "&title=" + indoorTitleTextField.getString() + "&description=" + indoorDescriptiontextField.getString() + "&postalCode=" + userPostalCode+ "&imagename=" + imageName), Connector.READ_WRITE);
+
+                    hc = (HttpConnection) Connector.open(reportIndoorURL + urlEncode("?userid=" + userIDLoggedIn + "&title=" + indoorTitleTextField.getString() + "&description=" + indoorDescriptiontextField.getString() + "&postalCode=" + userPostalCode + "&imagename=" + imageName), Connector.READ_WRITE);
 
                     hc.setRequestMethod(HttpConnection.POST);
                     OutputStream out = hc.openOutputStream();
@@ -1485,16 +1915,197 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                     }
                     System.out.println("Get Postal Code  THREAD: " + serverMsg.toString().trim());
                     userPostalCode = serverMsg.toString().trim();
+                    String splitted[] = split(userPostalCode, "~");
+                    //splitted[0] = postal code
+                    //splitted[1] = Level, requires split by |
+                    //splitted[2] = stairwell, requires split by |
                     is.close();
                     hc.close();
 
                     switchDisplayable(null, getIndoorReportForm());
-                    indoorPostalStringItem.setText(userPostalCode);
+                    indoorPostalStringItem.setText(splitted[0]);
+                    String level[] = split(splitted[1], "|");
+                    String stairwell[] = split(splitted[2], "|");
+
+                    for (int i = 1; i < level.length; i++) {
+                        System.out.println("Level: " + level[i]);
+                        indoorLevelChoiceGroup.append(level[i], null);
+                    }
+                    for (int k = 1; k < stairwell.length; k++) {
+                        System.out.println("Stairwell: " + stairwell[k]);
+                        indoorStairwellChoiceGroup.append(stairwell[k], null);
+                    }
 
                 } catch (Exception e) {
                     System.out.println(e);
                 }
 
+            }
+        }.start();
+    }
+
+    private void sendMessage() {
+        new Thread() {
+
+            public void run() {
+                StringBuffer serverMsg = new StringBuffer("");
+                HttpConnection hc = null;
+                InputStream is = null;
+
+                try {
+                    hc = (HttpConnection) Connector.open(sendMessageURL + urlEncode("?sender=" + msgSender + "&receiver=" + msgTo + "&subject=" + msgSubject + "&message=" + msgMessage));
+                    is = hc.openInputStream();
+                    int ch = is.read();
+                    while (ch != -1) {
+                        serverMsg.append((char) ch);
+
+                        ch = is.read();
+                    }
+                    System.out.println("Message Send  THREAD: " + serverMsg.toString().trim());
+                    String returnCode = serverMsg.toString().trim();
+                    is.close();
+                    hc.close();
+
+                    System.out.println(returnCode);
+
+                    if (returnCode.length() == 1) {
+                        if (returnCode.equalsIgnoreCase("T")) {
+                            // Successfully sent
+                            alert = new Alert("Success", "Your message has been successfully sent!", null, AlertType.INFO);
+                            alert.setTimeout(3000); //Timeout in 2 seconds
+                            getTbxTo().setString("");
+                            getTbxSubject().setString("");
+                            getTbxMessage().setString("");
+                            switchDisplayable(alert, getMessageMainForm());
+                        } else if (returnCode.equalsIgnoreCase("F")) {
+                            alert = new Alert("Error", "An error occured while we were tring to send your message. Please try again.", null, AlertType.ERROR);
+                            alert.setTimeout(3000); //Timeout in 2 seconds
+                            switchDisplayable(alert, getMessageCreateForm());
+                        }
+                    } else if (returnCode.substring(0, 1).equalsIgnoreCase("@")) {
+                        String[] errors = split(returnCode, "|");
+                        String message = "There are problems with your inputs. Ensure that the following inputs are valid:\n";
+                        for (int i = 1; i < errors.length; i++) {
+                            message += "\n" + errors[i];
+                        }
+                        alert = new Alert("Error", message, null, AlertType.ERROR);
+                        alert.setTimeout(7000); //Timeout in 2 seconds
+                        switchDisplayable(alert, getMessageCreateForm());
+                    }
+//                    switchDisplayable(null, getIndoorReportForm());
+//                    indoorPostalStringItem.setText(userPostalCode);
+
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+
+            }
+        }.start();
+    }
+
+    private void checkForMessages() {
+        new Thread() {
+
+            public void run() {
+                while (checkForMessages) {
+                    StringBuffer serverMsg = new StringBuffer("");
+                    HttpConnection hc = null;
+                    InputStream is = null;
+
+                    try {
+                        userIDLoggedIn = "tampines5981";
+                        logInMessage = "2010/07/21 11:24:46";
+                        hc = (HttpConnection) Connector.open(checkMessageURL + urlEncode("?user=" + userIDLoggedIn + "&timeStamp=" + logInMessage));
+                        is = hc.openInputStream();
+                        int ch = is.read();
+                        while (ch != -1) {
+                            serverMsg.append((char) ch);
+
+                            ch = is.read();
+                        }
+                        System.out.println("Message Checking  THREAD: " + serverMsg.toString().trim());
+                        String returnCode = serverMsg.toString().trim();
+                        is.close();
+                        hc.close();
+
+                        System.out.println(returnCode);
+
+                        if (returnCode.length() > 1) {
+                            String[] message = split(returnCode, "|");
+                            // There are new messages
+                            getLblFrom().setText(message[1]);
+                            getLblFromID().setText(message[2]);
+                            getLblTo().setText(message[3]);
+                            getLblToID().setText(message[4]);
+                            getLblSubject().setText(message[5]);
+                            getLblMessage().setLabel("On " + message[7] + ", " + message[1] + " wrote: ");
+                            getLblMessage().setText(message[6]);
+                            if (checkForMessages) {
+                                switchDisplayable(null, getMessageViewForm());
+                            }
+                        } else {
+                        }
+                        //                    switchDisplayable(null, getIndoorReportForm());
+                        //                    indoorPostalStringItem.setText(userPostalCode);
+
+                        Thread.sleep(10000);
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
+                }
+            }
+        }.start();
+    }
+
+    private void checkForMessagesOnce() {
+        new Thread() {
+
+            public void run() {
+                StringBuffer serverMsg = new StringBuffer("");
+                HttpConnection hc = null;
+                InputStream is = null;
+
+                try {
+                    userIDLoggedIn = "tampines5981";
+                    logInMessage = "2010/07/21 11:24:46";
+                    hc = (HttpConnection) Connector.open(checkMessageURL + urlEncode("?user=" + userIDLoggedIn + "&timeStamp=" + logInMessage));
+                    is = hc.openInputStream();
+                    int ch = is.read();
+                    while (ch != -1) {
+                        serverMsg.append((char) ch);
+
+                        ch = is.read();
+                    }
+                    System.out.println("Message Checking  THREAD: " + serverMsg.toString().trim());
+                    String returnCode = serverMsg.toString().trim();
+                    is.close();
+                    hc.close();
+
+                    System.out.println(returnCode);
+
+                    if (returnCode.length() > 1) {
+                        String[] message = split(returnCode, "|");
+                        // There are new messages
+                        getLblFrom().setText(message[1]);
+                        getLblFromID().setText(message[2]);
+                        getLblTo().setText(message[3]);
+                        getLblToID().setText(message[4]);
+                        getLblSubject().setText(message[5]);
+                        getLblMessage().setLabel("On " + message[7] + ", " + message[1] + " wrote: ");
+                        getLblMessage().setText(message[6]);
+                        if (checkForMessages) {
+                            switchDisplayable(null, getMessageViewForm());
+                        }
+                    } else {
+                        // There are no new messages
+                        alert = new Alert("No New Messages", "You have no new messages", null, AlertType.INFO);
+                        alert.setTimeout(2000); //Timeout in 2 seconds
+                        switchDisplayable(alert, getMessageMainForm());
+                    }
+
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
             }
         }.start();
     }
