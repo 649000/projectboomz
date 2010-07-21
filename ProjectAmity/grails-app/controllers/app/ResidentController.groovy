@@ -1,6 +1,11 @@
 package app
 
+import java.util.*
+import java.text.*
+
 class ResidentController {
+
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss")
 
     def index = { }
 
@@ -13,7 +18,7 @@ class ResidentController {
         {
             if(resident.password == params.password)
             {
-                render "T|" + new Date()
+                render "T|" + sdf.format( new Date() )
             }
             else {
                 render "F"
