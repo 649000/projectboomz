@@ -25,8 +25,8 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
     // variables for messaging module
 
     private String logInMessage = "";
-    private String sendMessageURL = "http://localhost:8080/ProjectAmity/messageMobile/send";
-    private String checkMessageURL = "http://localhost:8080/ProjectAmity/messageMobile/check";
+    private String sendMessageURL = "http://172.10.20.2:8080/ProjectAmity/messageMobile/send";
+    private String checkMessageURL = "http://172.10.20.2:8080/ProjectAmity/messageMobile/check";
     private String msgSender, msgTo, msgSubject, msgMessage;
     private boolean checkForMessages = false;
     private boolean midletPaused = false;
@@ -34,20 +34,20 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
     private String userIDLoggedIn = "";
     private String userPostalCode = "";
     //URLs
-    private String loginUserURL = "http://localhost:8080/ProjectAmity/resident/mLogin";
-    private String reportOutdoorURL = "http://localhost:8080/ProjectAmity/report/saveOutdoor";
-    private String reportIndoorURL = "http://localhost:8080/ProjectAmity/report/saveIndoor";
-    private String getPostalcode = "http://localhost:8080/ProjectAmity/resident/mPostalCode";
+    private String loginUserURL = "http://172.10.20.2:8080/ProjectAmity/resident/mLogin";
+    private String reportOutdoorURL = "http://172.10.20.2:8080/ProjectAmity/report/saveOutdoor";
+    private String reportIndoorURL = "http://172.10.20.2:8080/ProjectAmity/report/saveIndoor";
+    private String getPostalcode = "http://172.10.20.2:8080/ProjectAmity/resident/mPostalCode";
     //Need to get building info, level and stairwell
-    private String buildingInfoURL = "http://localhost:8080/ProjectAmity/building/buildingInfo";
+    private String buildingInfoURL = "http://172.10.20.2:8080/ProjectAmity/building/buildingInfo";
     //Server return messages
     private String loginServerMsg = "";
     private String reportOutdoorServerMsg = "";
     private String reportIndoorServerMsg = "";
     private String buildingInfoServerMsg = "";
     //temp variables to store the GPS coordinates
-    private double latitude = 0.0;
-    private double longitude = 0.0;
+    private double latitude = 1.345390;
+    private double longitude = 103.933733;
     private float altitude = 0;
     private byte[] imageByteOutdoor;
     private byte[] imageByteIndoor;
@@ -231,8 +231,8 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                 System.out.println("NRIC: " + NRICLoginFormtextField.getString());
                 System.out.println("Password: " + passwordLoginFormtextField.getString());
                 if (!NRICLoginFormtextField.getString().equals("") && !passwordLoginFormtextField.getString().equals("")) {
-                  loginAccount();
-                 } else {
+                    loginAccount();
+                } else {
 
                     System.out.println("Empty Fields Detected");
                     alert = new Alert("Error", "Username or Password cannot be blank.", null, AlertType.ERROR);
@@ -247,10 +247,10 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
         } else if (displayable == mainMenuForm) {
             if (command == mainMenuBackCommand) {//GEN-END:|7-commandAction|11|113-preAction
                 // write pre-action user code here
-                userIDLoggedIn="";
+                userIDLoggedIn = "";
                 switchDisplayable(null, getLoginForm());//GEN-LINE:|7-commandAction|12|113-postAction
                 // write post-action user code here
-                
+
             } else if (command == mainMenuOkCommand) {//GEN-LINE:|7-commandAction|13|61-preAction
                 // write pre-action user code here
                 if (mainMenuChoiceGroup.isSelected(0)) {
@@ -282,7 +282,7 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
             } else if (command == messageCreateSendCommand) {//GEN-LINE:|7-commandAction|17|95-preAction
                 // write pre-action user code here
 
-               // userIDLoggedIn = "tampines5981";
+                // userIDLoggedIn = "tampines5981";
                 msgSender = userIDLoggedIn;
                 msgTo = tbxTo.getString();
                 msgSubject = tbxSubject.getString();
@@ -323,9 +323,9 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                 // write post-action user code here
             } else if (command == messageViewReplyCommand) {//GEN-LINE:|7-commandAction|25|105-preAction
                 // write pre-action user code here
-                                System.out.println("User wants to reply to message");
-                getTbxTo().setString( lblFromID.getText() );
-                getTbxSubject().setString( "Re: " + lblSubject.getText() );
+                System.out.println("User wants to reply to message");
+                getTbxTo().setString(lblFromID.getText());
+                getTbxSubject().setString("Re: " + lblSubject.getText());
                 switchDisplayable(null, getMessageCreateForm());
 //GEN-LINE:|7-commandAction|26|105-postAction
                 // write post-action user code here
@@ -364,7 +364,9 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
 //                        indoorImageItem.setImage(null);
 //                    }
                     System.out.println("Before getting Location");
-                    getLocation();
+                    //  getLocation();
+                    switchDisplayable(null, getOutdoorReportForm());
+                    outdoorCoordinarteStringItem.setText("Latitude: " + latitude + " Longitude: " + longitude + " Altitude: " + altitude);
 
                 } else if (reportMainFormChoiceGroup.getSelectedIndex() == 1) {
 //                    if (outdoorImageItem.getImage() != null & indoorImageItem.getImage() != null) {
@@ -818,7 +820,6 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
         if (outdoorImageItem == null) {//GEN-END:|64-getter|0|64-preInit
             // write pre-init user code here
             outdoorImageItem = new ImageItem("Image:", null, ImageItem.LAYOUT_CENTER | Item.LAYOUT_TOP | Item.LAYOUT_BOTTOM | Item.LAYOUT_VCENTER | ImageItem.LAYOUT_NEWLINE_AFTER | Item.LAYOUT_VEXPAND, "<Missing Image>");//GEN-BEGIN:|64-getter|1|64-postInit
-            outdoorImageItem.addCommand(getOutdoorSelectNewCommand());
             outdoorImageItem.addCommand(getOutdoorSnapPicCommand());
             outdoorImageItem.setItemCommandListener(this);//GEN-END:|64-getter|1|64-postInit
             // write post-init user code here
@@ -835,21 +836,18 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
      */
     public void commandAction(Command command, Item item) {//GEN-END:|8-itemCommandAction|0|8-preItemCommandAction
         // write pre-action user code here
-        if (item == outdoorImageItem) {//GEN-BEGIN:|8-itemCommandAction|1|66-preAction
-            if (command == outdoorSelectNewCommand) {//GEN-END:|8-itemCommandAction|1|66-preAction
-                // write pre-action user code here
-//GEN-LINE:|8-itemCommandAction|2|66-postAction
-                // write post-action user code here
-            } else if (command == outdoorSnapPicCommand) {//GEN-LINE:|8-itemCommandAction|3|68-preAction
+        if (item == outdoorImageItem) {//GEN-BEGIN:|8-itemCommandAction|1|68-preAction
+            if (command == outdoorSnapPicCommand) {//GEN-END:|8-itemCommandAction|1|68-preAction
                 // write pre-action user code here
                 showCameraOutdoor();
-//GEN-LINE:|8-itemCommandAction|4|68-postAction
+//GEN-LINE:|8-itemCommandAction|2|68-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|8-itemCommandAction|5|8-postItemCommandAction
-        }//GEN-END:|8-itemCommandAction|5|8-postItemCommandAction
+            }//GEN-BEGIN:|8-itemCommandAction|3|8-postItemCommandAction
+        }//GEN-END:|8-itemCommandAction|3|8-postItemCommandAction
         // write post-action user code here
-    }//GEN-BEGIN:|8-itemCommandAction|6|
-    //</editor-fold>//GEN-END:|8-itemCommandAction|6|
+    }//GEN-BEGIN:|8-itemCommandAction|4|68-postAction
+    //</editor-fold>//GEN-END:|8-itemCommandAction|4|68-postAction
+
 
     //<editor-fold defaultstate="collapsed" desc=" Generated Getter: outdoorSelectNewCommand ">//GEN-BEGIN:|65-getter|0|65-preInit
     /**
@@ -1571,9 +1569,10 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                     hc.close();
                     String temp[] = split(loginServerMsg, "|");
                     if (temp[0].equals("T")) {
-
+                        // logInMessage is a variable that YJ needs.
+                        logInMessage = temp[1];
                         loginServerMsg = "";
-                        userIDLoggedIn = NRICLoginFormtextField.getString();
+                        userIDLoggedIn = temp[2];
                         Thread.sleep(500);
                         switchDisplayable(null, getMainMenuForm());
                     }
@@ -1608,12 +1607,16 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                     hc = (HttpConnection) Connector.open(reportOutdoorURL + urlEncode("?userid=" + userIDLoggedIn + "&title=" + outdoorTitletextField.getString() + "&description=" + outdoorDescriptiontextField.getString() + "&latitude=" + latitude + "&longitude=" + longitude + "&altitude=" + altitude + "&imagename=" + imageName), Connector.READ_WRITE);
 
                     hc.setRequestMethod(HttpConnection.POST);
+                    hc.setRequestProperty("Content-Type", "application/octet-stream");
                     OutputStream out = hc.openOutputStream();
 
                     //Base64 b = new Base64();
-                    //     String imageString = b.encodeToString(imageByteOutdoor);
-                    //  String imageString = base64Encode(imageByteOutdoor);
-                    //  out.write(imageString.getBytes());
+                    //     String imageString = b.encodeToString(imageByteOutdoor);\
+
+                      String imageString = base64Encode(imageByteOutdoor);
+                      out.write(imageString.getBytes());
+                    //out.write(imageByteIndoor);
+                    
 
                     is = hc.openInputStream();
                     int ch = is.read();
@@ -1624,7 +1627,7 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                     }
                     System.out.println("Submit Report Outdoors THREAD: " + serverMsg.toString().trim());
                     reportOutdoorServerMsg = serverMsg.toString().trim();
-                    // out.flush();
+                    
                     out.close();
                     is.close();
                     hc.close();
@@ -1809,11 +1812,11 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                     mPlayer.close();
                     mPlayer = null;
                     mVideoControl = null;
-                    outdoorImageItem.setImage(image);
-                    indoorImageItem.setImage(image);
+                    
 
                     // Flip back to the main form.
                     mDisplay.setCurrent(getOutdoorReportForm());
+                    outdoorImageItem.setImage(image);
 
                 } catch (MediaException me) {
                     handleException(me);
@@ -1865,11 +1868,12 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                     mPlayer.close();
                     mPlayer = null;
                     mVideoControl = null;
-                    outdoorImageItem.setImage(image);
-                    indoorImageItem.setImage(image);
+                   
+                  
 
                     // Flip back to the main form.
                     mDisplay.setCurrent(getIndoorReportForm());
+                      indoorImageItem.setImage(image);
 
                 } catch (MediaException me) {
                     handleException(me);
@@ -2036,8 +2040,8 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                     InputStream is = null;
 
                     try {
-                       // userIDLoggedIn = "tampines5981";
-                      //  logInMessage = "2010/07/21 11:24:46";
+                        // userIDLoggedIn = "tampines5981";
+                        //  logInMessage = "2010/07/21 11:24:46";
                         hc = (HttpConnection) Connector.open(checkMessageURL + urlEncode("?user=" + userIDLoggedIn + "&timeStamp=" + logInMessage));
                         is = hc.openInputStream();
                         int ch = is.read();
@@ -2089,8 +2093,8 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                 InputStream is = null;
 
                 try {
-                   // userIDLoggedIn = "tampines5981";
-                  //  logInMessage = "2010/07/21 11:24:46";
+                    // userIDLoggedIn = "tampines5981";
+                    //  logInMessage = "2010/07/21 11:24:46";
                     hc = (HttpConnection) Connector.open(checkMessageURL + urlEncode("?user=" + userIDLoggedIn + "&timeStamp=" + logInMessage));
                     is = hc.openInputStream();
                     int ch = is.read();
