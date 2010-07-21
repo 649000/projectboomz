@@ -1,5 +1,7 @@
 package app
 import grails.converters.JSON
+import org.apache.commons.codec.*
+import org.apache.commons.codec.binary.Base64
 
 class ReportController {
 
@@ -22,7 +24,7 @@ class ReportController {
         //Validation will be done on the mobile app
         try {
             def resident = Resident.findByUserid(params.userid)
-            def report = new Report();
+            def report = new Report()
             Date d = new Date()
             report.datePosted = d
             report.image = params.imagename
@@ -45,15 +47,16 @@ class ReportController {
 		buf.append(line)
             }
             String imageString = buf.toString()
+            Base64 b = new Base64()
+            byte[] imageByteArray = b.decodeBase64(imageString)
 
-           // byte[] imageByteArray = Base64.decode(imageString);
-
-//            FileOutputStream f = new FileOutputStream("C://"+params.imagename);
-//            f.write(imageByteArray);
-//            f.close();
+            FileOutputStream f = new FileOutputStream("/Users/nAzri/NetBeansProjects/ProjectAmity/web-app/outdoorreportimages/"+params.imagename)
+            f.write(imageByteArray);
+            f.close();
 
             resident.addToReport(report)
             render "T"
+
         }
         catch(Exception e)
         {
