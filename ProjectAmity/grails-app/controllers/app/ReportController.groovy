@@ -50,7 +50,8 @@ class ReportController {
             Base64 b = new Base64()
             byte[] imageByteArray = b.decodeBase64(imageString)
 
-            FileOutputStream f = new FileOutputStream("/Users/nAzri/NetBeansProjects/ProjectAmity/web-app/outdoorreportimages/"+params.imagename)
+            // FileOutputStream f = new FileOutputStream("/Users/nAzri/NetBeansProjects/ProjectAmity/web-app/outdoorreportimages/"+params.imagename)
+            FileOutputStream f = new FileOutputStream("C:\\Documents and Settings\\Administrator\\My Documents\\NetBeansProjects\\ProjectAmity\\web-app\\outdoorreportimages\\"+params.imagename)
             f.write(imageByteArray);
             f.close();
 
@@ -67,41 +68,62 @@ class ReportController {
     }
 
     def saveIndoor = {
-
-        //After the mobile app initiated the url connection
-        //Validation will be done on the mobile app
-        def resident = Resident.findByUserid(params.userid)
-        def _building = Building.findAllByPostalCode(params.postalCode)
-        def theCorrectBuilding
-        for(Building b: _building)
-        {
-            if(b.level==params.level && b.stairwell ==params.stairwell)
+        println("Indoor reporting starts here")
+        try {
+            println(params.postalCode)
+            def resident = Resident.findByUserid(params.userid)
+            def _building = Building.findAllByPostalCode(params.postalCode)
+            def theCorrectBuilding
+            
+            for(Building b: _building)
             {
-                theCorrectBuilding = b
+                if(b.level==params.level && b.stairwell ==params.stairwell)
+                {
+                    println(b.level)
+                    theCorrectBuilding = b
+                }
             }
-        }
-
-
-        def indoorReport = new IndoorReport()
-        //        Calendar c = Calendar.getInstance();
-        //        int date = c.get(Calendar.DATE)
-        //        int month = c.get(Calendar.MONTH)+1
-        //        int year =  c.get(Calendar.YEAR)
-
-        //report.datePosted = date + "-" + month + "-" + year
+            def indoorReport = new IndoorReport()
         
-        Date d = new Date()
-        indoorReport.datePosted = d
-        report.image = params.imagename
-        report.title = params.title
-        report.description = params.description
-        // report.category = "Indoor"
+            Date d = new Date()
+            indoorReport.datePosted = d
+            indoorReport.image = params.imagename
+            indoorReport.title = params.title
+            indoorReport.description = params.description
+            // report.category = "Indoor"
   
-        report.status = "Pending"
-        report.moderationStatus = false
+            indoorReport.status = "Pending"
+            indoorReport.moderationStatus = false
+
+            InputStream input = request.getInputStream()
+            BufferedReader r = new BufferedReader(new InputStreamReader(input))
+            StringBuffer buf = new StringBuffer()
+            String line
+
+            //Read the BufferedReader out and receives String data
+            while ((line = r.readLine())!=null) {
+                buf.append(line)
+            }
+            String imageString = buf.toString()
+            Base64 b = new Base64()
+            byte[] imageByteArray = b.decodeBase64(imageString)
+
         
-        theCorrectBuilding.addToIndoorReport(indoorReport)
-        resident.addToIndoorReport(indoorReport)
+            //FileOutputStream f = new FileOutputStream("/Users/nAzri/NetBeansProjects/ProjectAmity/web-app/indoorreportimages/"+params.imagename)
+         //   FileOutputStream f = new FileOutputStream("C:\\Documents and Settings\\Administrator\\My Documents\\NetBeansProjects\\ProjectAmity\\web-app\\indoorreportimages\\"+params.imagename)
+           // f.write(imageByteArray);
+            //f.close();
+        
+           theCorrectBuilding.addToIndoorReport(indoorReport)
+            resident.addToIndoorReport(indoorReport)
+            render "T"
+        }
+        catch(Exception e)
+        {
+            println("Error in saving indoor report")
+            e.printStackTrace()
+            render "F"
+        }
     }
 
     def loadData = {
