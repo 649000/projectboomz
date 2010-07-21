@@ -5,18 +5,20 @@ import grails.converters.JSON
 class CarpoolListingController
 {
 
+    def messageCheckingService
     def libraryService
     def cinemaService
     def placesOfInterestService
     def counterService
     def supermarketService
 
+    def currentUser = Resident.get(1)
+
     def index =
     {
-        loadData()
-
-        def currentUser = Resident.get(1)
         session.user = currentUser
+
+        loadData()
 
         if(currentUser.carpoolListing.departureTime.length() == 4)
         {
@@ -29,8 +31,10 @@ class CarpoolListingController
             params.returnTimeHour = currentUser.carpoolListing.returnTime.substring(0,2)
             params.returnTimeMinute = currentUser.carpoolListing.returnTime.substring(2,4)
         }
+
+        params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(currentUser)
         
-        [ listing : currentUser.carpoolListing ]
+        [ listing : currentUser.carpoolListing, params : params ]
     }
 
     def loadData()
@@ -203,8 +207,10 @@ class CarpoolListingController
 
     def view =
     {
+        
         def listingToView = CarpoolListing.findByResident( Resident.findById(params.id) )
-        [ listing : listingToView ]
+        params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(currentUser)
+        [ listing : listingToView, params : params ]
     }
 
     def search =
@@ -269,7 +275,13 @@ class CarpoolListingController
             }
             println(listings.totalCount)
             params.totalResults = listings.totalCount
+            params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(currentUser)
             [listings : listings, params : params]
+        }
+        else
+        {
+            params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(currentUser)
+            [params : params]
         }
     }
     

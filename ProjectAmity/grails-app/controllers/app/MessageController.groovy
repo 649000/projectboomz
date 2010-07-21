@@ -6,6 +6,8 @@ import java.util.Calendar
 class MessageController
 {
 
+    def messageCheckingService
+
     // Load the user's inbox
     def index =
     {
@@ -24,7 +26,7 @@ class MessageController
 
         println(inboxMessages.totalCount)
         params.totalResults = inboxMessages.totalCount
-        params.unreadCount = getUnreadMessages(currentUser)
+        params.unreadCount = messageCheckingService.getUnreadMessages(currentUser)
         [inboxMessages : inboxMessages, params : params]
     }
 
