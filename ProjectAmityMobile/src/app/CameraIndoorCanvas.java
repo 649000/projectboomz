@@ -32,9 +32,9 @@ public class CameraIndoorCanvas
     int height = getHeight();
 
     // Draw a green border around the VideoControl.
-    g.setColor(0x00ff00);
-    g.drawRect(0, 0, width - 1, height - 1);
-    g.drawRect(1, 1, width - 3, height - 3);
+//    g.setColor(0x00ff00);
+//    g.drawRect(0, 0, width - 1, height - 1);
+//    g.drawRect(1, 1, width - 3, height - 3);
   }
 
   public void keyPressed(int keyCode) {
