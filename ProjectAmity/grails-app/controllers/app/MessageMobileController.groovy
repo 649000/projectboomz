@@ -12,6 +12,7 @@ class MessageMobileController
         def receiver = params.receiver
         def subject = params.subject
         def message = params.message
+        println( sender )
 
         def errors = ''
 
@@ -59,6 +60,7 @@ class MessageMobileController
             }
             else
             {
+                println( newMessage.errors )
                 render 'F'
             }
         }
@@ -68,6 +70,7 @@ class MessageMobileController
     {
         def user = params.user
         def timeStamp = params.timeStamp
+        println(timeStamp)
         def newMessages
         def message = ''
 
