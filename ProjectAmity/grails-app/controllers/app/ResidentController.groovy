@@ -32,8 +32,23 @@ class ResidentController {
 
     def mPostalCode = {
         def resident = Resident.findByUserid(params.userid)
+        
+        //return all the building level and stairwell.
+        def level = "";
+        def stairwell ="";
+        def _building = Building.findAllByPostalCode(resident.postalCode)
 
-        render resident.postalCode
+        for(Building b: _building)
+        {
+            level+="|"+b.level
+            stairwell+="|"+ b.stairwell
+
+        }
+
+        def toReturn = resident.postalCode+"~"+level+ "~" + stairwell
+
+        render toReturn
+
         
     }
 }
