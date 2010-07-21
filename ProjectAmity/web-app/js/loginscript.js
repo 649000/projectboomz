@@ -15,6 +15,7 @@ function checkLogin(response)
         alert("Success")
         //redirect somewhere lah or use remote fuction and call other method lah
         //${remoteFunction(controller:'report', action:'index')}
+       
     }
     else if (temp == "Invalid Password")
     {
