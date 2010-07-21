@@ -12,22 +12,19 @@ class MessageController
     // Load the user's inbox
     def index =
     {
-        session.user = Resident.get(7)
-        currentUser = session.user
-
         params.max = 5
         def inboxMessages = Message.createCriteria().list(params)
         {
             and
             {
-                eq("receiver", currentUser)
+                eq("receiver", session.user)
             }
             order("timeStamp", "desc")
         }
 
         println(inboxMessages.totalCount)
         params.totalResults = inboxMessages.totalCount
-        params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(currentUser)
+        params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(session.user)
         [inboxMessages : inboxMessages, params : params]
     }
 
