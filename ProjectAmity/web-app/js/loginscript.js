@@ -9,23 +9,20 @@ function checkLogin(response)
     var temp = response.responseText
 
     if(nric != '' || password != '')
-        {
+    {
         if (temp =="Success")
-    {
-        alert("Success")
-        //redirect somewhere lah or use remote fuction and call other method lah
-        //${remoteFunction(controller:'report', action:'index')}
-       
-    }
-    else if (temp == "Invalid Password")
-    {
-        alert("Invalid Password")
-    
-    } else if (temp == "Invalid Login ID")
-    {
-        alert("Invalid Login ID")
-    }
+        {
+            alert("Success")
+            //redirect somewhere lah or use remote fuction and call other method lah
+            //${remoteFunction(controller:'report', action:'index')}
         }
-        else
-            alert("Login ID or Password Cannot be blank")
+        else if (temp == "Invalid NRIC / Password Combination")
+        {
+            alert("Invalid NRIC / Password Combination")
+        }
+    }
+    else
+    {
+        alert("Login ID or Password Cannot be blank")
+    }
 }

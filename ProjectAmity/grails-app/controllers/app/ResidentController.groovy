@@ -21,17 +21,16 @@ class ResidentController {
                 session.user = resident
                 println("Login Success")
                 toReturn="Success"
-               
             }
             else
             {
                 println("Wrong Password")
-                toReturn = "Invalid Password"
+                toReturn = "Invalid NRIC / Password Combination"
             }
         } else
         {
             println("Login Invalid")
-            toReturn = "Invalid Login ID"
+            toReturn = "Invalid NRIC / Password Combination"
         }
 
         render toReturn
