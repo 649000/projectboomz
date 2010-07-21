@@ -34,21 +34,19 @@ class MessageController
     // load the list of sent messages
     def sent =
     {
-        session.user = Resident.get(7)
-        def currentUser = session.user
 
         params.max = 5
         def sentMessages = Message.createCriteria().list(params)
         {
             and
             {
-                eq("sender", currentUser)
+                eq("sender", session.user)
             }
             order("timeStamp", "desc")
         }
 
         println(sentMessages.totalCount)
-        params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(currentUser)
+        params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(session.user)
         params.totalResults = sentMessages.totalCount
         [sentMessages : sentMessages, params : params]
     }
@@ -57,31 +55,30 @@ class MessageController
     def view =
     {
         session.user = Resident.get(7)
-        def currentUser = session.user
 
         def messageToView = Message.findById(params.id)
 
         if(messageToView == null)
         {
-            params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(currentUser)
+            params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(session.user)
             flash.messageOperationStatus = '<br/><p>The message you are trying to view does not exist!</p>'
             redirect(action: 'index')
         }
-        else if( currentUser != messageToView.sender && currentUser != messageToView.receiver )
+        else if( session.user != messageToView.sender && session.user != messageToView.receiver )
         {
-            params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(currentUser)
+            params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(session.user)
             flash.messageOperationStatus = '<br/><p>You are not authorised to view this message!</p>'
             redirect(action: 'index')
         }
-        else if( currentUser != messageToView.sender )
+        else if( session.user != messageToView.sender )
         {
             messageToView.isRead = true
-            params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(currentUser)
+            params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(session.user)
             [message : messageToView, params : params]
         }
         else
         {
-            params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(currentUser)
+            params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(session.user)
             [message : messageToView, params : params]
         }
     }
@@ -89,10 +86,7 @@ class MessageController
     // closure to call before create.gsp is loaded.
     def create =
     {
-        def currentUser = Resident.get(7)
-        session.user = currentUser
-
-        params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(currentUser)
+        params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(session.user)
         [params : params]
     }
 
@@ -145,10 +139,8 @@ class MessageController
         }
         else
         {
-            def currentUser = session.user
-
             def newMessage = new Message()
-            newMessage.sender = currentUser
+            newMessage.sender = session.user
             newMessage.receiver = recipient
             newMessage.subject = subject
             newMessage.message = message

@@ -12,11 +12,11 @@ class CarpoolListingController
     def counterService
     def supermarketService
 
-    def currentUser = Resident.get(1)
+    def currentUser
 
     def index =
     {
-        session.user = currentUser
+        currentUser = session.user
 
         loadData()
 
@@ -180,7 +180,7 @@ class CarpoolListingController
         {
             // Otherwise, update relevant fields in the CarpoolListing
 
-            def currentUser = session.user
+            currentUser = session.user
             def currentListing = CarpoolListing.findByResident(currentUser)
 
             def departureTime = departureHour + departureMinute
@@ -207,9 +207,8 @@ class CarpoolListingController
 
     def view =
     {
-        
         def listingToView = CarpoolListing.findByResident( Resident.findById(params.id) )
-        params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(currentUser)
+        params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(session.user)
         [ listing : listingToView, params : params ]
     }
 
@@ -275,12 +274,12 @@ class CarpoolListingController
             }
             println(listings.totalCount)
             params.totalResults = listings.totalCount
-            params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(currentUser)
+            params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(session.user)
             [listings : listings, params : params]
         }
         else
         {
-            params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(currentUser)
+            params.messageModuleUnreadMessages = messageCheckingService.getUnreadMessages(session.user)
             [params : params]
         }
     }
