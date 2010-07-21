@@ -9,6 +9,7 @@ var myPlacemark = null
 
 function InitGermanium(response)
 {
+    $('test').innerHTML= "Please click on the placemark to view reports."
     responseObj = eval( '(' + response.responseText + ')')
     buildingObj = responseObj[0]
     reportObj = responseObj[1]
@@ -73,7 +74,8 @@ function loadReports(event)
 
              //   alert(reportObj[j][k].title)
               var splitteddate = reportObj[j][k].datePosted.split("T")
-            $('test').innerHTML+= '<p>' + reportObj[j][k].title +'</p><p>' + splitteddate[0]+'</p><p>' + reportObj[j][k].image +'</p><p>' + reportObj[j][k].description+'</p><p>' + reportObj[j][k].status +'</p>'
+              reportObj[j][k].image
+            $('test').innerHTML+= '<p>' + reportObj[j][k].title +'</p><p>' + splitteddate[0]+'</p><p>' + '<img src="/ProjectAmity/indoorreportimages/'+ reportObj[j][k].image+'" width="400"  height="300"</a>' +'</p><p>' + reportObj[j][k].description+'</p><p>' + reportObj[j][k].status +'</p>'
             }
         }
     }
