@@ -3,10 +3,9 @@ import grails.converters.JSON
 
 class BarterAdController {
 
-    
+    def resident=session.user
 
     def index = {
-     def resident=Resident.findByNric("S9000001A")
         def list= [BarterAd.findAllByResident(resident),BarterAd.findAllByResidentNot(resident)]
         [barters: list]
     }
@@ -16,7 +15,6 @@ class BarterAdController {
     }
 
     def assign = {
-        def resident=Resident.findByNric("S9000001A")
         def list= [BarterAd.findAllByResident(resident),BarterAd.findAllByResidentNot(resident)]
         [barters: list]
     }
@@ -26,7 +24,6 @@ class BarterAdController {
         Date today=new Date()
         params.itemDatePosted=today
         //System.out.println(params.itemDatePosted)
-        def resident=Resident.findByNric("S9000001A")
         params.resident=resident;
         barter=new BarterAd(params)
         barter.save();
@@ -82,7 +79,7 @@ html+=" <tr>"
 html+=" <td colspan=\"2\">&nbsp;<b>"+residentR.userid+"</b> wants to trade with you:"
 html+=" </tr>"
 html+=" <tr>"
-html+=" <td colspan=\"2\">&nbsp;Your items to trade:</td>"
+html+=" <td colspan=\"2\">&nbsp;"+residentR.userid+"wants to trade <b>HIS/HER:</b></td>"
 html+=" </tr>"
 
         def tempList2=tempList[0].split(",")
@@ -101,7 +98,7 @@ html+=" </tr>"
         }
 
 html+=" <tr>"
-html+=" <td colspan=\"2\">&nbsp;</td>"
+html+=" <td colspan=\"2\">&nbsp;with <b>YOUR:<b/></td>"
 html+=" </tr>"
 
 
