@@ -8,7 +8,7 @@ class AppFilters {
             before = {
 //                if(!session.user)
 //                {
-//                    redirect(controller:'login')
+//                    redirect(controller:'index2')
 //                }
             }
             after = {
