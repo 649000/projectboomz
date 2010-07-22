@@ -75,7 +75,7 @@ function loadReports(event)
              //   alert(reportObj[j][k].title)
               var splitteddate = reportObj[j][k].datePosted.split("T")
               reportObj[j][k].image
-            $('test').innerHTML+= '<p>' + reportObj[j][k].title +'</p><p>' + splitteddate[0]+'</p><p>' + '<img src="/ProjectAmity/indoorreportimages/'+ reportObj[j][k].image+'" width="400"  height="300"</a>' +'</p><p>' + reportObj[j][k].description+'</p><p>' + reportObj[j][k].status +'</p>'
+            $('test').innerHTML+= '<p>' + reportObj[j][k].title +'</p><p>' + splitteddate[0]+'</p><p>' + '<img width=\"240px\" src="/ProjectAmity/indoorreportimages/'+ reportObj[j][k].image+'"  </a>' +'</p><p>' + reportObj[j][k].description+'</p><p>' + reportObj[j][k].status +'</p>'
             }
         }
     }
