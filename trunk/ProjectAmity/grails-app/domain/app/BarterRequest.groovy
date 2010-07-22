@@ -11,7 +11,10 @@ class BarterRequest {
     Date requestDatePosted
     String requestMessage
     String requestState
+    String requestedItems
+    String tradeItems
+    String requestId
+    String tradeId
 
-    static hasMany = [ barterAds : BarterAd]
 
 }

@@ -29,7 +29,8 @@
             <img src="${resource(dir:'images/amity',file:'header.png')}" id="headerIMG"/>
             <img src="${resource(dir:'images/amity',file:'bg.jpg')}" id="background"/>
 
-            <img src="${resource(dir:'images/amity',file:'home.png')}" id="home"/>
+            <a href="/ProjectAmity" >
+            <img src="${resource(dir:'images/amity',file:'home.png')}" border="0" id="home"/></a>
             <a href="${createLink(controller: 'report', action:'index')}" >
             <img src="${resource(dir:'images/amity',file:'report.png')}" border="0" id="report"/></a>
             <a href="${createLink(controller: 'carpoolListing', action:'index')}" >

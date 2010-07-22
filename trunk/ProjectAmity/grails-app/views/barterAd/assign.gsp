@@ -58,7 +58,7 @@ function confirmTrade()
 alert('Your items: '+ youritemsArray)
 alert('To trade: '+ peopleitemsArray)
 var allTrades=youritemsArray+','+peopleitemsArray
-alert(allTrade)
+alert(allTrades)
 ${remoteFunction(controller:"barterAd", action:"startAssign", params:"'toAssign='+allTrades")}
 }
 function confirmCancel()
