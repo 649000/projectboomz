@@ -131,3 +131,111 @@ h1 a:hover, h2 a:hover, h3 a:hover, h4 a:hover, h5 a:hover, h6 a:hover  {text-de
    width:275px;
    height:200px;
 }
+.box {
+	background:#0099CC;
+	width:100px;
+	height:100px;
+	float:left;
+	margin:10px 0px 0 10px;
+}
+#listHeader
+{
+background-color:#D7D7D7;
+width: 890px;
+height: 25px;
+float:left;
+margin:0 0 10px 0;
+}
+#itemListContainer
+{
+	background:#e7e7e7;
+	width:415px;
+	height:300px;
+	overflow-x:hidden;
+	overflow-y:auto;
+	padding: 0 0 10px 0;
+	float:left;
+}
+#peopleItemListContainer
+{
+    	background:#e7e7e7;
+	width:415px;
+	height:300px;
+	overflow-x:hidden;
+	overflow-y:auto;
+	padding: 0 0 10px 0;
+	float:left;
+}
+#addItemContainer
+{
+    	background:#e7e7e7;
+	width:415px;
+	height:300px;
+	overflow-x:hidden;
+	overflow-y:auto;
+	padding: 0 0 10px 0;
+	float:left;
+}
+#checkRequestsContainer
+{
+        background:#e7e7e7;
+	width:415px;
+	height:300px;
+	overflow-x:hidden;
+	overflow-y:auto;
+	padding: 0 0 10px 0;
+	float:left;
+}
+#itemStatusContainer
+{
+	background:#e7e7e7;
+	width:445px;
+	height:290px;
+	overflow-x:hidden;
+	overflow-y:auto;
+	padding: 10px;
+	float:right;
+}
+#mainItemContainer {
+	background:#f7f7f7;
+	width:890px;
+	height:560px;
+	padding: 10px;
+}
+#tradeHeader
+{
+background-color:#D7D7D7;
+width: 890px;
+height: 25px;
+float:left;
+margin:10px 0 10px 0;
+}
+#tradeContainerLeft
+{
+	background-color:#e7e7e7;
+	width: 415px;
+	height: 110px;
+	float:left;
+	overflow-x:hidden;
+	overflow-y:auto;
+	padding:0 0 10px 0;
+}
+#tradeContainerRight
+{
+	background-color:#e7e7e7;
+	width: 465px;
+	height: 110px;
+	float:right;
+	overflow-x:hidden;
+	overflow-y:auto;
+	padding:0 0 10px 0;
+}
+#tradeButton
+{
+	background-color:#D7D7D7;
+	width: 890px;
+	height: 30px;
+	float:left;
+	margin:10px 0 10px 0;
+        text-align:right;
+}
