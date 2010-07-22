@@ -19,7 +19,7 @@ class ResidentController {
             if(resident.password == params.password)
             {
                 session.user = resident
-                println("Login Success")
+                println("Login Success")               
                 toReturn="Success"
             }
             else
