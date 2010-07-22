@@ -110,7 +110,7 @@ class ReportController {
 
         
             FileOutputStream f = new FileOutputStream("/Users/nAzri/NetBeansProjects/ProjectAmity/web-app/indoorreportimages/"+params.imagename)
-            FileOutputStream f = new FileOutputStream("C:\\Documents and Settings\\Administrator\\My Documents\\NetBeansProjects\\ProjectAmity\\web-app\\indoorreportimages\\"+params.imagename)
+         //   FileOutputStream f = new FileOutputStream("C:\\Documents and Settings\\Administrator\\My Documents\\NetBeansProjects\\ProjectAmity\\web-app\\indoorreportimages\\"+params.imagename)
             f.write(imageByteArray);
             f.close();
         
