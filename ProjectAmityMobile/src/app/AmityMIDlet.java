@@ -19,19 +19,20 @@ import java.util.Vector;
 import javax.microedition.io.file.FileConnection;
 
 /**
- * @author student
+ * @author Team Smiley
  */
 public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandListener {
     // variables for messaging module
 
     private String logInMessage = "";
-    private String iPAddress = "10.0.1.4";
+    private String iPAddress = "localhost";
     private String sendMessageURL = "http://" + iPAddress + ":8080/ProjectAmity/messageMobile/send";
     private String checkMessageURL = "http://" + iPAddress + ":8080/ProjectAmity/messageMobile/check";
     private String msgSender, msgTo, msgSubject, msgMessage;
     private boolean checkForMessages = false;
     private boolean midletPaused = false;
     private LocationProvider provider = null;
+    private String neaOfficerLoggedin = "";
     private String userIDLoggedIn = "";
     private String userPostalCode = "";
     //URLs
@@ -39,13 +40,16 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
     private String reportOutdoorURL = "http://" + iPAddress + ":8080/ProjectAmity/report/saveOutdoor";
     private String reportIndoorURL = "http://" + iPAddress + ":8080/ProjectAmity/report/saveIndoor";
     private String getPostalcode = "http://" + iPAddress + ":8080/ProjectAmity/resident/mPostalCode";
-    //Need to get building info, level and stairwell
     private String buildingInfoURL = "http://" + iPAddress + ":8080/ProjectAmity/building/buildingInfo";
+    private String reportURL = "http://" + iPAddress + ":8080/ProjectAmity/NEAOfficer/mGetReports";
+    private String eachReportURL = "http://" + iPAddress + ":8080/ProjectAmity/NEAOfficer/eachReport";
     //Server return messages
     private String loginServerMsg = "";
     private String reportOutdoorServerMsg = "";
     private String reportIndoorServerMsg = "";
     private String buildingInfoServerMsg = "";
+    private String reportServerMsg = "";
+    private String eachReportServerMsg="";
     //temp variables to store the GPS coordinates
     private double latitude = 1.345390;
     private double longitude = 103.933733;
@@ -59,6 +63,7 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
     private Date d;
     private Command exitCommand2;
     private Command snapPicCommandIndoor;
+    private GoogleMaps gMap;
     //<editor-fold defaultstate="collapsed" desc=" Generated Fields ">//GEN-BEGIN:|fields|0|
     private Form loginForm;
     private TextField NRICLoginFormtextField;
@@ -96,6 +101,23 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
     private StringItem lblTo;
     private StringItem lblSubject;
     private StringItem lblFrom;
+    private Form assignedReportsForm;
+    private ChoiceGroup reportsChoiceGroup;
+    private Form viewOutdoorReportForm;
+    private StringItem ViewOutdoorTitleStringItem;
+    private StringItem ViewOutdoorDateStringItem;
+    private StringItem ViewOutdoorDescriptionStringItem;
+    private ImageItem ViewOutdoorLocationImageItem;
+    private Form viewIndoorReportForm;
+    private StringItem ViewIndoorTitleStringItem;
+    private StringItem ViewIndoorDateStringItem;
+    private StringItem ViewIndoorDescriptionStringItem;
+    private StringItem ViewIndoorLocationStringItem;
+    private ImageItem ViewIndoorMapImageItem;
+    private Form resolveOutdoorReportForm;
+    private ImageItem outdoorResolveImageItem;
+    private StringItem outdoorStatusStringItem;
+    private Form resolveIndoorReportForm;
     private Command loginCommand;
     private Command exitCommand;
     private Command exitCommand1;
@@ -118,6 +140,11 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
     private Command messageViewReplyCommand;
     private Command indoorSnapPicCommand;
     private Command mainMenuBackCommand;
+    private Command reportsBackCommand;
+    private Command reportOkCommand;
+    private Command viewIndoorbackCommand;
+    private Command ViewOutdoorBackCommand;
+    private Command ViewOutdoorEditCommand;
     //</editor-fold>//GEN-END:|fields|0|
 
     /**
@@ -149,6 +176,7 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
         d = new Date();
         //Initialize mDisplay
         mDisplay = Display.getDisplay(this);
+        gMap = new GoogleMaps("API_KEY");
         switchDisplayable(null, getLoginForm());//GEN-LINE:|3-startMIDlet|1|3-postAction
         // write post-action user code here
 
@@ -196,19 +224,31 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
      */
     public void commandAction(Command command, Displayable displayable) {//GEN-END:|7-commandAction|0|7-preCommandAction
         // write pre-action user code here
-        if (displayable == cameraCaptureForm) {//GEN-BEGIN:|7-commandAction|1|33-preAction
-            if (command == locationCommand) {//GEN-END:|7-commandAction|1|33-preAction
+        if (displayable == assignedReportsForm) {//GEN-BEGIN:|7-commandAction|1|123-preAction
+            if (command == reportOkCommand) {//GEN-END:|7-commandAction|1|123-preAction
+                // write pre-action user code here
+                getEachReport();
+//GEN-LINE:|7-commandAction|2|123-postAction
+                // write post-action user code here
+            } else if (command == reportsBackCommand) {//GEN-LINE:|7-commandAction|3|120-preAction
+                // write pre-action user code here
+                switchDisplayable(null, getLoginForm());//GEN-LINE:|7-commandAction|4|120-postAction
+                // write post-action user code here
+                neaOfficerLoggedin="";
+            }//GEN-BEGIN:|7-commandAction|5|33-preAction
+        } else if (displayable == cameraCaptureForm) {
+            if (command == locationCommand) {//GEN-END:|7-commandAction|5|33-preAction
                 // write pre-action user code here
                 getLocation();
-//GEN-LINE:|7-commandAction|2|33-postAction
+//GEN-LINE:|7-commandAction|6|33-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|3|52-preAction
+            }//GEN-BEGIN:|7-commandAction|7|52-preAction
         } else if (displayable == indoorReportForm) {
-            if (command == indoorReportBbackCommand) {//GEN-END:|7-commandAction|3|52-preAction
+            if (command == indoorReportBbackCommand) {//GEN-END:|7-commandAction|7|52-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getReportMainForm());//GEN-LINE:|7-commandAction|4|52-postAction
+                switchDisplayable(null, getReportMainForm());//GEN-LINE:|7-commandAction|8|52-postAction
                 // write post-action user code here
-            } else if (command == indoorReportSubmitCommand) {//GEN-LINE:|7-commandAction|5|58-preAction
+            } else if (command == indoorReportSubmitCommand) {//GEN-LINE:|7-commandAction|9|58-preAction
                 // write pre-action user code here
                 if (!indoorTitleTextField.getString().equals("") && !indoorDescriptiontextField.getString().equals("")) { //&& indoorImageItem.getImage() != null) {
                     reportSubmitIndoor();
@@ -220,15 +260,15 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                     switchDisplayable(alert, getIndoorReportForm());
                 }
 
-//GEN-LINE:|7-commandAction|6|58-postAction
+//GEN-LINE:|7-commandAction|10|58-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|7|21-preAction
+            }//GEN-BEGIN:|7-commandAction|11|21-preAction
         } else if (displayable == loginForm) {
-            if (command == exitCommand) {//GEN-END:|7-commandAction|7|21-preAction
+            if (command == exitCommand) {//GEN-END:|7-commandAction|11|21-preAction
                 // write pre-action user code here
-                exitMIDlet();//GEN-LINE:|7-commandAction|8|21-postAction
+                exitMIDlet();//GEN-LINE:|7-commandAction|12|21-postAction
                 // write post-action user code here
-            } else if (command == loginCommand) {//GEN-LINE:|7-commandAction|9|18-preAction
+            } else if (command == loginCommand) {//GEN-LINE:|7-commandAction|13|18-preAction
                 // write pre-action user code here
                 System.out.println("NRIC: " + NRICLoginFormtextField.getString());
                 System.out.println("Password: " + passwordLoginFormtextField.getString());
@@ -242,18 +282,18 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                     switchDisplayable(alert, getLoginForm());
                 }
 
-//GEN-LINE:|7-commandAction|10|18-postAction
+//GEN-LINE:|7-commandAction|14|18-postAction
                 // write post-action user code here
 
-            }//GEN-BEGIN:|7-commandAction|11|113-preAction
+            }//GEN-BEGIN:|7-commandAction|15|113-preAction
         } else if (displayable == mainMenuForm) {
-            if (command == mainMenuBackCommand) {//GEN-END:|7-commandAction|11|113-preAction
+            if (command == mainMenuBackCommand) {//GEN-END:|7-commandAction|15|113-preAction
                 // write pre-action user code here
                 userIDLoggedIn = "";
-                switchDisplayable(null, getLoginForm());//GEN-LINE:|7-commandAction|12|113-postAction
+                switchDisplayable(null, getLoginForm());//GEN-LINE:|7-commandAction|16|113-postAction
                 // write post-action user code here
 
-            } else if (command == mainMenuOkCommand) {//GEN-LINE:|7-commandAction|13|61-preAction
+            } else if (command == mainMenuOkCommand) {//GEN-LINE:|7-commandAction|17|61-preAction
                 // write pre-action user code here
                 if (mainMenuChoiceGroup.isSelected(0)) {
                     System.out.println("User has selected private messaging module");
@@ -273,15 +313,15 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
 
 
 
-//GEN-LINE:|7-commandAction|14|61-postAction
+//GEN-LINE:|7-commandAction|18|61-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|15|93-preAction
+            }//GEN-BEGIN:|7-commandAction|19|93-preAction
         } else if (displayable == messageCreateForm) {
-            if (command == messageCreateBackCommand) {//GEN-END:|7-commandAction|15|93-preAction
+            if (command == messageCreateBackCommand) {//GEN-END:|7-commandAction|19|93-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getMessageMainForm());//GEN-LINE:|7-commandAction|16|93-postAction
+                switchDisplayable(null, getMessageMainForm());//GEN-LINE:|7-commandAction|20|93-postAction
                 // write post-action user code here
-            } else if (command == messageCreateSendCommand) {//GEN-LINE:|7-commandAction|17|95-preAction
+            } else if (command == messageCreateSendCommand) {//GEN-LINE:|7-commandAction|21|95-preAction
                 // write pre-action user code here
 
                 // userIDLoggedIn = "tampines5981";
@@ -291,16 +331,16 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                 msgMessage = tbxMessage.getString();
                 sendMessage();
 
-//GEN-LINE:|7-commandAction|18|95-postAction
+//GEN-LINE:|7-commandAction|22|95-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|19|83-preAction
+            }//GEN-BEGIN:|7-commandAction|23|83-preAction
         } else if (displayable == messageMainForm) {
-            if (command == messageMainBackCommand) {//GEN-END:|7-commandAction|19|83-preAction
+            if (command == messageMainBackCommand) {//GEN-END:|7-commandAction|23|83-preAction
                 // write pre-action user code here
                 checkForMessages = false;
-                switchDisplayable(null, getMainMenuForm());//GEN-LINE:|7-commandAction|20|83-postAction
+                switchDisplayable(null, getMainMenuForm());//GEN-LINE:|7-commandAction|24|83-postAction
                 // write post-action user code here
-            } else if (command == messageMainNextCommand) {//GEN-LINE:|7-commandAction|21|85-preAction
+            } else if (command == messageMainNextCommand) {//GEN-LINE:|7-commandAction|25|85-preAction
                 // write pre-action user code here
                 if (messageMainChoice.isSelected(0)) {
                     System.out.println("User wants to compose new message");
@@ -315,29 +355,29 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                     switchDisplayable(alert, getMainMenuForm());
                 }
 
-//GEN-LINE:|7-commandAction|22|85-postAction
+//GEN-LINE:|7-commandAction|26|85-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|23|102-preAction
+            }//GEN-BEGIN:|7-commandAction|27|102-preAction
         } else if (displayable == messageViewForm) {
-            if (command == messageViewBackCommand) {//GEN-END:|7-commandAction|23|102-preAction
+            if (command == messageViewBackCommand) {//GEN-END:|7-commandAction|27|102-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getMessageMainForm());//GEN-LINE:|7-commandAction|24|102-postAction
+                switchDisplayable(null, getMessageMainForm());//GEN-LINE:|7-commandAction|28|102-postAction
                 // write post-action user code here
-            } else if (command == messageViewReplyCommand) {//GEN-LINE:|7-commandAction|25|105-preAction
+            } else if (command == messageViewReplyCommand) {//GEN-LINE:|7-commandAction|29|105-preAction
                 // write pre-action user code here
                 System.out.println("User wants to reply to message");
                 getTbxTo().setString(lblFromID.getText());
                 getTbxSubject().setString("Re: " + lblSubject.getText());
                 switchDisplayable(null, getMessageCreateForm());
-//GEN-LINE:|7-commandAction|26|105-postAction
+//GEN-LINE:|7-commandAction|30|105-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|27|50-preAction
+            }//GEN-BEGIN:|7-commandAction|31|50-preAction
         } else if (displayable == outdoorReportForm) {
-            if (command == outdoorReportBackCommand) {//GEN-END:|7-commandAction|27|50-preAction
+            if (command == outdoorReportBackCommand) {//GEN-END:|7-commandAction|31|50-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getReportMainForm());//GEN-LINE:|7-commandAction|28|50-postAction
+                switchDisplayable(null, getReportMainForm());//GEN-LINE:|7-commandAction|32|50-postAction
                 // write post-action user code here
-            } else if (command == outdoorReportSubmitCommand) {//GEN-LINE:|7-commandAction|29|56-preAction
+            } else if (command == outdoorReportSubmitCommand) {//GEN-LINE:|7-commandAction|33|56-preAction
                 if (!outdoorTitletextField.getString().equals("") && !outdoorDescriptiontextField.getString().equals("")) { //&& latitude != 0.0 && longitude != 0.0&& outdoorImageItem.getImage() != null) {
                     reportSubmitOutdoor();
                 } else {
@@ -349,15 +389,15 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                 }
 
 
-//GEN-LINE:|7-commandAction|30|56-postAction
+//GEN-LINE:|7-commandAction|34|56-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|31|77-preAction
+            }//GEN-BEGIN:|7-commandAction|35|77-preAction
         } else if (displayable == reportMainForm) {
-            if (command == reportMenuBackCommand) {//GEN-END:|7-commandAction|31|77-preAction
+            if (command == reportMenuBackCommand) {//GEN-END:|7-commandAction|35|77-preAction
                 // write pre-action user code here
-                switchDisplayable(null, getMainMenuForm());//GEN-LINE:|7-commandAction|32|77-postAction
+                switchDisplayable(null, getMainMenuForm());//GEN-LINE:|7-commandAction|36|77-postAction
                 // write post-action user code here
-            } else if (command == reportMenuOkCommand) {//GEN-LINE:|7-commandAction|33|48-preAction
+            } else if (command == reportMenuOkCommand) {//GEN-LINE:|7-commandAction|37|48-preAction
                 // write pre-action user code here
                 if (reportMainFormChoiceGroup.getSelectedIndex() == 0) {
 
@@ -386,10 +426,26 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
 //                    switchDisplayable(alert, getMainMenuForm());
 //                }
 
-//GEN-LINE:|7-commandAction|34|48-postAction
+//GEN-LINE:|7-commandAction|38|48-postAction
                 // write post-action user code here
-            }//GEN-BEGIN:|7-commandAction|35|7-postCommandAction
-        }//GEN-END:|7-commandAction|35|7-postCommandAction
+            }//GEN-BEGIN:|7-commandAction|39|128-preAction
+        } else if (displayable == viewIndoorReportForm) {
+            if (command == viewIndoorbackCommand) {//GEN-END:|7-commandAction|39|128-preAction
+                // write pre-action user code here
+                switchDisplayable(null, getAssignedReportsForm());//GEN-LINE:|7-commandAction|40|128-postAction
+                // write post-action user code here
+            }//GEN-BEGIN:|7-commandAction|41|131-preAction
+        } else if (displayable == viewOutdoorReportForm) {
+            if (command == ViewOutdoorBackCommand) {//GEN-END:|7-commandAction|41|131-preAction
+                // write pre-action user code here
+                switchDisplayable(null, getAssignedReportsForm());//GEN-LINE:|7-commandAction|42|131-postAction
+                // write post-action user code here
+            } else if (command == ViewOutdoorEditCommand) {//GEN-LINE:|7-commandAction|43|138-preAction
+                // write pre-action user code here
+                switchDisplayable(null, getResolveOutdoorReportForm());//GEN-LINE:|7-commandAction|44|138-postAction
+                // write post-action user code here
+            }//GEN-BEGIN:|7-commandAction|45|7-postCommandAction
+        }//GEN-END:|7-commandAction|45|7-postCommandAction
  // write post-action user code here
         else if (command == snapPicCommand) {
             captureOutdoor();
@@ -407,8 +463,8 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
             mPlayer = null;
             mVideoControl = null;
         }
-    }//GEN-BEGIN:|7-commandAction|36|
-    //</editor-fold>//GEN-END:|7-commandAction|36|
+    }//GEN-BEGIN:|7-commandAction|46|
+    //</editor-fold>//GEN-END:|7-commandAction|46|
 
     //<editor-fold defaultstate="collapsed" desc=" Generated Getter: loginForm ">//GEN-BEGIN:|14-getter|0|14-preInit
     /**
@@ -437,7 +493,7 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
     public TextField getNRICLoginFormtextField() {
         if (NRICLoginFormtextField == null) {//GEN-END:|23-getter|0|23-preInit
             // write pre-init user code here
-            NRICLoginFormtextField = new TextField("NRIC:", null, 32, TextField.ANY);//GEN-LINE:|23-getter|1|23-postInit
+            NRICLoginFormtextField = new TextField("NRIC/NEAOfficer ID:", null, 32, TextField.ANY);//GEN-LINE:|23-getter|1|23-postInit
             // write post-init user code here
         }//GEN-BEGIN:|23-getter|2|
         return NRICLoginFormtextField;
@@ -1383,6 +1439,348 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
     }
     //</editor-fold>//GEN-END:|115-getter|2|
 
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: assignedReportsForm ">//GEN-BEGIN:|117-getter|0|117-preInit
+    /**
+     * Returns an initiliazed instance of assignedReportsForm component.
+     * @return the initialized component instance
+     */
+    public Form getAssignedReportsForm() {
+        if (assignedReportsForm == null) {//GEN-END:|117-getter|0|117-preInit
+            // write pre-init user code here
+            assignedReportsForm = new Form("Available Reports", new Item[] { getReportsChoiceGroup() });//GEN-BEGIN:|117-getter|1|117-postInit
+            assignedReportsForm.addCommand(getReportsBackCommand());
+            assignedReportsForm.addCommand(getReportOkCommand());
+            assignedReportsForm.setCommandListener(this);//GEN-END:|117-getter|1|117-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|117-getter|2|
+        return assignedReportsForm;
+    }
+    //</editor-fold>//GEN-END:|117-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: reportsChoiceGroup ">//GEN-BEGIN:|118-getter|0|118-preInit
+    /**
+     * Returns an initiliazed instance of reportsChoiceGroup component.
+     * @return the initialized component instance
+     */
+    public ChoiceGroup getReportsChoiceGroup() {
+        if (reportsChoiceGroup == null) {//GEN-END:|118-getter|0|118-preInit
+            // write pre-init user code here
+            reportsChoiceGroup = new ChoiceGroup("Reports:", Choice.EXCLUSIVE);//GEN-LINE:|118-getter|1|118-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|118-getter|2|
+        return reportsChoiceGroup;
+    }
+    //</editor-fold>//GEN-END:|118-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: reportsBackCommand ">//GEN-BEGIN:|119-getter|0|119-preInit
+    /**
+     * Returns an initiliazed instance of reportsBackCommand component.
+     * @return the initialized component instance
+     */
+    public Command getReportsBackCommand() {
+        if (reportsBackCommand == null) {//GEN-END:|119-getter|0|119-preInit
+            // write pre-init user code here
+            reportsBackCommand = new Command("Logout", "<null>", Command.BACK, 0);//GEN-LINE:|119-getter|1|119-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|119-getter|2|
+        return reportsBackCommand;
+    }
+    //</editor-fold>//GEN-END:|119-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: reportOkCommand ">//GEN-BEGIN:|122-getter|0|122-preInit
+    /**
+     * Returns an initiliazed instance of reportOkCommand component.
+     * @return the initialized component instance
+     */
+    public Command getReportOkCommand() {
+        if (reportOkCommand == null) {//GEN-END:|122-getter|0|122-preInit
+            // write pre-init user code here
+            reportOkCommand = new Command("View", Command.OK, 0);//GEN-LINE:|122-getter|1|122-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|122-getter|2|
+        return reportOkCommand;
+    }
+    //</editor-fold>//GEN-END:|122-getter|2|
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: viewOutdoorReportForm ">//GEN-BEGIN:|124-getter|0|124-preInit
+    /**
+     * Returns an initiliazed instance of viewOutdoorReportForm component.
+     * @return the initialized component instance
+     */
+    public Form getViewOutdoorReportForm() {
+        if (viewOutdoorReportForm == null) {//GEN-END:|124-getter|0|124-preInit
+            // write pre-init user code here
+            viewOutdoorReportForm = new Form("View Outdoor Report", new Item[] { getViewOutdoorTitleStringItem(), getViewOutdoorDateStringItem(), getViewOutdoorDescriptionStringItem(), getViewOutdoorLocationImageItem() });//GEN-BEGIN:|124-getter|1|124-postInit
+            viewOutdoorReportForm.addCommand(getViewOutdoorBackCommand());
+            viewOutdoorReportForm.addCommand(getViewOutdoorEditCommand());
+            viewOutdoorReportForm.setCommandListener(this);//GEN-END:|124-getter|1|124-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|124-getter|2|
+        return viewOutdoorReportForm;
+    }
+    //</editor-fold>//GEN-END:|124-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: viewIndoorReportForm ">//GEN-BEGIN:|126-getter|0|126-preInit
+    /**
+     * Returns an initiliazed instance of viewIndoorReportForm component.
+     * @return the initialized component instance
+     */
+    public Form getViewIndoorReportForm() {
+        if (viewIndoorReportForm == null) {//GEN-END:|126-getter|0|126-preInit
+            // write pre-init user code here
+            viewIndoorReportForm = new Form("View Indoor Report", new Item[] { getViewIndoorTitleStringItem(), getViewIndoorDateStringItem(), getViewIndoorDescriptionStringItem(), getViewIndoorLocationStringItem(), getViewIndoorMapImageItem() });//GEN-BEGIN:|126-getter|1|126-postInit
+            viewIndoorReportForm.addCommand(getViewIndoorbackCommand());
+            viewIndoorReportForm.setCommandListener(this);//GEN-END:|126-getter|1|126-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|126-getter|2|
+        return viewIndoorReportForm;
+    }
+    //</editor-fold>//GEN-END:|126-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: viewIndoorbackCommand ">//GEN-BEGIN:|127-getter|0|127-preInit
+    /**
+     * Returns an initiliazed instance of viewIndoorbackCommand component.
+     * @return the initialized component instance
+     */
+    public Command getViewIndoorbackCommand() {
+        if (viewIndoorbackCommand == null) {//GEN-END:|127-getter|0|127-preInit
+            // write pre-init user code here
+            viewIndoorbackCommand = new Command("Back", Command.BACK, 0);//GEN-LINE:|127-getter|1|127-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|127-getter|2|
+        return viewIndoorbackCommand;
+    }
+    //</editor-fold>//GEN-END:|127-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: ViewOutdoorBackCommand ">//GEN-BEGIN:|130-getter|0|130-preInit
+    /**
+     * Returns an initiliazed instance of ViewOutdoorBackCommand component.
+     * @return the initialized component instance
+     */
+    public Command getViewOutdoorBackCommand() {
+        if (ViewOutdoorBackCommand == null) {//GEN-END:|130-getter|0|130-preInit
+            // write pre-init user code here
+            ViewOutdoorBackCommand = new Command("Back", Command.BACK, 0);//GEN-LINE:|130-getter|1|130-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|130-getter|2|
+        return ViewOutdoorBackCommand;
+    }
+    //</editor-fold>//GEN-END:|130-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: ViewOutdoorTitleStringItem ">//GEN-BEGIN:|133-getter|0|133-preInit
+    /**
+     * Returns an initiliazed instance of ViewOutdoorTitleStringItem component.
+     * @return the initialized component instance
+     */
+    public StringItem getViewOutdoorTitleStringItem() {
+        if (ViewOutdoorTitleStringItem == null) {//GEN-END:|133-getter|0|133-preInit
+            // write pre-init user code here
+            ViewOutdoorTitleStringItem = new StringItem("Title:", null);//GEN-LINE:|133-getter|1|133-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|133-getter|2|
+        return ViewOutdoorTitleStringItem;
+    }
+    //</editor-fold>//GEN-END:|133-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: ViewOutdoorDateStringItem ">//GEN-BEGIN:|134-getter|0|134-preInit
+    /**
+     * Returns an initiliazed instance of ViewOutdoorDateStringItem component.
+     * @return the initialized component instance
+     */
+    public StringItem getViewOutdoorDateStringItem() {
+        if (ViewOutdoorDateStringItem == null) {//GEN-END:|134-getter|0|134-preInit
+            // write pre-init user code here
+            ViewOutdoorDateStringItem = new StringItem("Date:", null);//GEN-LINE:|134-getter|1|134-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|134-getter|2|
+        return ViewOutdoorDateStringItem;
+    }
+    //</editor-fold>//GEN-END:|134-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: ViewOutdoorDescriptionStringItem ">//GEN-BEGIN:|135-getter|0|135-preInit
+    /**
+     * Returns an initiliazed instance of ViewOutdoorDescriptionStringItem component.
+     * @return the initialized component instance
+     */
+    public StringItem getViewOutdoorDescriptionStringItem() {
+        if (ViewOutdoorDescriptionStringItem == null) {//GEN-END:|135-getter|0|135-preInit
+            // write pre-init user code here
+            ViewOutdoorDescriptionStringItem = new StringItem("Description:", null);//GEN-LINE:|135-getter|1|135-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|135-getter|2|
+        return ViewOutdoorDescriptionStringItem;
+    }
+    //</editor-fold>//GEN-END:|135-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: ViewOutdoorLocationImageItem ">//GEN-BEGIN:|136-getter|0|136-preInit
+    /**
+     * Returns an initiliazed instance of ViewOutdoorLocationImageItem component.
+     * @return the initialized component instance
+     */
+    public ImageItem getViewOutdoorLocationImageItem() {
+        if (ViewOutdoorLocationImageItem == null) {//GEN-END:|136-getter|0|136-preInit
+            // write pre-init user code here
+            ViewOutdoorLocationImageItem = new ImageItem("Location:", null, ImageItem.LAYOUT_DEFAULT, "<Missing Image>");//GEN-LINE:|136-getter|1|136-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|136-getter|2|
+        return ViewOutdoorLocationImageItem;
+    }
+    //</editor-fold>//GEN-END:|136-getter|2|
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: ViewOutdoorEditCommand ">//GEN-BEGIN:|137-getter|0|137-preInit
+    /**
+     * Returns an initiliazed instance of ViewOutdoorEditCommand component.
+     * @return the initialized component instance
+     */
+    public Command getViewOutdoorEditCommand() {
+        if (ViewOutdoorEditCommand == null) {//GEN-END:|137-getter|0|137-preInit
+            // write pre-init user code here
+            ViewOutdoorEditCommand = new Command("Edit", Command.OK, 0);//GEN-LINE:|137-getter|1|137-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|137-getter|2|
+        return ViewOutdoorEditCommand;
+    }
+    //</editor-fold>//GEN-END:|137-getter|2|
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: resolveOutdoorReportForm ">//GEN-BEGIN:|140-getter|0|140-preInit
+    /**
+     * Returns an initiliazed instance of resolveOutdoorReportForm component.
+     * @return the initialized component instance
+     */
+    public Form getResolveOutdoorReportForm() {
+        if (resolveOutdoorReportForm == null) {//GEN-END:|140-getter|0|140-preInit
+            // write pre-init user code here
+            resolveOutdoorReportForm = new Form("Resolve Report", new Item[] { getOutdoorResolveImageItem(), getOutdoorStatusStringItem() });//GEN-LINE:|140-getter|1|140-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|140-getter|2|
+        return resolveOutdoorReportForm;
+    }
+    //</editor-fold>//GEN-END:|140-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: resolveIndoorReportForm ">//GEN-BEGIN:|142-getter|0|142-preInit
+    /**
+     * Returns an initiliazed instance of resolveIndoorReportForm component.
+     * @return the initialized component instance
+     */
+    public Form getResolveIndoorReportForm() {
+        if (resolveIndoorReportForm == null) {//GEN-END:|142-getter|0|142-preInit
+            // write pre-init user code here
+            resolveIndoorReportForm = new Form("form");//GEN-LINE:|142-getter|1|142-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|142-getter|2|
+        return resolveIndoorReportForm;
+    }
+    //</editor-fold>//GEN-END:|142-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: ViewIndoorTitleStringItem ">//GEN-BEGIN:|143-getter|0|143-preInit
+    /**
+     * Returns an initiliazed instance of ViewIndoorTitleStringItem component.
+     * @return the initialized component instance
+     */
+    public StringItem getViewIndoorTitleStringItem() {
+        if (ViewIndoorTitleStringItem == null) {//GEN-END:|143-getter|0|143-preInit
+            // write pre-init user code here
+            ViewIndoorTitleStringItem = new StringItem("Title:", null);//GEN-LINE:|143-getter|1|143-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|143-getter|2|
+        return ViewIndoorTitleStringItem;
+    }
+    //</editor-fold>//GEN-END:|143-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: ViewIndoorDateStringItem ">//GEN-BEGIN:|144-getter|0|144-preInit
+    /**
+     * Returns an initiliazed instance of ViewIndoorDateStringItem component.
+     * @return the initialized component instance
+     */
+    public StringItem getViewIndoorDateStringItem() {
+        if (ViewIndoorDateStringItem == null) {//GEN-END:|144-getter|0|144-preInit
+            // write pre-init user code here
+            ViewIndoorDateStringItem = new StringItem("Date:", null);//GEN-LINE:|144-getter|1|144-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|144-getter|2|
+        return ViewIndoorDateStringItem;
+    }
+    //</editor-fold>//GEN-END:|144-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: ViewIndoorDescriptionStringItem ">//GEN-BEGIN:|145-getter|0|145-preInit
+    /**
+     * Returns an initiliazed instance of ViewIndoorDescriptionStringItem component.
+     * @return the initialized component instance
+     */
+    public StringItem getViewIndoorDescriptionStringItem() {
+        if (ViewIndoorDescriptionStringItem == null) {//GEN-END:|145-getter|0|145-preInit
+            // write pre-init user code here
+            ViewIndoorDescriptionStringItem = new StringItem("Description", null);//GEN-LINE:|145-getter|1|145-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|145-getter|2|
+        return ViewIndoorDescriptionStringItem;
+    }
+    //</editor-fold>//GEN-END:|145-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: ViewIndoorLocationStringItem ">//GEN-BEGIN:|146-getter|0|146-preInit
+    /**
+     * Returns an initiliazed instance of ViewIndoorLocationStringItem component.
+     * @return the initialized component instance
+     */
+    public StringItem getViewIndoorLocationStringItem() {
+        if (ViewIndoorLocationStringItem == null) {//GEN-END:|146-getter|0|146-preInit
+            // write pre-init user code here
+            ViewIndoorLocationStringItem = new StringItem("Postal Code:", null);//GEN-LINE:|146-getter|1|146-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|146-getter|2|
+        return ViewIndoorLocationStringItem;
+    }
+    //</editor-fold>//GEN-END:|146-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: ViewIndoorMapImageItem ">//GEN-BEGIN:|148-getter|0|148-preInit
+    /**
+     * Returns an initiliazed instance of ViewIndoorMapImageItem component.
+     * @return the initialized component instance
+     */
+    public ImageItem getViewIndoorMapImageItem() {
+        if (ViewIndoorMapImageItem == null) {//GEN-END:|148-getter|0|148-preInit
+            // write pre-init user code here
+            ViewIndoorMapImageItem = new ImageItem("Map:", null, ImageItem.LAYOUT_DEFAULT, "<Missing Image>");//GEN-LINE:|148-getter|1|148-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|148-getter|2|
+        return ViewIndoorMapImageItem;
+    }
+    //</editor-fold>//GEN-END:|148-getter|2|
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: outdoorResolveImageItem ">//GEN-BEGIN:|149-getter|0|149-preInit
+    /**
+     * Returns an initiliazed instance of outdoorResolveImageItem component.
+     * @return the initialized component instance
+     */
+    public ImageItem getOutdoorResolveImageItem() {
+        if (outdoorResolveImageItem == null) {//GEN-END:|149-getter|0|149-preInit
+            // write pre-init user code here
+            outdoorResolveImageItem = new ImageItem("New Image:", null, ImageItem.LAYOUT_DEFAULT, "<Missing Image>");//GEN-LINE:|149-getter|1|149-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|149-getter|2|
+        return outdoorResolveImageItem;
+    }
+    //</editor-fold>//GEN-END:|149-getter|2|
+
+    //<editor-fold defaultstate="collapsed" desc=" Generated Getter: outdoorStatusStringItem ">//GEN-BEGIN:|150-getter|0|150-preInit
+    /**
+     * Returns an initiliazed instance of outdoorStatusStringItem component.
+     * @return the initialized component instance
+     */
+    public StringItem getOutdoorStatusStringItem() {
+        if (outdoorStatusStringItem == null) {//GEN-END:|150-getter|0|150-preInit
+            // write pre-init user code here
+            outdoorStatusStringItem = new StringItem("Status:", null);//GEN-LINE:|150-getter|1|150-postInit
+            // write post-init user code here
+        }//GEN-BEGIN:|150-getter|2|
+        return outdoorStatusStringItem;
+    }
+    //</editor-fold>//GEN-END:|150-getter|2|
+
     /**
      * Returns a display instance.
      * @return the display instance.
@@ -1602,12 +2000,25 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                     hc.close();
                     String temp[] = split(loginServerMsg, "|");
                     if (temp[0].equals("T")) {
-                        // logInMessage is a variable that YJ needs.
-                        logInMessage = temp[1];
-                        loginServerMsg = "";
-                        userIDLoggedIn = temp[2];
-                        Thread.sleep(500);
-                        switchDisplayable(null, getMainMenuForm());
+
+                        if (temp[3].equals("NEAOfficer")) {
+                            neaOfficerLoggedin = temp[2];
+                            getReports();
+                               Thread.sleep(500);
+                            
+
+
+
+                        } else {
+                            // logInMessage is a variable that YJ needs.
+                            logInMessage = temp[1];
+                            loginServerMsg = "";
+                            userIDLoggedIn = temp[2];
+                            Thread.sleep(500);
+                            switchDisplayable(null, getMainMenuForm());
+                        }
+
+
                     }
 
                     if (loginServerMsg.equals("F")) {
@@ -1700,15 +2111,15 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                     int tempLevel = indoorLevelChoiceGroup.getSelectedIndex();
                     int tempStairwell = indoorStairwellChoiceGroup.getSelectedIndex();
                     String chosenLevel = indoorLevelChoiceGroup.getString(tempLevel);
-                    System.out.println("Chosen Level: "+ chosenLevel);
+                    System.out.println("Chosen Level: " + chosenLevel);
                     String chosenStairwell = indoorStairwellChoiceGroup.getString(tempStairwell);
-                    System.out.println("Chosen Stairwell: "+ chosenStairwell);
-                    String tempSplitted[] = split(userPostalCode,"~");
+                    System.out.println("Chosen Stairwell: " + chosenStairwell);
+                    String tempSplitted[] = split(userPostalCode, "~");
                     hc = (HttpConnection) Connector.open(reportIndoorURL + urlEncode("?userid=" + userIDLoggedIn + "&title=" + indoorTitleTextField.getString() + "&description=" + indoorDescriptiontextField.getString() + "&postalCode=" + tempSplitted[0] + "&imagename=" + imageName + "&level=" + chosenLevel + "&stairwell=" + chosenStairwell), Connector.READ_WRITE);
                     hc.setRequestMethod(HttpConnection.POST);
                     hc.setRequestProperty("Content-Type", "application/octet-stream");
                     OutputStream out = hc.openOutputStream();
-                   // String imageString = base64Encode(imageByteIndoor);
+                    // String imageString = base64Encode(imageByteIndoor);
                     //out.write(imageString.getBytes());
 
                     is = hc.openInputStream();
@@ -1975,8 +2386,8 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                     hc.close();
 
                     switchDisplayable(null, getIndoorReportForm());
-                                            indoorLevelChoiceGroup.deleteAll();
-                        indoorStairwellChoiceGroup.deleteAll();
+                    indoorLevelChoiceGroup.deleteAll();
+                    indoorStairwellChoiceGroup.deleteAll();
                     indoorPostalStringItem.setText(splitted[0]);
                     String level[] = split(splitted[1], "|");
                     String stairwell[] = split(splitted[2], "|");
@@ -2160,6 +2571,119 @@ public class AmityMIDlet extends MIDlet implements CommandListener, ItemCommandL
                 } catch (Exception e) {
                     System.out.println(e);
                 }
+            }
+        }.start();
+    }
+
+    private void getReports() {
+        new Thread() {
+
+            public void run() {
+                //Load all the reports from this particular officer
+                StringBuffer serverMsg = new StringBuffer("");
+                HttpConnection hc = null;
+                InputStream is = null;
+
+
+                try {
+                    hc = (HttpConnection) Connector.open(reportURL + urlEncode("?userid=" + neaOfficerLoggedin));
+                    is = hc.openInputStream();
+                    int ch = is.read();
+                    while (ch != -1) {
+                        serverMsg.append((char) ch);
+
+                        ch = is.read();
+                    }
+                    System.out.println("Get Officer's Report  THREAD: " + serverMsg.toString().trim());
+                    reportServerMsg = serverMsg.toString().trim();
+
+                    if (!reportServerMsg.equals("F")) {
+
+                        
+                        String toSplit[] = split(reportServerMsg, "|");
+                        switchDisplayable(null, getAssignedReportsForm());
+                        reportsChoiceGroup.deleteAll();
+                        for (int i = 1; i < toSplit.length; i++) {
+                            reportsChoiceGroup.append(toSplit[i], null);
+                        }
+                    } else
+                    {
+                        switchDisplayable(null, getAssignedReportsForm());
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+            }
+        }.start();
+    }
+
+        private void getEachReport() {
+        new Thread() {
+
+            public void run() {
+                //Load all the reports from this particular officer
+                StringBuffer serverMsg = new StringBuffer("");
+                HttpConnection hc = null;
+                InputStream is = null;
+
+
+                try {
+                    String temp = reportsChoiceGroup.getString(reportsChoiceGroup.getSelectedIndex());
+                    System.out.println("Selected Index" +temp + " end");
+                    String splittted[] = split(temp, "-");
+                    hc = (HttpConnection) Connector.open(eachReportURL + urlEncode("?title=" + splittted[0]+ "&date=" + splittted[1]+ "&category=" + splittted[2]));
+                    is = hc.openInputStream();
+                    int ch = is.read();
+                    while (ch != -1) {
+                        serverMsg.append((char) ch);
+
+                        ch = is.read();
+                    }
+                    System.out.println("Get Each Report  THREAD: " + serverMsg.toString().trim());
+                    eachReportServerMsg = serverMsg.toString().trim();
+
+                    if (!reportServerMsg.equals("F")) {
+                        String splitted[] = split(eachReportServerMsg,"|");
+                        if(splitted[0].equals("Outdoor"))
+                        {
+                            switchDisplayable(null, getViewOutdoorReportForm());
+                            //Outdoor|This is the title|2010-07-12 14:01:48.0|This is a description 1|1.34538|103.934312
+                            ViewOutdoorTitleStringItem.setText(splitted[1]);
+                            ViewOutdoorDateStringItem.setText(splitted[2]);
+                            ViewOutdoorDescriptionStringItem.setText(splitted[3]);
+                            //   public Image retrieveStaticImage(int width, int height, double lat, double lng, int zoom,String format)
+                            double lat = Double.parseDouble(splitted[4]);
+                            double longi = Double.parseDouble(splitted[5]);
+
+                            ViewOutdoorLocationImageItem.setImage(gMap.retrieveStaticImage(300, 300, lat, longi, 16, "jpg"));
+                            
+
+                        } else
+                        {
+                            
+                            switchDisplayable(null, getViewIndoorReportForm());
+                            ViewIndoorTitleStringItem.setText(splitted[1]);
+                            ViewIndoorDateStringItem.setText(splitted[2]);
+                            ViewIndoorDescriptionStringItem.setText(splitted[3]);
+                            ViewIndoorLocationStringItem.setText("PostalCode : " + splitted[4] + "Level: " + splitted[5] + "Stairwell: " + splitted[6]);
+                            double[] lanLng = gMap.geocodeAddress("Singapore" + splitted[4]);
+                            ViewIndoorMapImageItem.setImage(gMap.retrieveStaticImage(300, 300, lanLng[0], lanLng[1], 16, "jpg"));
+                        }
+
+
+                       
+                        
+
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
             }
         }.start();
     }

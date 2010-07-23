@@ -19,6 +19,7 @@ public class CameraCanvas
     try {
       //videoControl.setDisplayLocation(2, 2);
       videoControl.setDisplaySize(width, height);
+      //Need to..
     }
     catch (MediaException me) {
       try { videoControl.setDisplayFullScreen(true); }
