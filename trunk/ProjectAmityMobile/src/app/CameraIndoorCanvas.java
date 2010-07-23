@@ -8,6 +8,7 @@ public class CameraIndoorCanvas
     extends Canvas {
 
   private AmityMIDlet mAmityMIDlet;
+  //Reminders
 
   public CameraIndoorCanvas(AmityMIDlet midlet, VideoControl videoControl) {
     int width = getWidth();
